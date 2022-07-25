@@ -6,5 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="image/page"/>
+	<classpathentry kind="src" path="image/button"/>
+	<classpathentry excluding="button/|page/" kind="src" path="image"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
