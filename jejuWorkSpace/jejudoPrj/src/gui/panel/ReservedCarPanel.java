@@ -129,8 +129,8 @@ public class ReservedCarPanel extends ImgPanel {
 		backDay.setText("YYYY-MM-DD");
 		minMoney.setText("0");
 		maxMoney.setText("0");
-		energyG.clearSelection();
-		sizeG.clearSelection();
+		if(energyG!=null)energyG.clearSelection();
+		if(sizeG!=null)sizeG.clearSelection();
 	}
 
 	public HomeBtn getHomeBtn() {

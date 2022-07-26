@@ -99,7 +99,7 @@ public class ReservedAccomPanel extends ImgPanel {
 		backDay.setText("YYYY-MM-DD");
 		minMoney.setText("0");
 		maxMoney.setText("0");
-		g.clearSelection();
+		if(g!=null)g.clearSelection();
 	}
 
 	public HomeBtn getHomeBtn() {

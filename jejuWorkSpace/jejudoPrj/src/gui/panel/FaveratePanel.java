@@ -135,11 +135,11 @@ public class FaveratePanel extends ImgPanel {
 	}
 
 	public void reset() {
-		groupQ1.clearSelection();
-		groupQ2.clearSelection();
-		groupQ3.clearSelection();
-		groupQ4.clearSelection();
-		groupQ5.clearSelection();
+		if(groupQ1!=null)groupQ1.clearSelection();
+		if(groupQ2!=null)groupQ2.clearSelection();
+		if(groupQ3!=null)groupQ3.clearSelection();
+		if(groupQ4!=null)groupQ4.clearSelection();
+		if(groupQ5!=null)groupQ5.clearSelection();
 	}
 
 	public HomeBtn getHomeBtn() {

@@ -1,23 +1,31 @@
 package gui.panel;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
-import javax.swing.table.JTableHeader;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
 import gui.button.NextBtn;
-import java.awt.ScrollPane;
-import java.awt.Color;
+import gui.table.NewTable;
 
 public class SugTripPanelTest extends ImgPanel {
 
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
-	private ScrollPane scrollPane;
-	private JTable table;
+	private NewTable tourism;
+	private NewTable activity;
+	private NewTable restaurant;
+	private JScrollPane tourismScroll;
+	private JScrollPane activityScroll;
+	private JScrollPane restaurantScroll;
 
 	public SugTripPanelTest() {
 		super("sugTrip");
@@ -30,22 +38,33 @@ public class SugTripPanelTest extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
-		
-//		scrollPane = new ScrollPane();
-//		scrollPane.setBackground(Color.WHITE);
-//		scrollPane.setBounds(25, 122, 495, 193);
-//		add(scrollPane);
-		
-		Integer[][] data = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-		String[] cols = {"A", "B", "C"};
-		
-		table = new JTable(data, cols);
-		table.setBorder(new LineBorder(new Color(64, 64, 64)));
-	    JTableHeader header = table.getTableHeader();
-	    header.setBackground(Color.BLUE);
+
+		Integer[][] data = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+		String[] cols = { "A", "B", "C" };
+
+		tourism = new NewTable();
+		tourism.setData(data, cols);
+
+		activity = new NewTable();
+		activity.setData(data, cols);
+
+		restaurant = new NewTable();
+		restaurant.setData(data, cols);
+
+		tourismScroll = new JScrollPane(tourism);
+		tourismScroll.setBounds(25, 124, 495, 191);
+		add(tourismScroll);
+
+		activityScroll = new JScrollPane(activity);
+		activityScroll.setBounds(25, 367, 495, 191);
+		add(activityScroll);
+
+		restaurantScroll = new JScrollPane(restaurant);
+		restaurantScroll.setBounds(25, 610, 495, 191);
+		add(restaurantScroll);
 
 	}
-
+	
 	public HomeBtn getHomeBtn() {
 		return homeBtn;
 	}
@@ -57,4 +76,29 @@ public class SugTripPanelTest extends ImgPanel {
 	public BackBtn getBackBtn() {
 		return backBtn;
 	}
+
+	public JTable getTourism() {
+		return tourism;
+	}
+
+	public JTable getActivity() {
+		return activity;
+	}
+
+	public JTable getRestaurant() {
+		return restaurant;
+	}
+
+	public JScrollPane getTourismScroll() {
+		return tourismScroll;
+	}
+
+	public JScrollPane getActivityScroll() {
+		return activityScroll;
+	}
+
+	public JScrollPane getRestaurantScroll() {
+		return restaurantScroll;
+	}
+
 }

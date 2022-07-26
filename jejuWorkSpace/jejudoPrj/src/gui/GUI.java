@@ -76,6 +76,8 @@ public class GUI {
 		ReservInforPanel reservInforPanel = new ReservInforPanel();
 		SugTripPanel sugTripPanel = new SugTripPanel();
 		
+		
+		
 		/** 추천관광지 **/
 		frame.getContentPane().add(sugTripPanel);
 		sugTripPanel.setVisible(false);
@@ -164,7 +166,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reservInforPanel.setVisible(false);	
-				sugTripPanel.reset();
+				//테이블 데이터 셋
 				sugTripPanel.setVisible(true);
 			}
 		});

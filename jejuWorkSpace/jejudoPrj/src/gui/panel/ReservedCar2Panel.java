@@ -64,7 +64,7 @@ public class ReservedCar2Panel extends ImgPanel {
 	
 	public void reset() {
 		driver.setText(null);
-		bg.clearSelection();
+		if(bg!=null)bg.clearSelection();
 	}
 
 	public HomeBtn getHomeBtn() {

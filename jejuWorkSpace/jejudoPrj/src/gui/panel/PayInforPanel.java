@@ -96,7 +96,8 @@ public class PayInforPanel extends ImgPanel {
 	}
 	
 	public void reset() {
-		// TODO Auto-generated method stub
+		usePoint.setText(null);
+		if(g!=null)g.clearSelection();
 		
 	}
 	

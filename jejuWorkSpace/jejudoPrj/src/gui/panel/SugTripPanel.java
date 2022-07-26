@@ -1,6 +1,7 @@
 package gui.panel;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -96,11 +97,6 @@ public class SugTripPanel extends ImgPanel {
 
 	}
 	
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public HomeBtn getHomeBtn() {
 		return homeBtn;
 	}
