@@ -12,9 +12,8 @@ public class ImgPanel extends JPanel {
 	private Image img;
 
 	public ImgPanel(String page) {
-//		this.img = new ImageIcon("D:\\dev\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\page\\" + page + ".jpg").getImage(); // 절대경로
-//		this.img = new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\page\\" + page + ".jpg").getImage(); // 절대경로
-		this.img = new ImageIcon(".\\.\\image\\page\\"+page+".jpg").getImage(); //상대경로
+		this.img = new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\page\\" + page + ".jpg").getImage(); // 절대경로
+//		this.img = new ImageIcon(".\\.\\image\\page\\"+page+".jpg").getImage(); //상대경로
 		setSize(new Dimension(img.getWidth(null), img.getHeight(null)));
 		setPreferredSize(new Dimension(img.getWidth(null), img.getHeight(null)));
 		setLayout(null);

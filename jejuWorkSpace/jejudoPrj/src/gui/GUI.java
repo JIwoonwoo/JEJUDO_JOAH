@@ -8,9 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 
+import gui.dialog.PopUpDialog;
 import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
@@ -58,7 +60,7 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("JEJUDO JOAH");
-		frame.setIconImage(new ImageIcon("D:\\dev\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\icon.png").getImage());
+		frame.setIconImage(new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\icon.png").getImage());
 //		frame.setIconImage(new ImageIcon(".\\.\\image\\icon.png").getImage());
 
 		LoginPanel loginPanel = new LoginPanel();
@@ -639,6 +641,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(loginPanel.getIdTextField());
 				System.out.println(loginPanel.getPasswordField());
+				JDialog j = new PopUpDialog(frame, "로그인성공", "로긴 되었습니다.");
+				j.setVisible(true);
 				mainPanel.setVisible(true);
 				loginPanel.setVisible(false);
 

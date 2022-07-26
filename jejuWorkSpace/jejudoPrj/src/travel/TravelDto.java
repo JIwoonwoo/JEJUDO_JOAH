@@ -1,4 +1,4 @@
-package dto;
+package travel;
 
 import java.sql.Timestamp;
 
@@ -6,19 +6,19 @@ public class TravelDto {
 
 	private int travelNo;
 	private String travelName;
-	String travelLocation;
-	boolean isActivity;
-	int travelPrice;
-	boolean withAnimal;
-	String travelInfo;
-	String travelPhone;
-	String category;
-	String theme;
-	String type;
-	Timestamp open;
-	Timestamp close;
-	String closedDay;
-	int like;
+	private String travelLocation;
+	private boolean isActivity;
+	private int travelPrice;
+	private boolean withAnimal;
+	private String travelInfo;
+	private String travelPhone;
+	private String category;
+	private String theme;
+	private String type;
+	private Timestamp open;
+	private Timestamp close;
+	private String closedDay;
+	private int like;
 	
 	public TravelDto() {
 		
