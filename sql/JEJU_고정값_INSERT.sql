@@ -1,0 +1,36 @@
+--------------설문
+--GROUP
+INSERT INTO GROUP VALUES(1, '혼자');
+INSERT INTO GROUP VALUES(2, '친구');
+INSERT INTO GROUP VALUES(3, '연인');
+INSERT INTO GROUP VALUES(4, '가족');
+--LOCATION
+INSERT INTO LOCATION VALUES(1, '제주시');
+INSERT INTO LOCATION VALUES(2, '서귀포시');
+INSERT INTO LOCATION VALUES(3, '제주전체');
+--PURPOSE
+INSERT INTO PURPOSE VALUES(1, '쇼핑');
+INSERT INTO PURPOSE VALUES(2, '휴식');
+INSERT INTO PURPOSE VALUES(3, '관광');
+INSERT INTO PURPOSE VALUES(4, '경험');
+INSERT INTO PURPOSE VALUES(5, '식도락');
+
+--------------연료
+--FUEL
+INSERT INTO FUEL VALUES(SEQ_FUEL.nextval, '경유');
+INSERT INTO FUEL VALUES(SEQ_FUEL.nextval, '휘발유');
+INSERT INTO FUEL VALUES(SEQ_FUEL.nextval, '전기');
+
+--------------뷰
+--ROOM_VIEW_INFO
+INSERT INTO GROUP VALUES(seq_group.nextval, '혼자');
+INSERT INTO GROUP VALUES(seq_group.nextval, '친구');
+INSERT INTO GROUP VALUES(seq_group.nextval, '연인');
+INSERT INTO GROUP VALUES(seq_group.nextval, '가족');
+
+--------------주변환경
+--ACCOM_AR_INFO
+INSERT INTO GROUP VALUES(seq_group.nextval, '혼자');
+INSERT INTO GROUP VALUES(seq_group.nextval, '친구');
+INSERT INTO GROUP VALUES(seq_group.nextval, '연인');
+INSERT INTO GROUP VALUES(seq_group.nextval, '가족');

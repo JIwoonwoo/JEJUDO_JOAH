@@ -8,25 +8,19 @@ import java.sql.Statement;
 
 public class JDBCTemplate {
 
-	public static Connection getConnection() {
+	public static Connection getConnection() throws Exception {
 		
 		Connection conn = null;
 		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			String id = "C##JEJU";
-			String pwd = "KH3";
-			
-			conn = DriverManager.getConnection(url, id, pwd);
-			conn.setAutoCommit(false);
-			
-		} catch (Exception e) {
-			System.out.println("커넥션 가지고오기 실패!");
-			e.printStackTrace();
-		}
+		Class.forName("oracle.jdbc.driver.OracleDriver");
 		
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String id = "C##JEJU";
+		String pwd = "KH3";
+		
+		conn = DriverManager.getConnection(url, id, pwd);
+		conn.setAutoCommit(false);
+			
 		return conn;
 	}
 	

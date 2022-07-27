@@ -82,7 +82,7 @@ public class ReservedCarPanel extends ImgPanel {
 		maxMoney.setHorizontalAlignment(JTextField.RIGHT);
 
 		PlainDocument doc2 = (PlainDocument) maxMoney.getDocument();
-		doc.setDocumentFilter(new MyIntFilter());
+		doc2.setDocumentFilter(new MyIntFilter());
 
 		add(maxMoney);
 		
