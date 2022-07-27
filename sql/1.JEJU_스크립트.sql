@@ -7,9 +7,12 @@ CREATE TABLE room (
     room_name    VARCHAR2(30) NOT NULL,
     room_price   NUMBER NOT NULL,
     capacity     NUMBER NOT NULL,
-    animal_yn    CHAR(1) DEFAULT 'N' NOT NULL CHECK ( animal_yn IN ( 'M', 'F' ) ),
-    pool_able_yn CHAR(1) NOT NULL CHECK ( pool_able_yn IN ( 'M', 'F' ) )
+    animal_yn    CHAR(1) DEFAULT 'N' NOT NULL CHECK ( animal_yn IN ( 'Y', 'N' ) ),
+    pool_able_yn CHAR(1) NOT NULL CHECK ( pool_able_yn IN ( 'Y', 'N' ) )
 );
+
+ALTER TABLE ROOM MODIFY animal_yn CHECK ( animal_yn IN ( 'Y', 'N' ) );
+ALTER TABLE ROOM MODIFY pool_able_yn CHECK ( pool_able_yn IN ( 'Y', 'N' ) );
 
 COMMENT ON COLUMN room.room_price IS
     '음수 불가능';
@@ -30,6 +33,9 @@ CREATE TABLE flight (
     dep_airport    VARCHAR(15) NOT NULL,
     arr_airport    VARCHAR(15) NOT NULL
 );
+
+--ALTER TABLE FLIGHT MODIFY departure_time VARCHAR(10);
+--ALTER TABLE FLIGHT MODIFY arrival_time VARCHAR(10);
 
 COMMENT ON COLUMN flight.flight_no IS
     '시퀀스 관리';
@@ -65,20 +71,23 @@ CREATE TABLE travel (
     recommend_type NUMBER NOT NULL,
     theme          NUMBER NOT NULL,
     category       NUMBER NOT NULL,
-    travel_name    VARCHAR2(20) NOT NULL,
+    travel_name    VARCHAR2(40) NOT NULL,
     travel_address VARCHAR2(100) NOT NULL,
     activity_yn    CHAR(1) CHECK ( activity_yn IN ( 'Y', 'N' ) ) NOT NULL,
-    travel_price   NUMBER NOT NULL,
+    travel_price   NUMBER NULL,
     animal_yn      CHAR(1) CHECK ( animal_yn IN ( 'Y', 'N' ) ) NOT NULL,
     travel_info    VARCHAR2(200) NOT NULL,
-    travel_phone   VARCHAR2(13) NOT NULL,
-    open           TIMESTAMP NULL,
-    closed         TIMESTAMP NULL,
-    closed_day     VARCHAR2(20) NULL,
+    travel_phone   VARCHAR2(20) NULL,
+    open           VARCHAR2(10) NULL,
+    closed         VARCHAR2(10) NULL,
+    closed_day     VARCHAR2(40) NULL,
     like_cnt       NUMBER DEFAULT 0 NULL,
     delete_yn      CHAR(1) DEFAULT 'N' CHECK ( delete_yn IN ( 'Y', 'N' ) ) NOT NULL,
     delete_date    TIMESTAMP NULL
 );
+
+--ALTER TABLE TRAVEL MODIFY travel_name VARCHAR2(40);
+--ALTER TABLE TRAVEL MODIFY travel_phone VARCHAR2(20);
 
 COMMENT ON COLUMN travel.travel_no IS
     '시퀀스로 관리';
@@ -243,9 +252,11 @@ CREATE TABLE accom (
     accom_around  NUMBER NOT NULL,
     accom_name    VARCHAR2(40) NOT NULL,
     accom_address VARCHAR(100) NOT NULL,
-    pool_yn       CHAR(1) DEFAULT 'N' NOT NULL CHECK ( pool_yn IN ( 'M', 'F' ) ),
+    pool_yn       CHAR(1) DEFAULT 'N' NOT NULL CHECK ( pool_yn IN ( 'Y', 'N' ) ),
     type          CHAR(1) NOT NULL CHECK ( type IN ( 'H', 'G' ) )
 );
+
+--ALTER TABLE accom MODIFY pool_yn CHECK ( pool_yn IN ( 'Y', 'N' ) );
 
 COMMENT ON COLUMN accom.accom_no IS
     '시퀀스로 관리';
@@ -298,8 +309,10 @@ DROP TABLE room_view_info;
 
 CREATE TABLE room_view_info (
     room_view_no   NUMBER NOT NULL,
-    room_view_info VARCHAR2(10) NULL
+    room_view_info VARCHAR2(20) NULL
 );
+
+--ALTER TABLE ROOM_VIEW_INFO MODIFY ROOM_VIEW_INFO VARCHAR2(20);
 
 COMMENT ON COLUMN room_view_info.room_view_info IS
     '오션, 마운틴, 시티';
@@ -308,7 +321,7 @@ DROP TABLE category;
 
 CREATE TABLE category (
     no       NUMBER NOT NULL,
-    category VARCHAR(10) NOT NULL
+    category VARCHAR(20) NOT NULL
 );
 
 ALTER TABLE room ADD CONSTRAINT pk_room PRIMARY KEY ( room_no );
