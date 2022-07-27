@@ -1,451 +1,448 @@
-DROP TABLE "ROOM";
+DROP TABLE room;
 
-CREATE TABLE "ROOM" (
-    "ROOM_NO"       NUMBER NOT NULL,
-    "ACCOM_NO"      NUMBER NOT NULL,
-    "ROOM_VIEW"     NUMBER NOT NULL,
-    "ROOM_NAME"     VARCHAR2(30) NOT NULL,
-    "ROOM_PRICE"    NUMBER NOT NULL,
-    "CAPACITY"      NUMBER NOT NULL,
-    "ANIMAL_YN"     CHAR(1) DEFAULT 'N' NOT NULL,
-    "POOL__ABLE_YN" CHAR(1) NOT NULL
+CREATE TABLE room (
+    room_no      NUMBER NOT NULL,
+    accom_no     NUMBER NOT NULL,
+    room_view    NUMBER NOT NULL,
+    room_name    VARCHAR2(30) NOT NULL,
+    room_price   NUMBER NOT NULL,
+    capacity     NUMBER NOT NULL,
+    animal_yn    CHAR(1) DEFAULT 'N' NOT NULL CHECK ( animal_yn IN ( 'M', 'F' ) ),
+    pool_able_yn CHAR(1) NOT NULL CHECK ( pool_able_yn IN ( 'M', 'F' ) )
 );
 
-COMMENT ON COLUMN "ROOM"."ROOM_PRICE" IS
+COMMENT ON COLUMN room.room_price IS
     '음수 불가능';
 
-COMMENT ON COLUMN "ROOM"."CAPACITY" IS
+COMMENT ON COLUMN room.capacity IS
     '1이상';
 
-DROP TABLE "FLIGHT";
+DROP TABLE flight;
 
-CREATE TABLE "FLIGHT" (
-    "FLIGHT_NO"      NUMBER NOT NULL,
-    "FLIGHT_NAME"    CHAR(6) NOT NULL,
-    "DEPARTURE_TIME" TIMESTAMP NOT NULL,
-    "ARRIVAL_TIME"   TIMESTAMP NOT NULL,
-    "AIRLINE"        VARCHAR2(20) NOT NULL,
-    "FLIGHT_PRICE"   NUMBER NOT NULL,
-    "SEAT"           NUMBER NOT NULL,
-    "DEP_AIRPORT"    VARCHAR(15) NOT NULL,
-    "ARR_AIRPORT"    VARCHAR(15) NOT NULL
+CREATE TABLE flight (
+    flight_no      NUMBER NOT NULL,
+    flight_name    CHAR(6) NOT NULL,
+    departure_time TIMESTAMP NOT NULL,
+    arrival_time   TIMESTAMP NOT NULL,
+    airline        VARCHAR2(20) NOT NULL,
+    flight_price   NUMBER NOT NULL,
+    seat           NUMBER NOT NULL,
+    dep_airport    VARCHAR(15) NOT NULL,
+    arr_airport    VARCHAR(15) NOT NULL
 );
 
-COMMENT ON COLUMN "FLIGHT"."FLIGHT_NO" IS
+COMMENT ON COLUMN flight.flight_no IS
     '시퀀스 관리';
 
-COMMENT ON COLUMN "FLIGHT"."FLIGHT_NAME" IS
+COMMENT ON COLUMN flight.flight_name IS
     'CHAR(6)? VARCHAR2?';
 
-DROP TABLE "MEMBER";
+DROP TABLE member;
 
-CREATE TABLE "MEMBER" (
-    "MEMBER_NO"   NUMBER NOT NULL,
-    "ID"          VARCHAR2(20) UNIQUE NOT NULL,
-    "PWD"         VARCHAR2(20) NOT NULL,
-    "MEMBER_NAME" VARCHAR2(20) NOT NULL,
-    "MEMBER_NICK" VARCHAR2(20) NOT NULL,
-    "PHONE"       CHAR(13) ,
-    "EMAIL"       VARCHAR2(30) ,
-    "ENROLL_DATE" TIMESTAMP DEFAULT sysdate NOT NULL,
-    "QUIT_YN"     CHAR(1) DEFAULT 'N' CHECK(QUIT_YN IN('Y','N')) NOT NULL,
-    "POINT"       NUMBER DEFAULT 0 NOT NULL
+CREATE TABLE member (
+    member_no   NUMBER NOT NULL,
+    id          VARCHAR2(20) UNIQUE NOT NULL,
+    pwd         VARCHAR2(20) NOT NULL,
+    member_name VARCHAR2(20) NOT NULL,
+    member_nick VARCHAR2(20) NOT NULL,
+    phone       CHAR(13),
+    email       VARCHAR2(30),
+    enroll_date TIMESTAMP DEFAULT sysdate NOT NULL,
+    quit_yn     CHAR(1) DEFAULT 'N' CHECK ( quit_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    point       NUMBER DEFAULT 0 NOT NULL
 );
 
-COMMENT ON COLUMN "MEMBER"."MEMBER_NO" IS
+COMMENT ON COLUMN member.member_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "MEMBER"."QUIT_YN" IS
+COMMENT ON COLUMN member.quit_yn IS
     '제약조건 CHECK';
 
-DROP TABLE "TRAVEL";
+DROP TABLE travel;
 
-CREATE TABLE "TRAVEL" (
-    "TRAVEL_NO"      NUMBER NOT NULL,
-    "RECOMMEND_TYPE" NUMBER NOT NULL,
-    "THEME"          NUMBER NOT NULL,
-    "CATEGORY"       NUMBER NOT NULL,
-    "TRAVEL_NAME"    VARCHAR2(20) NOT NULL,
-    "TRAVEL_ADDRESS" VARCHAR2(100) NOT NULL,
-    "ACTIVITY_YN"    CHAR(1) NOT NULL,
-    "TRAVEL_PRICE"   NUMBER NOT NULL,
-    "ANIMAL_YN"      CHAR(1) NOT NULL,
-    "TRAVEL_INFO"    VARCHAR2(200) NOT NULL,
-    "TRAVEL_PHONE"   VARCHAR2(13) NOT NULL,
-    "OPEN"           TIMESTAMP NULL,
-    "CLOSED"         TIMESTAMP NULL,
-    "CLOSED_DAY"     VARCHAR2(20) NULL,
-    "LIKE_CNT"       NUMBER DEFAULT 0 NULL,
-    "DELETE_YN"      CHAR(1) DEFAULT 'N' NOT NULL,
-    "DELETE_DATE"    TIMESTAMP NULL
+CREATE TABLE travel (
+    travel_no      NUMBER NOT NULL,
+    recommend_type NUMBER NOT NULL,
+    theme          NUMBER NOT NULL,
+    category       NUMBER NOT NULL,
+    travel_name    VARCHAR2(20) NOT NULL,
+    travel_address VARCHAR2(100) NOT NULL,
+    activity_yn    CHAR(1) CHECK ( activity_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    travel_price   NUMBER NOT NULL,
+    animal_yn      CHAR(1) CHECK ( animal_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    travel_info    VARCHAR2(200) NOT NULL,
+    travel_phone   VARCHAR2(13) NOT NULL,
+    open           TIMESTAMP NULL,
+    closed         TIMESTAMP NULL,
+    closed_day     VARCHAR2(20) NULL,
+    like_cnt       NUMBER DEFAULT 0 NULL,
+    delete_yn      CHAR(1) DEFAULT 'N' CHECK ( delete_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    delete_date    TIMESTAMP NULL
 );
 
-COMMENT ON COLUMN "TRAVEL"."TRAVEL_NO" IS
+COMMENT ON COLUMN travel.travel_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "TRAVEL"."ACTIVITY_YN" IS
+COMMENT ON COLUMN travel.activity_yn IS
     '제약조건 CHECK';
 
-COMMENT ON COLUMN "TRAVEL"."ANIMAL_YN" IS
+COMMENT ON COLUMN travel.animal_yn IS
     '제약조건 CHECK
 상세페이지에 추가';
 
-COMMENT ON COLUMN "TRAVEL"."TRAVEL_PHONE" IS
+COMMENT ON COLUMN travel.travel_phone IS
     '000-0000-0000';
 
-COMMENT ON COLUMN "TRAVEL"."LIKE_CNT" IS
+COMMENT ON COLUMN travel.like_cnt IS
     '좋아요는 시퀀스 말고 셀렉해서 +1 하는 걸로 (시퀀스로 하면 내려가는 기능을 쓸 수 없기 때문에 좋아요 눌렀다가 취소 못함)';
 
-DROP TABLE "QnA";
+DROP TABLE qna;
 
-CREATE TABLE "QnA" (
-    "QUESTION_NO"    NUMBER NOT NULL,
-    "MEMBER_NO"      NUMBER NOT NULL,
-    "QUESTION_TITLE" VARCHAR(20) NOT NULL,
-    "QUESTION_TIME"  TIMESTAMP DEFAULT sysdate NOT NULL,
-    "ANSWER_YN"      CHAR(1) DEFAULT 'N' CHECK( ANSWER_YN IN('Y','N')) NOT NULL,
-    "Q_CONTENT"      VARCHAR(4000) NOT NULL,
-    "A_CONTENT"      VARCHAR(4000) NULL,
-    "MODIFY_TIME"    TIMESTAMP NULL,
-    "DELETE_YN"      CHAR(1) DEFAULT 'N' CHECK( DELETE_YN IN('Y','N')) NOT NULL,
-    "DELETE_DATE"    TIMESTAMP NULL,
-    "ANSWER_DATE"    TIMESTAMP NULL
+CREATE TABLE qna (
+    question_no    NUMBER NOT NULL,
+    member_no      NUMBER NOT NULL,
+    question_title VARCHAR(20) NOT NULL,
+    question_time  TIMESTAMP DEFAULT sysdate NOT NULL,
+    answer_yn      CHAR(1) DEFAULT 'N' CHECK ( answer_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    q_content      VARCHAR(4000) NOT NULL,
+    a_content      VARCHAR(4000) NULL,
+    modify_time    TIMESTAMP NULL,
+    delete_yn      CHAR(1) DEFAULT 'N' CHECK ( delete_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    delete_date    TIMESTAMP NULL,
+    answer_date    TIMESTAMP NULL
 );
 
-COMMENT ON COLUMN "QnA"."QUESTION_NO" IS
+COMMENT ON COLUMN qna.question_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "QnA"."ANSWER_YN" IS
+COMMENT ON COLUMN qna.answer_yn IS
     'CHECK 제약조건';
 
-COMMENT ON COLUMN "QnA"."DELETE_YN" IS
+COMMENT ON COLUMN qna.delete_yn IS
     'CHECK제약조건';
 
-DROP TABLE "PAYMENT";
+DROP TABLE payment;
 
-CREATE TABLE "PAYMENT" (
-    "PAY_NO"      NUMBER NOT NULL,
-    "FLIGHT_NO"   NUMBER NOT NULL,
-    "ACCOM_NO"    NUMBER NOT NULL,
-    "CAR_NO"      NUMBER NULL,
-    "TOTAL"       NUMBER NOT NULL,
-    "POINT_USED"  NUMBER DEFAULT 0 NOT NULL,
-    "CUT_PRICE"   NUMBER NULL,
-    "POINT"       NUMBER NOT NULL,
-    "PAY_METHOD"  CHAR(1) NOT NULL,
-    "PAY_DATE"    TIMESTAMP DEFAULT sysdate NOT NULL,
-    "CANCEL_YN"   CHAR(1) DEFAULT 'N' NULL,
-    "CANCEL_DATE" TIMESTAMP NULL
+CREATE TABLE payment (
+    pay_no      NUMBER NOT NULL,
+    flight_no   NUMBER NOT NULL,
+    accom_no    NUMBER NOT NULL,
+    car_no      NUMBER NULL,
+    total       NUMBER NOT NULL,
+    point_used  NUMBER DEFAULT 0 NOT NULL,
+    cut_price   NUMBER NULL,
+    point       NUMBER NOT NULL,
+    pay_method  CHAR(1) NOT NULL,
+    pay_date    TIMESTAMP DEFAULT sysdate NOT NULL,
+    cancel_yn   CHAR(1) DEFAULT 'N' NULL,
+    cancel_date TIMESTAMP NULL
 );
 
-COMMENT ON COLUMN "PAYMENT"."PAY_NO" IS
+COMMENT ON COLUMN payment.pay_no IS
     '시퀀스로관리';
 
-COMMENT ON COLUMN "PAYMENT"."CANCEL_YN" IS
+COMMENT ON COLUMN payment.cancel_yn IS
     'CHECK제약조건';
 
-DROP TABLE "FLIGHT_RESERVATION";
+DROP TABLE flight_reservation;
 
-CREATE TABLE "FLIGHT_RESERVATION" (
-    "FLIGHT_NO"    NUMBER NOT NULL,
-    "DEPARTURE"    NUMBER NOT NULL,
-    "RETURN"       NUMBER NOT NULL,
-    "MEMBER_NO"    NUMBER NOT NULL,
-    "RESERVE_DATE" DATE DEFAULT sysdate NOT NULL,
-    "CANCEL_YN"    CHAR(1) DEFAULT 'N' NOT NULL,
-    "CANCEL_DATE"  TIMESTAMP NULL
+CREATE TABLE flight_reservation (
+    flight_no        NUMBER NOT NULL,
+    departure_flight NUMBER NOT NULL,
+    return_flight    NUMBER NOT NULL,
+    member_no        NUMBER NOT NULL,
+    reserve_date     DATE DEFAULT sysdate NOT NULL,
+    cancel_yn        CHAR(1) DEFAULT 'N' CHECK ( cancel_yn IN ( 'Y', 'N' ) ) NOT NULL,
+    cancel_date      TIMESTAMP NULL
 );
 
-COMMENT ON COLUMN "FLIGHT_RESERVATION"."MEMBER_NO" IS
+COMMENT ON COLUMN flight_reservation.member_no IS
     '시퀀스로 관리';
 
-DROP TABLE "RENTAL_CAR";
+DROP TABLE rental_car;
 
-CREATE TABLE "RENTAL_CAR" (
-    "RENTAL_NO" NUMBER NOT NULL,
-    "CAR_NO"    NUMBER NOT NULL,
-    "CAR_UQ"    VARCHAR(20) NOT NULL,
-    "DAY_PRICE" NUMBER NOT NULL
+CREATE TABLE rental_car (
+    rental_no NUMBER NOT NULL,
+    car_no    NUMBER NOT NULL,
+    car_uq    VARCHAR(20) NOT NULL,
+    day_price NUMBER NOT NULL
 );
 
-DROP TABLE "SURVEY";
+DROP TABLE survey;
 
-CREATE TABLE "SURVEY" (
-    "SURVEY_NO"   NUMBER NOT NULL,
-    "MEMBER_NO"   NUMBER NOT NULL,
-    "PURPOSE"     NUMBER NOT NULL,
-    "PURPOSE2"    NUMBER NOT NULL,
-    "LOCATION"    NUMBER NOT NULL,
-    "GROUP"       NUMBER NOT NULL,
-    "BUDGET"      CHAR(1) NOT NULL,
-    "ANIMAL_YN"   CHAR(1) NOT NULL,
-    "SURVEY_DATE" TIMESTAMP DEFAULT sysdate NOT NULL,
-    "DELETE_YN"   CHAR(1) DEFAULT 'N' NOT NULL
+CREATE TABLE survey (
+    survey_no   NUMBER NOT NULL,
+    member_no   NUMBER NOT NULL,
+    purpose     NUMBER NOT NULL,
+    purpose2    NUMBER NOT NULL,
+    location    NUMBER NOT NULL,
+    person_group       NUMBER NOT NULL,
+    budget      CHAR(1) NOT NULL,
+    animal_yn   CHAR(1) NOT NULL,
+    survey_date TIMESTAMP DEFAULT sysdate NOT NULL,
+    delete_yn   CHAR(1) DEFAULT 'N' NOT NULL
 );
 
-COMMENT ON COLUMN "SURVEY"."SURVEY_NO" IS
+COMMENT ON COLUMN survey.survey_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "SURVEY"."MEMBER_NO" IS
+COMMENT ON COLUMN survey.member_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "SURVEY"."DELETE_YN" IS
+COMMENT ON COLUMN survey.delete_yn IS
     'CHECK 제약조건';
 
-DROP TABLE "CAR_RESERVATION";
+DROP TABLE car_reservation;
 
-CREATE TABLE "CAR_RESERVATION" (
-    "CAR_NO"       NUMBER NOT NULL,
-    "RENTAL_NO"    NUMBER NOT NULL,
-    "MEMBER_NO"    NUMBER NOT NULL,
-    "RENTAL_DATE"  DATE NOT NULL,
-    "RETURN_DATE"  DATE NOT NULL,
-    "RESERVE_DATE" DATE DEFAULT sysdate NOT NULL,
-    "INSURANCE"    VARCHAR(20) NULL,
-    "CANCEL_DATE"  TIMESTAMP NULL,
-    "CANCEL_YN"    CHAR(1) DEFAULT 'N' NULL
+CREATE TABLE car_reservation (
+    car_no       NUMBER NOT NULL,
+    rental_no    NUMBER NOT NULL,
+    member_no    NUMBER NOT NULL,
+    rental_date  DATE NOT NULL,
+    return_date  DATE NOT NULL,
+    reserve_date DATE DEFAULT sysdate NOT NULL,
+    insurance    VARCHAR(20) NULL,
+    cancel_date  TIMESTAMP NULL,
+    cancel_yn    CHAR(1) DEFAULT 'N' CHECK ( cancel_yn IN ( 'Y', 'N' ) ) NULL
 );
 
-COMMENT ON COLUMN "CAR_RESERVATION"."MEMBER_NO" IS
+COMMENT ON COLUMN car_reservation.member_no IS
     '시퀀스로 관리';
 
-DROP TABLE "ACCOM_RESERVATION";
+DROP TABLE accom_reservation;
 
-CREATE TABLE "ACCOM_RESERVATION" (
-    "ACCOM_NO"     NUMBER NOT NULL,
-    "ROOM_NO"      NUMBER NOT NULL,
-    "MEMBER_NO"    NUMBER NOT NULL,
-    "CHECK_IN"     TIMESTAMP NOT NULL,
-    "CHECK_OUT"    TIMESTAMP NOT NULL,
-    "RESERVE_DATE" TIMESTAMP DEFAULT sysdate NOT NULL,
-    "CANCEL_YN"    CHAR(1) DEFAULT 'N' NOT NULL,
-    "CANCEL_DATE"  TIMESTAMP NULL
+CREATE TABLE accom_reservation (
+    accom_no     NUMBER NOT NULL,
+    room_no      NUMBER NOT NULL,
+    member_no    NUMBER NOT NULL,
+    check_in     TIMESTAMP NOT NULL,
+    check_out    TIMESTAMP NOT NULL,
+    reserve_date TIMESTAMP DEFAULT sysdate NOT NULL,
+    cancel_yn    CHAR(1) DEFAULT 'N' NOT NULL CHECK ( cancel_yn IN ( 'M', 'F' ) ),
+    cancel_date  TIMESTAMP NULL
 );
 
-COMMENT ON COLUMN "ACCOM_RESERVATION"."MEMBER_NO" IS
+COMMENT ON COLUMN accom_reservation.member_no IS
     '시퀀스로 관리';
 
-DROP TABLE "CAR";
+DROP TABLE car;
 
-CREATE TABLE "CAR" (
-    "CAR_NO"     NUMBER NOT NULL,
-    "FUEL"       NUMBER NOT NULL,
-    "CAR_NAME"   VARCHAR2(20) NOT NULL,
-    "CAR_SIZE"   VARCHAR2(20) NOT NULL,
-    "CAR_PERSON" NUMBER NOT NULL,
-    "OPENABLE"   CHAR(1) NOT NULL
+CREATE TABLE car (
+    car_no     NUMBER NOT NULL,
+    fuel       NUMBER NOT NULL,
+    car_name   VARCHAR2(20) NOT NULL,
+    car_size   VARCHAR2(20) NOT NULL,
+    car_person NUMBER NOT NULL,
+    openable   CHAR(1) NOT NULL CHECK ( openable IN ( 'Y', 'N' ) )
 );
 
-DROP TABLE "ACCOM";
+DROP TABLE accom;
 
-CREATE TABLE "ACCOM" (
-    "ACCOM_NO"      NUMBER NOT NULL,
-    "ACCOM_AROUND"  NUMBER NOT NULL,
-    "ACCOM_NAME"    VARCHAR2(40) NOT NULL,
-    "ACCOM_ADDRESS" VARCHAR(100) NOT NULL,
-    "POOL_YN"       CHAR(1) DEFAULT 'N' NOT NULL,
-    "TYPE"          CHAR(1) NOT NULL
+CREATE TABLE accom (
+    accom_no      NUMBER NOT NULL,
+    accom_around  NUMBER NOT NULL,
+    accom_name    VARCHAR2(40) NOT NULL,
+    accom_address VARCHAR(100) NOT NULL,
+    pool_yn       CHAR(1) DEFAULT 'N' NOT NULL CHECK ( pool_yn IN ( 'M', 'F' ) ),
+    type          CHAR(1) NOT NULL CHECK ( type IN ( 'H', 'G' ) )
 );
 
-COMMENT ON COLUMN "ACCOM"."ACCOM_NO" IS
+COMMENT ON COLUMN accom.accom_no IS
     '시퀀스로 관리';
 
-COMMENT ON COLUMN "ACCOM"."ACCOM_ADDRESS" IS
+COMMENT ON COLUMN accom.accom_address IS
     '제주시, 서귀포시 구분';
 
-COMMENT ON COLUMN "ACCOM"."TYPE" IS
+COMMENT ON COLUMN accom.type IS
     '호텔 H, 게스트하우스 G';
 
-DROP TABLE "GROUP";
+DROP TABLE person_group;
 
-CREATE TABLE "GROUP" (
-    "NO"    NUMBER NOT NULL,
-    "GROUP" VARCHAR2(10) NOT NULL
+CREATE TABLE person_group (
+    no    NUMBER NOT NULL,
+    person_group VARCHAR2(30) NOT NULL
 );
 
-COMMENT ON COLUMN "GROUP"."GROUP" IS
-    '가족, 연인, 혼자, 친구';
+DROP TABLE fuel;
 
-DROP TABLE "FUEL";
-
-CREATE TABLE "FUEL" (
-    "FUEL_NO" NUMBER NOT NULL,
-    "FUEL"    VARCHAR(10) NOT NULL
+CREATE TABLE fuel (
+    fuel_no NUMBER NOT NULL,
+    fuel    VARCHAR(10) NOT NULL
 );
 
-DROP TABLE "PURPOSE";
+DROP TABLE purpose;
 
-CREATE TABLE "PURPOSE" (
-    "NO"      NUMBER NOT NULL,
-    "PURPOSE" VARCHAR2(10) NOT NULL
+CREATE TABLE purpose (
+    no      NUMBER NOT NULL,
+    purpose VARCHAR2(10) NOT NULL
 );
 
-DROP TABLE "ACCOM_AR_INFO";
+DROP TABLE accom_ar_info;
 
-CREATE TABLE "ACCOM_AR_INFO" (
-    "ACCOM_AR_NO" NUMBER NOT NULL,
-    "ACCOM_AR"    VARCHAR2(10) NULL
+CREATE TABLE accom_ar_info (
+    accom_ar_no NUMBER NOT NULL,
+    accom_ar    VARCHAR2(10) NULL
 );
 
-COMMENT ON COLUMN "ACCOM_AR_INFO"."ACCOM_AR" IS
+COMMENT ON COLUMN accom_ar_info.accom_ar IS
     '논밭, 바닷가, 도시, 숲속';
 
-DROP TABLE "LOCATION";
+DROP TABLE location;
 
-CREATE TABLE "LOCATION" (
-    "NO"       NUMBER NOT NULL,
-    "LOCATION" VARCHAR2(10) NOT NULL
+CREATE TABLE location (
+    no       NUMBER NOT NULL,
+    location VARCHAR2(10) NOT NULL
 );
 
-DROP TABLE "ROOM_VIEW_INFO";
+DROP TABLE room_view_info;
 
-CREATE TABLE "ROOM_VIEW_INFO" (
-    "ROOM_VIEW_NO"   NUMBER NOT NULL,
-    "ROOM_VIEW_INFO" VARCHAR2(10) NULL
+CREATE TABLE room_view_info (
+    room_view_no   NUMBER NOT NULL,
+    room_view_info VARCHAR2(10) NULL
 );
 
-COMMENT ON COLUMN "ROOM_VIEW_INFO"."ROOM_VIEW_INFO" IS
+COMMENT ON COLUMN room_view_info.room_view_info IS
     '오션, 마운틴, 시티';
 
-DROP TABLE "CATEGORY";
+DROP TABLE category;
 
-CREATE TABLE "CATEGORY" (
-    "NO"       NUMBER NOT NULL,
-    "CATEGORY" VARCHAR(10) NOT NULL
+CREATE TABLE category (
+    no       NUMBER NOT NULL,
+    category VARCHAR(10) NOT NULL
 );
 
-ALTER TABLE "ROOM" ADD CONSTRAINT "PK_ROOM" PRIMARY KEY ( "ROOM_NO" );
+ALTER TABLE room ADD CONSTRAINT pk_room PRIMARY KEY ( room_no );
 
-ALTER TABLE "FLIGHT" ADD CONSTRAINT "PK_FLIGHT" PRIMARY KEY ( "FLIGHT_NO" );
+ALTER TABLE flight ADD CONSTRAINT pk_flight PRIMARY KEY ( flight_no );
 
-ALTER TABLE "MEMBER" ADD CONSTRAINT "PK_MEMBER" PRIMARY KEY ( "MEMBER_NO" );
+ALTER TABLE member ADD CONSTRAINT pk_member PRIMARY KEY ( member_no );
 
-ALTER TABLE "TRAVEL" ADD CONSTRAINT "PK_TRAVEL" PRIMARY KEY ( "TRAVEL_NO" );
+ALTER TABLE travel ADD CONSTRAINT pk_travel PRIMARY KEY ( travel_no );
 
-ALTER TABLE "QnA" ADD CONSTRAINT "PK_QNA" PRIMARY KEY ( "QUESTION_NO" );
+ALTER TABLE qna ADD CONSTRAINT pk_qna PRIMARY KEY ( question_no );
 
-ALTER TABLE "PAYMENT" ADD CONSTRAINT "PK_PAYMENT" PRIMARY KEY ( "PAY_NO" );
+ALTER TABLE payment ADD CONSTRAINT pk_payment PRIMARY KEY ( pay_no );
 
-ALTER TABLE "FLIGHT_RESERVATION" ADD CONSTRAINT "PK_FLIGHT_RESERVATION" PRIMARY KEY ( "FLIGHT_NO" );
+ALTER TABLE flight_reservation ADD CONSTRAINT pk_flight_reservation PRIMARY KEY ( flight_no );
 
-ALTER TABLE "RENTAL_CAR" ADD CONSTRAINT "PK_RENTAL_CAR" PRIMARY KEY ( "RENTAL_NO" );
+ALTER TABLE rental_car ADD CONSTRAINT pk_rental_car PRIMARY KEY ( rental_no );
 
-ALTER TABLE "SURVEY" ADD CONSTRAINT "PK_SURVEY" PRIMARY KEY ( "SURVEY_NO" );
+ALTER TABLE survey ADD CONSTRAINT pk_survey PRIMARY KEY ( survey_no );
 
-ALTER TABLE "CAR_RESERVATION" ADD CONSTRAINT "PK_CAR_RESERVATION" PRIMARY KEY ( "CAR_NO" );
+ALTER TABLE car_reservation ADD CONSTRAINT pk_car_reservation PRIMARY KEY ( car_no );
 
-ALTER TABLE "ACCOM_RESERVATION" ADD CONSTRAINT "PK_ACCOM_RESERVATION" PRIMARY KEY ( "ACCOM_NO" );
+ALTER TABLE accom_reservation ADD CONSTRAINT pk_accom_reservation PRIMARY KEY ( accom_no );
 
-ALTER TABLE "CAR" ADD CONSTRAINT "PK_CAR" PRIMARY KEY ( "CAR_NO" );
+ALTER TABLE car ADD CONSTRAINT pk_car PRIMARY KEY ( car_no );
 
-ALTER TABLE "ACCOM" ADD CONSTRAINT "PK_ACCOM" PRIMARY KEY ( "ACCOM_NO" );
+ALTER TABLE accom ADD CONSTRAINT pk_accom PRIMARY KEY ( accom_no );
 
-ALTER TABLE "GROUP" ADD CONSTRAINT "PK_GROUP" PRIMARY KEY ( "NO" );
+ALTER TABLE person_group ADD CONSTRAINT pk_group PRIMARY KEY ( no );
 
-ALTER TABLE "FUEL" ADD CONSTRAINT "PK_FUEL" PRIMARY KEY ( "FUEL_NO" );
+ALTER TABLE fuel ADD CONSTRAINT pk_fuel PRIMARY KEY ( fuel_no );
 
-ALTER TABLE "PURPOSE" ADD CONSTRAINT "PK_PURPOSE" PRIMARY KEY ( "NO" );
+ALTER TABLE purpose ADD CONSTRAINT pk_purpose PRIMARY KEY ( no );
 
-ALTER TABLE "ACCOM_AR_INFO" ADD CONSTRAINT "PK_ACCOM_AR_INFO" PRIMARY KEY ( "ACCOM_AR_NO" );
+ALTER TABLE accom_ar_info ADD CONSTRAINT pk_accom_ar_info PRIMARY KEY ( accom_ar_no );
 
-ALTER TABLE "LOCATION" ADD CONSTRAINT "PK_LOCATION" PRIMARY KEY ( "NO" );
+ALTER TABLE location ADD CONSTRAINT pk_location PRIMARY KEY ( no );
 
-ALTER TABLE "ROOM_VIEW_INFO" ADD CONSTRAINT "PK_ROOM_VIEW_INFO" PRIMARY KEY ( "ROOM_VIEW_NO" );
+ALTER TABLE room_view_info ADD CONSTRAINT pk_room_view_info PRIMARY KEY ( room_view_no );
 
-ALTER TABLE "CATEGORY" ADD CONSTRAINT "PK_CATEGORY" PRIMARY KEY ( "NO" );
+ALTER TABLE category ADD CONSTRAINT pk_category PRIMARY KEY ( no );
 
-ALTER TABLE "ROOM"
-    ADD CONSTRAINT "FK_ACCOM_TO_ROOM_1" FOREIGN KEY ( "ACCOM_NO" )
-        REFERENCES "ACCOM" ( "ACCOM_NO" );
+ALTER TABLE room
+    ADD CONSTRAINT fk_accom_to_room_1 FOREIGN KEY ( accom_no )
+        REFERENCES accom ( accom_no );
 
-ALTER TABLE "ROOM"
-    ADD CONSTRAINT "FK_ROOM_VIEW_INFO_TO_ROOM_1" FOREIGN KEY ( "ROOM_VIEW" )
-        REFERENCES "ROOM_VIEW_INFO" ( "ROOM_VIEW_NO" );
+ALTER TABLE room
+    ADD CONSTRAINT fk_room_view_info_to_room_1 FOREIGN KEY ( room_view )
+        REFERENCES room_view_info ( room_view_no );
 
-ALTER TABLE "TRAVEL"
-    ADD CONSTRAINT "FK_GROUP_TO_TRAVEL_1" FOREIGN KEY ( "RECOMMEND_TYPE" )
-        REFERENCES "GROUP" ( "NO" );
+ALTER TABLE travel
+    ADD CONSTRAINT fk_group_to_travel_1 FOREIGN KEY ( recommend_type )
+        REFERENCES person_group ( no );
 
-ALTER TABLE "TRAVEL"
-    ADD CONSTRAINT "FK_PURPOSE_TO_TRAVEL_1" FOREIGN KEY ( "THEME" )
-        REFERENCES "PURPOSE" ( "NO" );
+ALTER TABLE travel
+    ADD CONSTRAINT fk_purpose_to_travel_1 FOREIGN KEY ( theme )
+        REFERENCES purpose ( no );
 
-ALTER TABLE "TRAVEL"
-    ADD CONSTRAINT "FK_CATEGORY_TO_TRAVEL_1" FOREIGN KEY ( "CATEGORY" )
-        REFERENCES "CATEGORY" ( "NO" );
+ALTER TABLE travel
+    ADD CONSTRAINT fk_category_to_travel_1 FOREIGN KEY ( category )
+        REFERENCES category ( no );
 
-ALTER TABLE "QnA"
-    ADD CONSTRAINT "FK_MEMBER_TO_QnA_1" FOREIGN KEY ( "MEMBER_NO" )
-        REFERENCES "MEMBER" ( "MEMBER_NO" );
+ALTER TABLE qna
+    ADD CONSTRAINT fk_member_to_qna_1 FOREIGN KEY ( member_no )
+        REFERENCES member ( member_no );
 
-ALTER TABLE "PAYMENT"
-    ADD CONSTRAINT "FK_FLIGHT_RESERVATION_TO_PAYMENT_1" FOREIGN KEY ( "FLIGHT_NO" )
-        REFERENCES "FLIGHT_RESERVATION" ( "FLIGHT_NO" );
+ALTER TABLE payment
+    ADD CONSTRAINT fk_flight_reservation_to_payment_1 FOREIGN KEY ( flight_no )
+        REFERENCES flight_reservation ( flight_no );
 
-ALTER TABLE "PAYMENT"
-    ADD CONSTRAINT "FK_ACCOM_RESERVATION_TO_PAYMENT_1" FOREIGN KEY ( "ACCOM_NO" )
-        REFERENCES "ACCOM_RESERVATION" ( "ACCOM_NO" );
+ALTER TABLE payment
+    ADD CONSTRAINT fk_accom_reservation_to_payment_1 FOREIGN KEY ( accom_no )
+        REFERENCES accom_reservation ( accom_no );
 
-ALTER TABLE "PAYMENT"
-    ADD CONSTRAINT "FK_CAR_RESERVATION_TO_PAYMENT_1" FOREIGN KEY ( "CAR_NO" )
-        REFERENCES "CAR_RESERVATION" ( "CAR_NO" );
+ALTER TABLE payment
+    ADD CONSTRAINT fk_car_reservation_to_payment_1 FOREIGN KEY ( car_no )
+        REFERENCES car_reservation ( car_no );
 
-ALTER TABLE "FLIGHT_RESERVATION"
-    ADD CONSTRAINT "FK_FLIGHT_TO_FLIGHT_RESERVATION_1" FOREIGN KEY ( "DEPARTURE" )
-        REFERENCES "FLIGHT" ( "FLIGHT_NO" );
+ALTER TABLE flight_reservation
+    ADD CONSTRAINT fk_flight_to_flight_reservation_1 FOREIGN KEY ( departure_flight )
+        REFERENCES flight ( flight_no );
 
-ALTER TABLE "FLIGHT_RESERVATION"
-    ADD CONSTRAINT "FK_FLIGHT_TO_FLIGHT_RESERVATION_2" FOREIGN KEY ( "RETURN" )
-        REFERENCES "FLIGHT" ( "FLIGHT_NO" );
+ALTER TABLE flight_reservation
+    ADD CONSTRAINT fk_flight_to_flight_reservation_2 FOREIGN KEY ( return_flight )
+        REFERENCES flight ( flight_no );
 
-ALTER TABLE "FLIGHT_RESERVATION"
-    ADD CONSTRAINT "FK_MEMBER_TO_FLIGHT_RESERVATION_1" FOREIGN KEY ( "MEMBER_NO" )
-        REFERENCES "MEMBER" ( "MEMBER_NO" );
+ALTER TABLE flight_reservation
+    ADD CONSTRAINT fk_member_to_flight_reservation_1 FOREIGN KEY ( member_no )
+        REFERENCES member ( member_no );
 
-ALTER TABLE "RENTAL_CAR"
-    ADD CONSTRAINT "FK_CAR_TO_RENTAL_CAR_1" FOREIGN KEY ( "CAR_NO" )
-        REFERENCES "CAR" ( "CAR_NO" );
+ALTER TABLE rental_car
+    ADD CONSTRAINT fk_car_to_rental_car_1 FOREIGN KEY ( car_no )
+        REFERENCES car ( car_no );
 
-ALTER TABLE "SURVEY"
-    ADD CONSTRAINT "FK_MEMBER_TO_SURVEY_1" FOREIGN KEY ( "MEMBER_NO" )
-        REFERENCES "MEMBER" ( "MEMBER_NO" );
+ALTER TABLE survey
+    ADD CONSTRAINT fk_member_to_survey_1 FOREIGN KEY ( member_no )
+        REFERENCES member ( member_no );
 
-ALTER TABLE "SURVEY"
-    ADD CONSTRAINT "FK_PURPOSE_TO_SURVEY_1" FOREIGN KEY ( "PURPOSE" )
-        REFERENCES "PURPOSE" ( "NO" );
+ALTER TABLE survey
+    ADD CONSTRAINT fk_purpose_to_survey_1 FOREIGN KEY ( purpose )
+        REFERENCES purpose ( no );
 
-ALTER TABLE "SURVEY"
-    ADD CONSTRAINT "FK_PURPOSE_TO_SURVEY_2" FOREIGN KEY ( "PURPOSE2" )
-        REFERENCES "PURPOSE" ( "NO" );
+ALTER TABLE survey
+    ADD CONSTRAINT fk_purpose_to_survey_2 FOREIGN KEY ( purpose2 )
+        REFERENCES purpose ( no );
 
-ALTER TABLE "SURVEY"
-    ADD CONSTRAINT "FK_LOCATION_TO_SURVEY_1" FOREIGN KEY ( "LOCATION" )
-        REFERENCES "LOCATION" ( "NO" );
+ALTER TABLE survey
+    ADD CONSTRAINT fk_location_to_survey_1 FOREIGN KEY ( location )
+        REFERENCES location ( no );
 
-ALTER TABLE "SURVEY"
-    ADD CONSTRAINT "FK_GROUP_TO_SURVEY_1" FOREIGN KEY ( "GROUP" )
-        REFERENCES "GROUP" ( "NO" );
+ALTER TABLE survey
+    ADD CONSTRAINT fk_group_to_survey_1 FOREIGN KEY ( person_group )
+        REFERENCES person_group ( no );
 
-ALTER TABLE "CAR_RESERVATION"
-    ADD CONSTRAINT "FK_RENTAL_CAR_TO_CAR_RESERVATION_1" FOREIGN KEY ( "RENTAL_NO" )
-        REFERENCES "RENTAL_CAR" ( "RENTAL_NO" );
+ALTER TABLE car_reservation
+    ADD CONSTRAINT fk_rental_car_to_car_reservation_1 FOREIGN KEY ( rental_no )
+        REFERENCES rental_car ( rental_no );
 
-ALTER TABLE "CAR_RESERVATION"
-    ADD CONSTRAINT "FK_MEMBER_TO_CAR_RESERVATION_1" FOREIGN KEY ( "MEMBER_NO" )
-        REFERENCES "MEMBER" ( "MEMBER_NO" );
+ALTER TABLE car_reservation
+    ADD CONSTRAINT fk_member_to_car_reservation_1 FOREIGN KEY ( member_no )
+        REFERENCES member ( member_no );
 
-ALTER TABLE "ACCOM_RESERVATION"
-    ADD CONSTRAINT "FK_ROOM_TO_ACCOM_RESERVATION_1" FOREIGN KEY ( "ROOM_NO" )
-        REFERENCES "ROOM" ( "ROOM_NO" );
+ALTER TABLE accom_reservation
+    ADD CONSTRAINT fk_room_to_accom_reservation_1 FOREIGN KEY ( room_no )
+        REFERENCES room ( room_no );
 
-ALTER TABLE "ACCOM_RESERVATION"
-    ADD CONSTRAINT "FK_MEMBER_TO_ACCOM_RESERVATION_1" FOREIGN KEY ( "MEMBER_NO" )
-        REFERENCES "MEMBER" ( "MEMBER_NO" );
+ALTER TABLE accom_reservation
+    ADD CONSTRAINT fk_member_to_accom_reservation_1 FOREIGN KEY ( member_no )
+        REFERENCES member ( member_no );
 
-ALTER TABLE "CAR"
-    ADD CONSTRAINT "FK_FUEL_TO_CAR_1" FOREIGN KEY ( "FUEL" )
-        REFERENCES "FUEL" ( "FUEL_NO" );
+ALTER TABLE car
+    ADD CONSTRAINT fk_fuel_to_car_1 FOREIGN KEY ( fuel )
+        REFERENCES fuel ( fuel_no );
 
-ALTER TABLE "ACCOM"
-    ADD CONSTRAINT "FK_ACCOM_AR_INFO_TO_ACCOM_1" FOREIGN KEY ( "ACCOM_AROUND" )
-        REFERENCES "ACCOM_AR_INFO" ( "ACCOM_AR_NO" );
+ALTER TABLE accom
+    ADD CONSTRAINT fk_accom_ar_info_to_accom_1 FOREIGN KEY ( accom_around )
+        REFERENCES accom_ar_info ( accom_ar_no );
