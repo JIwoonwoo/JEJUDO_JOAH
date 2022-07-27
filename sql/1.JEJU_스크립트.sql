@@ -11,8 +11,8 @@ CREATE TABLE room (
     pool_able_yn CHAR(1) NOT NULL CHECK ( pool_able_yn IN ( 'Y', 'N' ) )
 );
 
-ALTER TABLE ROOM MODIFY animal_yn CHECK ( animal_yn IN ( 'Y', 'N' ) );
-ALTER TABLE ROOM MODIFY pool_able_yn CHECK ( pool_able_yn IN ( 'Y', 'N' ) );
+--ALTER TABLE ROOM MODIFY animal_yn CHECK ( animal_yn IN ( 'Y', 'N' ) );
+--ALTER TABLE ROOM MODIFY pool_able_yn CHECK ( pool_able_yn IN ( 'Y', 'N' ) );
 
 COMMENT ON COLUMN room.room_price IS
     '음수 불가능';
@@ -174,8 +174,11 @@ CREATE TABLE rental_car (
     rental_no NUMBER NOT NULL,
     car_no    NUMBER NOT NULL,
     car_uq    VARCHAR(20) NOT NULL,
-    day_price NUMBER NOT NULL
+    day_price NUMBER NOT NULL,
+    openable   CHAR(1) NOT NULL CHECK ( openable IN ( 'Y', 'N' ) )
 );
+
+--ALTER TABLE rental_car ADD openable   CHAR(1) NOT NULL CHECK ( openable IN ( 'Y', 'N' ) );
 
 DROP TABLE survey;
 
@@ -241,9 +244,10 @@ CREATE TABLE car (
     fuel       NUMBER NOT NULL,
     car_name   VARCHAR2(20) NOT NULL,
     car_size   VARCHAR2(20) NOT NULL,
-    car_person NUMBER NOT NULL,
-    openable   CHAR(1) NOT NULL CHECK ( openable IN ( 'Y', 'N' ) )
+    car_person NUMBER NOT NULL
 );
+
+--ALTER TABLE CAR DROP COLUMN openable;
 
 DROP TABLE accom;
 
