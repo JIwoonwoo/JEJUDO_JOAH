@@ -306,8 +306,10 @@ DROP TABLE location;
 
 CREATE TABLE location (
     no       NUMBER NOT NULL,
-    location VARCHAR2(10) NOT NULL
+    location VARCHAR2(20) NOT NULL
 );
+
+--ALTER TABLE LOCATION MODIFY LOCATION VARCHAR2(20);
 
 DROP TABLE room_view_info;
 
