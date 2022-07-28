@@ -19,7 +19,7 @@ import gui.field.InvisiableTextField;
 import member.MemberService;
 
 public class JoinPanel extends ImgPanel {
-	
+
 	private MemberService ms = new MemberService();
 
 	private HomeBtn homeBtn;
@@ -52,66 +52,30 @@ public class JoinPanel extends ImgPanel {
 
 		textFieldId = new InvisiableTextField("영어 소문자와 숫자만 가능합니다.");
 		textFieldId.setBounds(150, 279, 318, 34);
-		textFieldId.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				JTextField jt = (JTextField) e.getSource();
-				JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class , jt.getParent());
-				if(!ms.checkId(textFieldId.getText())) {
-					PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
-					dialog.run();
-					textFieldId.requestFocus();
-				}
-				
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-			}
-		});
 		add(textFieldId);
 
 		textFieldPwd = new InvisiablePasswordField(null);
 		textFieldPwd.setBounds(150, 353, 318, 34);
-		textFieldPwd.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				JPasswordField jt = (JPasswordField) e.getSource();
-				JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class , jt.getParent());
-				if(!ms.checkPwd(textFieldPwd.getText())) {
-					PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
-					dialog.run();
-					textFieldPwd.requestFocus();
-				}
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-			}
-		});
 		add(textFieldPwd);
 
-		textFieldNick = new InvisiableTextField(null);
+		textFieldNick = new InvisiableTextField("특수문자 제외 2 ~ 8글자");
 		textFieldNick.setBounds(150, 427, 318, 34);
 		textFieldNick.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				JTextField jt = (JTextField) e.getSource();
-				JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class , jt.getParent());
-				if(!ms.checkNick(textFieldNick.getText())) {
-					PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
-					dialog.run();
-					textFieldNick.requestFocus();
-				}				
+				if (!getTextFieldNick().equals("")) {
+					JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, textFieldNick.getParent());
+					if (!ms.checkNick(textFieldNick.getText())) {
+						PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
+						dialog.run();
+						textFieldNick.requestFocus();
+					}
+				}else {textFieldNick.setText("특수문자 제외 2 ~ 8글자");}
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		add(textFieldNick);
@@ -119,22 +83,21 @@ public class JoinPanel extends ImgPanel {
 		textFieldPhone = new InvisiableTextField("-도 포함하여 작성해주세요");
 		textFieldPhone.setBounds(150, 566, 318, 34);
 		textFieldPhone.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				JTextField jt = (JTextField) e.getSource();
-				JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class , jt.getParent());
-				if(!ms.checkPhone(textFieldPhone.getText())) {
-					PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
-					dialog.run();
-					textFieldPhone.requestFocus();
-				}				
+				if (!getTextFieldPhone().equals("")) {
+					JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, textFieldPhone.getParent());
+					if (!ms.checkPhone(textFieldPhone.getText())) {
+						PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
+						dialog.run();
+						textFieldPhone.requestFocus();
+					}
+				}else {textFieldPhone.setText("-도 포함하여 작성해주세요");}
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		add(textFieldPhone);
@@ -142,22 +105,21 @@ public class JoinPanel extends ImgPanel {
 		textFieldEmail = new InvisiableTextField(null);
 		textFieldEmail.setBounds(150, 641, 318, 34);
 		textFieldEmail.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				JTextField jt = (JTextField) e.getSource();
-				JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class , jt.getParent());
-				if(!ms.checkEmail(textFieldEmail.getText())) {
-					PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
-					dialog.run();
-					textFieldEmail.requestFocus();
-				}				
+				if (!getTextFieldEmail().equals("")) {
+					JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, textFieldEmail.getParent());
+					if (!ms.checkEmail(textFieldEmail.getText())) {
+						PopUpDialog dialog = new PopUpDialog(f, "회원가입", "형식을 맞춰주세요");
+						dialog.run();
+						textFieldEmail.requestFocus();
+					}
+				}
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		add(textFieldEmail);
@@ -171,15 +133,15 @@ public class JoinPanel extends ImgPanel {
 		checkPwdBtn.setLocation(464, 328);
 
 	}
-	
+
 	public void reset() {
 
 		textFieldName.setText(null);
-		textFieldId.setText(null);
+		textFieldId.setText("영어 소문자와 숫자만 가능합니다.");
 		textFieldEmail.setText(null);
 		textFieldPwd.setText(null);
-		textFieldPhone.setText(null);
-		textFieldNick.setText(null);
+		textFieldPhone.setText("-도 포함하여 작성해주세요");
+		textFieldNick.setText("특수문자 제외 2 ~ 8글자");
 		checkIdBtn.setSelected(false);
 		checkPwdBtn.setSelected(false);
 
@@ -201,15 +163,23 @@ public class JoinPanel extends ImgPanel {
 		return textFieldName.getText();
 	}
 
-	public String getTextFieldId() {
+	public String getId() {
 		return textFieldId.getText();
+	}
+	
+	public JTextField getTextFieldId() {
+		return textFieldId;
+	}
+
+	public JPasswordField getTextFieldPwd() {
+		return textFieldPwd;
 	}
 
 	public String getTextFieldEmail() {
 		return textFieldEmail.getText();
 	}
 
-	public String getTextFieldPwd() {
+	public String getPwd() {
 		return String.valueOf(textFieldPwd.getPassword());
 	}
 
