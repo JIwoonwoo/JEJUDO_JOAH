@@ -25,8 +25,8 @@ DROP TABLE flight;
 CREATE TABLE flight (
     flight_no      NUMBER NOT NULL,
     flight_name    CHAR(6) NOT NULL,
-    departure_time TIMESTAMP NOT NULL,
-    arrival_time   TIMESTAMP NOT NULL,
+    departure_time VARCHAR(10) NOT NULL,
+    arrival_time   VARCHAR(10) NOT NULL,
     airline        VARCHAR2(20) NOT NULL,
     flight_price   NUMBER NOT NULL,
     seat           NUMBER NOT NULL,

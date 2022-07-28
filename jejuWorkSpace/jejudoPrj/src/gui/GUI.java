@@ -27,6 +27,8 @@ import gui.panel.ReservedCarPanel;
 import gui.panel.ReservedFlightPanel;
 import gui.panel.ReservedPanel;
 import gui.panel.SugTripPanel;
+import member.MemberService;
+import member.MemberVo;
 
 public class GUI {
 
@@ -78,7 +80,7 @@ public class GUI {
 		ReservInforPanel reservInforPanel = new ReservInforPanel();
 		SugTripPanel sugTripPanel = new SugTripPanel();
 		
-		
+		MemberService ms = new MemberService();
 		
 		/** 추천관광지 **/
 		frame.getContentPane().add(sugTripPanel);
@@ -537,13 +539,15 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(joinPanel.getTextFieldEmail());
-				System.out.println(joinPanel.getTextFieldId());
-				System.out.println(joinPanel.getTextFieldName());
-				System.out.println(joinPanel.getTextFieldNick());
-				System.out.println(joinPanel.getTextFieldPhone());
-				System.out.println(joinPanel.getTextFieldPwd());
 
+				MemberVo vo = new MemberVo();
+				vo.setEmail(joinPanel.getTextFieldEmail());
+				vo.setId(joinPanel.getTextFieldId());
+				vo.setMemberName(joinPanel.getTextFieldName());
+				vo.setMemberNick(joinPanel.getTextFieldNick());
+				vo.setPhone(joinPanel.getTextFieldNick());
+				vo.setPwd(joinPanel.getTextFieldPwd());
+				
 				loginPanel.reset();
 				loginPanel.setVisible(true);
 				joinPanel.setVisible(false);
@@ -581,11 +585,23 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(findIdPanel.getTextFieldName());
-				System.out.println(findIdPanel.getTextFieldEmail());
-				loginPanel.reset();
-				loginPanel.setVisible(true);
-				findIdPanel.setVisible(false);
+				
+				MemberVo vo = new MemberVo();
+				vo.setEmail(findIdPanel.getTextFieldEmail());
+				vo.setMemberName(findIdPanel.getTextFieldName());
+				
+				String id = ms.findId(vo);
+				if(id!=null) {
+					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "아이디는 "+id+" 입니다.");
+					dialog.run();
+					loginPanel.reset();
+					loginPanel.setVisible(true);
+					findIdPanel.setVisible(false);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "입력하신 정보가 없습니다.");
+					dialog.run();
+				}
+
 
 			}
 		});
@@ -620,12 +636,24 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(findPwdPanel.getTextFieldName());
-				System.out.println(findPwdPanel.getTextFieldId());
-				System.out.println(findPwdPanel.getTextFieldEmail());
-				loginPanel.reset();
-				loginPanel.setVisible(true);
-				findPwdPanel.setVisible(false);
+		
+				MemberVo vo = new MemberVo();
+				vo.setId(findPwdPanel.getTextFieldId());
+				vo.setEmail(findPwdPanel.getTextFieldEmail());
+				vo.setMemberName(findPwdPanel.getTextFieldName());
+				System.out.println(vo);
+				String pwd = ms.findPwd(vo);
+				if(pwd!=null) {
+					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "비밀번호는 "+pwd+" 입니다.");
+					dialog.run();
+					loginPanel.reset();
+					loginPanel.setVisible(true);
+					findPwdPanel.setVisible(false);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "입력하신 정보가 없습니다.");
+					dialog.run();
+				}
+
 
 			}
 		});
@@ -639,12 +667,20 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(loginPanel.getIdTextField());
-				System.out.println(loginPanel.getPasswordField());
-				JDialog j = new PopUpDialog(frame, "로그인성공", "로긴 되었습니다.");
-				j.setVisible(true);
-				mainPanel.setVisible(true);
-				loginPanel.setVisible(false);
+				
+				MemberVo vo = new MemberVo();
+				vo.setId(loginPanel.getIdTextField());
+				vo.setPwd(loginPanel.getPasswordField());
+				
+				if(ms.login(vo)) {
+					PopUpDialog dialog = new PopUpDialog(frame, "로그인성공", "로그인 되었습니다.");
+					dialog.run();
+					mainPanel.setVisible(true);
+					loginPanel.setVisible(false);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "로그인실패", "아이디, 비밀번호를 확인하십시오.");
+					dialog.run();
+				}
 
 			}
 		});
