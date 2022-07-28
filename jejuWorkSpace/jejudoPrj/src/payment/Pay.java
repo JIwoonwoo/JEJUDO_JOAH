@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import member.MemberVo;
+import util.InputUtil;
 import util.JDBCTemplate;
 
 public class Pay {
@@ -30,6 +31,12 @@ public class Pay {
 		//id로 회원의 예약번호 조회
 		PayVo vo = checkNo(id);
 		
+		//포인트 보여주기, 사용유무, 사용량
+		int myPoint = usePoint(vo);
+		
+		//결제종류선택, 결제하기
+		
+		
 		
 	}
 	//로그인 체크
@@ -42,7 +49,7 @@ public class Pay {
 	// 회원 id로 예약번호 조회와 금액 조회
 	private PayVo checkNo(String id){
 		
-		String sqlGf = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE\r\n"
+		String sqlGf = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE, M.POINT\r\n"
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
 				+ "JOIN FLIGHT F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_NO\r\n"
@@ -94,9 +101,11 @@ public class Pay {
 			
 
 			if(rsGf.next()) {
+				int myPoint = rsGf.getInt("M.POINT");
 				int fNo = rsGf.getInt("F.FLIGHT_NO");
 				int fp = rsGf.getInt("F.FLIGHT_PRICE");
-				vo = new PayVo();		
+				vo = new PayVo();
+				vo.setMypoint(myPoint);
 				vo.setFlightNo(fNo);
 				vo.setFlightGoPay(fp);
 			}
@@ -126,6 +135,7 @@ public class Pay {
 				vo.setAccomPay(fDay);
 			}
 		} catch (Exception e) {
+			System.out.println("결제 조회 에러~");
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(conn);
@@ -140,5 +150,63 @@ public class Pay {
 		}
 		return vo;
 	}
-
+	
+	private int usePoint(PayVo vo) {
+		
+		int myPoint = vo.getMypoint();
+		
+		if(myPoint == 0) {
+			System.out.println("현재 사용가능한 포인트가 없습니다.");
+			 return myPoint;
+		}
+		
+		System.out.print("현재 보유 포인트 : " + vo.getMypoint());
+		System.out.println("1. 포인트 사용");
+		System.out.println("0. 사용안함");
+			
+		try {
+			while(true) {
+				int c = InputUtil.getInt();
+				
+				if(c == 0) {
+					return 0;
+				}else if (c == 1) {
+					System.out.println("포인트를 얼마나 사용하시겠습니까?");
+					System.out.println("1. 모두사용");
+					System.out.println("2. 직접입력");
+					int a = InputUtil.getInt();
+					
+					if(a==1) {
+						return myPoint;
+					}else if(c==2) {
+						int usePoint = InputUtil.getInt();
+						
+						while(true) {
+							if(usePoint <= myPoint && usePoint > 0) {
+								myPoint = usePoint;
+								return myPoint;
+							}else {
+								System.out.println("입력값을 벗어났습니다.");
+								continue;
+							}
+						}	
+					}else {
+						System.out.println("다시 입력해 주세요");
+						continue;
+					}
+				}else {
+					System.out.println("다시 입력해 주세요");
+					continue;
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("입력 오류");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 }
+
