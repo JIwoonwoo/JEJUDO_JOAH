@@ -58,7 +58,7 @@ public class JoinPanel extends ImgPanel {
 		textFieldPwd.setBounds(150, 353, 318, 34);
 		add(textFieldPwd);
 
-		textFieldNick = new InvisiableTextField("특수문자 제외 2 ~ 8글자");
+		textFieldNick = new InvisiableTextField(null);
 		textFieldNick.setBounds(150, 427, 318, 34);
 		textFieldNick.addFocusListener(new FocusListener() {
 
@@ -71,7 +71,7 @@ public class JoinPanel extends ImgPanel {
 						dialog.run();
 						textFieldNick.requestFocus();
 					}
-				}else {textFieldNick.setText("특수문자 제외 2 ~ 8글자");}
+				}else {textFieldNick.setText(null);}
 			}
 
 			@Override
@@ -80,7 +80,7 @@ public class JoinPanel extends ImgPanel {
 		});
 		add(textFieldNick);
 
-		textFieldPhone = new InvisiableTextField("-도 포함하여 작성해주세요");
+		textFieldPhone = new InvisiableTextField(null);
 		textFieldPhone.setBounds(150, 566, 318, 34);
 		textFieldPhone.addFocusListener(new FocusListener() {
 
@@ -93,7 +93,7 @@ public class JoinPanel extends ImgPanel {
 						dialog.run();
 						textFieldPhone.requestFocus();
 					}
-				}else {textFieldPhone.setText("-도 포함하여 작성해주세요");}
+				}else {textFieldPhone.setText(null);}
 			}
 
 			@Override
@@ -140,8 +140,8 @@ public class JoinPanel extends ImgPanel {
 		textFieldId.setText("영어 소문자와 숫자만 가능합니다.");
 		textFieldEmail.setText(null);
 		textFieldPwd.setText(null);
-		textFieldPhone.setText("-도 포함하여 작성해주세요");
-		textFieldNick.setText("특수문자 제외 2 ~ 8글자");
+		textFieldPhone.setText(null);
+		textFieldNick.setText(null);
 		checkIdBtn.setSelected(false);
 		checkPwdBtn.setSelected(false);
 

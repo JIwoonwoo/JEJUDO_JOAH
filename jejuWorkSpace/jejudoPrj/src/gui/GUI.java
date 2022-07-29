@@ -4,17 +4,12 @@ import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
@@ -68,8 +63,8 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("JEJUDO JOAH");
-		frame.setIconImage(new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\icon.png").getImage());
-//		frame.setIconImage(new ImageIcon(".\\.\\image\\icon.png").getImage());
+//		frame.setIconImage(new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\icon.png").getImage());
+		frame.setIconImage(new ImageIcon(".\\.\\image\\icon.png").getImage());
 
 		LoginPanel loginPanel = new LoginPanel();
 		FaveratePanel faveratePanel = new FaveratePanel();
@@ -85,13 +80,13 @@ public class GUI {
 		PayInforPanel payInforPanel = new PayInforPanel();
 		ReservInforPanel reservInforPanel = new ReservInforPanel();
 		SugTripPanel sugTripPanel = new SugTripPanel();
-		
+
 		MemberService ms = new MemberService();
-		
+
 		/** 추천관광지 **/
 		frame.getContentPane().add(sugTripPanel);
 		sugTripPanel.setVisible(false);
-		
+
 		// 홈
 		sugTripPanel.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -115,52 +110,52 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sugTripPanel.setVisible(false);		
+				sugTripPanel.setVisible(false);
 				mainPanel.setVisible(true);
-				//결제 완료!
+				// 결제 완료!
 			}
 		});
-		
+
 		JTable tourism = sugTripPanel.getTourism();
 		tourism.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent mouseEvent) {
-		        JTable table =(JTable) mouseEvent.getSource();
-		        Point point = mouseEvent.getPoint();
-		        int row = table.rowAtPoint(point);
-		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-		        	System.out.println(tourism.getValueAt(tourism.getSelectedRow(), 0).toString()); 
-		        }
-		    }
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable table = (JTable) mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
+				int row = table.rowAtPoint(point);
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					System.out.println(tourism.getValueAt(tourism.getSelectedRow(), 0).toString());
+				}
+			}
 		});
-		
+
 		JTable activity = sugTripPanel.getActivity();
 		activity.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent mouseEvent) {
-		        JTable table =(JTable) mouseEvent.getSource();
-		        Point point = mouseEvent.getPoint();
-		        int row = table.rowAtPoint(point);
-		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-		        	System.out.println(activity.getValueAt(activity.getSelectedRow(), 0).toString()); 
-		        }
-		    }
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable table = (JTable) mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
+				int row = table.rowAtPoint(point);
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					System.out.println(activity.getValueAt(activity.getSelectedRow(), 0).toString());
+				}
+			}
 		});
-		
+
 		JTable restaurant = sugTripPanel.getRestaurant();
 		restaurant.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent mouseEvent) {
-		        JTable table =(JTable) mouseEvent.getSource();
-		        Point point = mouseEvent.getPoint();
-		        int row = table.rowAtPoint(point);
-		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-		        	System.out.println(restaurant.getValueAt(restaurant.getSelectedRow(), 0).toString()); 
-		        }
-		    }
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable table = (JTable) mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
+				int row = table.rowAtPoint(point);
+				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+					System.out.println(restaurant.getValueAt(restaurant.getSelectedRow(), 0).toString());
+				}
+			}
 		});
 
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
 		reservInforPanel.setVisible(false);
-		
+
 		// 홈
 		reservInforPanel.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -175,16 +170,16 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				reservInforPanel.setVisible(false);	
-				//테이블 데이터 셋
+				reservInforPanel.setVisible(false);
+				// 테이블 데이터 셋
 				sugTripPanel.setVisible(true);
 			}
 		});
-		
+
 		/** 결제정보 **/
 		frame.getContentPane().add(payInforPanel);
 		payInforPanel.setVisible(false);
-		
+
 		// 홈
 		payInforPanel.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -208,17 +203,17 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				payInforPanel.setVisible(false);	
+				payInforPanel.setVisible(false);
 				reservInforPanel.reset();
 				reservInforPanel.setVisible(true);
-				//결제 완료!
+				// 결제 완료!
 			}
 		});
-		
+
 		/** 예약페이지 랜트카2 **/// 체크박스 만들어야함..
 		frame.getContentPane().add(reservedCar2Panel);
 		reservedCar2Panel.setVisible(false);
-		
+
 		// 홈
 		reservedCar2Panel.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -243,14 +238,14 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reservedCar2Panel.setVisible(false);
-				
+
 				payInforPanel.reset();
 				payInforPanel.setFlightPrice(null);
 				payInforPanel.setAccomPrice(null);
 				payInforPanel.setCarPrice(null);
 				payInforPanel.setHavePoint(null);
 				payInforPanel.setSumPrice(null);
-				
+
 				payInforPanel.setVisible(true);
 			}
 		});
@@ -339,7 +334,7 @@ public class GUI {
 		/** 예약페이지 비행기 **/
 		frame.getContentPane().add(reservedFlightPanel);
 		reservedFlightPanel.setVisible(false);
-		
+
 		reservedFlightPanel.getHomeBtn().addActionListener(new ActionListener() {
 
 			@Override
@@ -517,46 +512,52 @@ public class GUI {
 
 		// 아이디중복확인
 		joinPanel.getCheckIdBtn().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(ms.checkId(joinPanel.getId())) {
-					if(ms.checkDubleId(joinPanel.getId())) {
-						PopUpDialog dialog = new  PopUpDialog(frame, "아이디 중복확인", "생성가능한 아이디 입니다.");
+				
+				if (ms.checkId(joinPanel.getId())) {
+					
+					if (ms.checkDubleId(joinPanel.getId())) {
+						PopUpDialog dialog = new PopUpDialog(frame, "아이디 중복확인", "생성가능한 아이디 입니다.");
 						dialog.run();
 						joinPanel.getTextFieldId().setEnabled(false);
 						joinPanel.getCheckIdBtn().setSelected(true);
-					}else {
-						PopUpDialog dialog = new  PopUpDialog(frame, "아이디 중복확인", "사용 불가능한 아이디 입니다.");
+					} else {
+						PopUpDialog dialog = new PopUpDialog(frame, "아이디 중복확인", "사용 불가능한 아이디 입니다.");
 						dialog.run();
 						joinPanel.getCheckIdBtn().setSelected(false);
 					}
-				}else {
-					PopUpDialog dialog = new  PopUpDialog(frame, "아이디 중복확인", "형식을 맞춰주시기 바랍니다.");
+					
+				} else {
+					PopUpDialog dialog = new PopUpDialog(frame, "아이디 중복확인", "형식을 맞춰주시기 바랍니다.");
 					dialog.run();
 					joinPanel.getCheckIdBtn().setSelected(false);
-				}					
+				}
 			}
 		});
 		// 비밀확인
 		joinPanel.getCheckPwdBtn().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(ms.checkPwd(joinPanel.getPwd())) {
+				
+				if (ms.checkPwd(joinPanel.getPwd())) {
 					TextFieldDialog dialog = new TextFieldDialog(frame, "비밀번호 확인", "한번 더 입력해주세요");
-					if(joinPanel.getPwd().equals(dialog.run())){
-						PopUpDialog dialog2 = new  PopUpDialog(frame, "비밀번호 확인", "확인되었습니다.");
+					
+					if (joinPanel.getPwd().equals(dialog.run())) {
+						PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "확인되었습니다.");
 						dialog2.run();
 						joinPanel.getTextFieldPwd().setEnabled(false);
 						joinPanel.getCheckPwdBtn().setSelected(true);
-					}else {
-						PopUpDialog dialog2 = new  PopUpDialog(frame, "비밀번호 확인", "비밀번호가 동일하지 않습니다.");
+					} else {
+						PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "비밀번호가 동일하지 않습니다.");
 						dialog2.run();
 						joinPanel.getCheckPwdBtn().setSelected(false);
 					}
-				}else {
-					PopUpDialog dialog2 = new  PopUpDialog(frame, "비밀번호 확인", "비밀번호는 4자리 이상입니다.");
+					
+				} else {
+					PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "비밀번호는 4자리 이상입니다.");
 					dialog2.run();
 					joinPanel.getCheckPwdBtn().setSelected(false);
 				}
@@ -570,7 +571,6 @@ public class GUI {
 				loginPanel.reset();
 				loginPanel.setVisible(true);
 				joinPanel.setVisible(false);
-
 			}
 		});
 		// 홈으로
@@ -581,7 +581,6 @@ public class GUI {
 				loginPanel.reset();
 				loginPanel.setVisible(true);
 				joinPanel.setVisible(false);
-
 			}
 		});
 		// 회원가입
@@ -589,8 +588,8 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if(joinPanel.getCheckIdBtn().isSelected()&&joinPanel.getCheckPwdBtn().isSelected()) {
+
+				if (joinPanel.getCheckIdBtn().isSelected() 	&& joinPanel.getCheckPwdBtn().isSelected()){
 
 					MemberVo vo = new MemberVo();
 					vo.setEmail(joinPanel.getTextFieldEmail());
@@ -599,23 +598,22 @@ public class GUI {
 					vo.setMemberNick(joinPanel.getTextFieldNick());
 					vo.setPhone(joinPanel.getTextFieldPhone());
 					vo.setPwd(joinPanel.getPwd());
-					
-					if(ms.join(vo)) {
-						PopUpDialog dialog = new  PopUpDialog(frame, "회원가입", "회원가입 성공! 환영합니다.");
+
+					if (ms.join(vo)) {
+						PopUpDialog dialog = new PopUpDialog(frame, "회원가입", "회원가입 성공! 환영합니다.");
 						dialog.run();
 						loginPanel.reset();
 						loginPanel.setVisible(true);
 						joinPanel.setVisible(false);
-					}else {
-						PopUpDialog dialog = new  PopUpDialog(frame, "회원가입", "회원가입 실패.. 다시 시도해주세요.");
+					} else {
+						PopUpDialog dialog = new PopUpDialog(frame, "회원가입", "회원가입 실패.. 다시 시도해주세요.");
 						dialog.run();
 					}
 
-				}else {
-					PopUpDialog dialog = new  PopUpDialog(frame, "회원가입", "아이디, 비밀번호를 체크해주시기 바랍니다.");
+				} else {
+					PopUpDialog dialog = new PopUpDialog(frame, "회원가입", "아이디, 비밀번호 및 필수항목을 체크해주세요.");
 					dialog.run();
 				}
-
 			}
 		});
 
@@ -630,7 +628,6 @@ public class GUI {
 				loginPanel.reset();
 				loginPanel.setVisible(true);
 				findIdPanel.setVisible(false);
-
 			}
 		});
 		// 홈
@@ -641,7 +638,6 @@ public class GUI {
 				loginPanel.reset();
 				loginPanel.setVisible(true);
 				findIdPanel.setVisible(false);
-
 			}
 		});
 		// 아이디 찾기
@@ -649,24 +645,23 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				MemberVo vo = new MemberVo();
 				vo.setEmail(findIdPanel.getTextFieldEmail());
 				vo.setMemberName(findIdPanel.getTextFieldName());
-				
+
 				String id = ms.findId(vo);
-				if(id!=null) {
-					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "아이디는 "+id+" 입니다.");
+				
+				if (id != null) {
+					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "아이디는 " + id + " 입니다.");
 					dialog.run();
 					loginPanel.reset();
 					loginPanel.setVisible(true);
 					findIdPanel.setVisible(false);
-				}else {
+				} else {
 					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "입력하신 정보가 없습니다.");
 					dialog.run();
 				}
-
-
 			}
 		});
 
@@ -700,25 +695,24 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		
+
 				MemberVo vo = new MemberVo();
 				vo.setId(findPwdPanel.getTextFieldId());
 				vo.setEmail(findPwdPanel.getTextFieldEmail());
 				vo.setMemberName(findPwdPanel.getTextFieldName());
 				System.out.println(vo);
 				String pwd = ms.findPwd(vo);
-				if(pwd!=null) {
-					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "비밀번호는 "+pwd+" 입니다.");
+				
+				if (pwd != null) {
+					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "비밀번호는 " + pwd + " 입니다.");
 					dialog.run();
 					loginPanel.reset();
 					loginPanel.setVisible(true);
 					findPwdPanel.setVisible(false);
-				}else {
+				} else {
 					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "입력하신 정보가 없습니다.");
 					dialog.run();
 				}
-
-
 			}
 		});
 
@@ -731,17 +725,17 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				MemberVo vo = new MemberVo();
 				vo.setId(loginPanel.getIdTextField());
 				vo.setPwd(loginPanel.getPasswordField());
-				
-				if(ms.login(vo)) {
+
+				if (ms.login(vo)) {
 					PopUpDialog dialog = new PopUpDialog(frame, "로그인성공", "로그인 되었습니다.");
 					dialog.run();
 					mainPanel.setVisible(true);
 					loginPanel.setVisible(false);
-				}else {
+				} else {
 					PopUpDialog dialog = new PopUpDialog(frame, "로그인실패", "아이디, 비밀번호를 확인하십시오.");
 					dialog.run();
 				}

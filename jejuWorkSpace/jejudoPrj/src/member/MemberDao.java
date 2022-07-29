@@ -12,9 +12,10 @@ public class MemberDao {
 
 	/**
 	 * login
+	 * 
 	 * @param conn
-	 * @param vo (id,  pwd)
-	 * @return -1 0 MemberNO
+	 * @param vo   (id, pwd)
+	 * @return 실패 -1, 비밀번호 틀림 0, 성공 MemberNo
 	 * @throws Exception
 	 */
 	public int login(Connection conn, MemberVo vo) throws Exception {
@@ -28,7 +29,7 @@ public class MemberDao {
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
-			
+
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -48,10 +49,12 @@ public class MemberDao {
 	}
 
 	/**
-	 * join 메소드 input > Connection, MemberVo (id, pwd, name, nick, phone, email)
-	 * output > true / false
+	 * join
 	 * 
-	 * 넘겨받은 데이터들로 insert 성공 결과에 따라 true / false 리턴
+	 * @param conn
+	 * @param vo   (id, pwd, name, nick, [phone], email)
+	 * @return true / false
+	 * @throws Exception
 	 */
 	public boolean join(Connection conn, MemberVo vo) throws Exception {
 
@@ -78,10 +81,10 @@ public class MemberDao {
 	}
 
 	/**
-	 * search 메소드
+	 * search
 	 * 
 	 * @param conn
-	 * @return MemberVo
+	 * @return vo(id, pwd, name, nick, phone, email, point)
 	 * @throws Exception
 	 */
 	public MemberVo search(Connection conn) throws Exception {
@@ -100,6 +103,7 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
+				vo = new MemberVo();
 				vo.setId(rs.getString("ID"));
 				vo.setPwd(rs.getString("PWD"));
 				vo.setMemberName(rs.getString("MEMBER_NAME"));
@@ -121,7 +125,10 @@ public class MemberDao {
 	/**
 	 * update
 	 * 
-	 * 
+	 * @param conn
+	 * @param vo   (pwd, nick, phone, eamil)
+	 * @return true / false
+	 * @throws Exception
 	 */
 	public boolean update(Connection conn, MemberVo vo) throws Exception {
 
@@ -149,9 +156,10 @@ public class MemberDao {
 	}
 
 	/**
+	 * quit
 	 * 
 	 * @param conn
-	 * @return
+	 * @return true / false
 	 * @throws Exception
 	 */
 	public boolean quit(Connection conn) throws Exception {
@@ -175,45 +183,15 @@ public class MemberDao {
 	}
 
 	/**
+	 * find ID
 	 * 
 	 * @param conn
-	 * @return point
-	 * @throws Exception
-	 */
-	public int hasPoint(Connection conn) throws Exception {
-
-		int result = -1;
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			String sql = "SELECT POINT FROM MEMBER WHERE ID = ?";
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Main.loginNo);
-
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				result = rs.getInt("POINT");
-			}
-
-		} finally {
-			JDBCTemplate.close(pstmt);
-			JDBCTemplate.close(rs);
-		}
-
-		return result;
-	}
-
-	/**
-	 * find ID
-	 * @param conn
-	 * @param vo (name, email)
-	 * @return id
+	 * @param vo   (name, email)
+	 * @return String (id)
 	 * @throws Exception
 	 */
 	public String findId(Connection conn, MemberVo vo) throws Exception {
-		
+
 		String result = null;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
@@ -240,9 +218,10 @@ public class MemberDao {
 
 	/**
 	 * findPwd
+	 * 
 	 * @param conn
-	 * @param vo (id, name, email)
-	 * @return PWD
+	 * @param vo   (id, name, email)
+	 * @return String (PWD)
 	 * @throws Exception
 	 */
 	public String findPwd(Connection conn, MemberVo vo) throws Exception {

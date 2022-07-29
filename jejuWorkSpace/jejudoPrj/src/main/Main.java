@@ -1,8 +1,7 @@
 package main;
 
-import member.MemberController;
 import member.MemberService;
-import util.InputUtil;
+import qna.QnaService;
 
 public class Main {
 	
@@ -10,12 +9,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		MemberController mc = new MemberController();
+		loginNo = 1;
 		
-//		mc.viewLogin();
-		String s = InputUtil.sc.nextLine();
-		boolean b = new MemberService().checkPwd(s);
-		System.out.println(b);
+//		MemberService md = new MemberService();
+//		String eamil = "asdf";
+//		eamil = md.search().getEmail();
+//		
+//		System.out.println(eamil.equals("null"));
+		
+		QnaService qs = new QnaService();
+		System.out.println(qs.myQnaList().get(0));
 		
 	}
 
