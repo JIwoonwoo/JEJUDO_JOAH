@@ -17,12 +17,7 @@ public class InvisiablePasswordField extends JPasswordField {
 		setFont(new Font("굴림", Font.PLAIN, 15));
 		setOpaque(false);
 		setBorder(null);
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setText(null);
-			}
-		});
+		
 		addFocusListener(new FocusListener() {
 
 			@Override

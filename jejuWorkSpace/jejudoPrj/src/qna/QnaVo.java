@@ -2,25 +2,23 @@ package qna;
 
 import java.sql.Timestamp;
 
-public class qnaVo {
+public class QnaVo {
 	
-	public qnaVo() {
+	public QnaVo() {
 		
 	}
 	
-	public qnaVo(int questionNo, int memberNo, String questionTitle, char answerYN, String qContent, String aContent) {
+	public QnaVo(int questionNo, int memberNo, String questionTitle, boolean answerYN, String qContent, String aContent) {
 		super();
 		this.questionNo = questionNo;
-		this.memberNo = memberNo;
 		this.questionTitle = questionTitle;
 		this.answerYN = answerYN;
 		this.qContent = qContent;
 		this.aContent = aContent;
 	}
 	private int questionNo;
-	private int memberNo;
 	private String questionTitle;
-	private char answerYN;
+	private boolean answerYN;
 	private String qContent;
 	private String aContent;
 	public int getQuestionNo() {
@@ -29,22 +27,16 @@ public class qnaVo {
 	public void setQuestionNo(int questionNo) {
 		this.questionNo = questionNo;
 	}
-	public int getMemberNo() {
-		return memberNo;
-	}
-	public void setMemberNo(int memberNo) {
-		this.memberNo = memberNo;
-	}
 	public String getQuestionTitle() {
 		return questionTitle;
 	}
 	public void setQuestionTitle(String questionTitle) {
 		this.questionTitle = questionTitle;
 	}
-	public char getAnswerYN() {
+	public boolean getAnswerYN() {
 		return answerYN;
 	}
-	public void setAnswerYN(char answerYN) {
+	public void setAnswerYN(boolean answerYN) {
 		this.answerYN = answerYN;
 	}
 	public String getqContent() {
@@ -61,7 +53,7 @@ public class qnaVo {
 	}
 	@Override
 	public String toString() {
-		return "qnaVo [questionNo=" + questionNo + ", memberNo=" + memberNo + ", questionTitle=" + questionTitle
+		return "qnaVo [questionNo=" + questionNo + ", questionTitle=" + questionTitle
 				+ ", answerYN=" + answerYN + ", qContent=" + qContent + ", aContent=" + aContent + "]";
 	}
 	

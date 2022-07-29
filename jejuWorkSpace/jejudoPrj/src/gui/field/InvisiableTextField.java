@@ -19,12 +19,6 @@ public class InvisiableTextField extends JTextField {
 		setOpaque(false);
 		setBorder(null);
 
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setText(null);
-			}
-		});
 		addFocusListener(new FocusListener() {
 
 			@Override
