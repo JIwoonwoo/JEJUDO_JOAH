@@ -11,10 +11,51 @@ public class PayDao {
 	// 예약정보가 맞는지 확인
 	// 회원 id로 예약번호 조회와 금액 조회
 	
-	public PayVo fPay(String id) {
-		String sqlGf = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE, M.POINT\r\n" + "FROM MEMBER M\r\n"
+	public PayVo gfPay(String id) {
+		String sql = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE, M.POINT\r\n" + "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
 				+ "JOIN FLIGHT F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_NO\r\n" + "WHERE M.ID = ? AND FR.PAID_YN = 'N'";
+
+		Connection conn = null;
+		PayVo vo = null;
+
+		PreparedStatement pstmt = null;
+
+		ResultSet rs = null;
+
+		try {
+			conn = JDBCTemplate.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+			if (rs.last()) {
+
+				int myPoint = rs.getInt("M.POINT");
+				int fNo = rs.getInt("F.FLIGHT_NO");
+				int fp = rs.getInt("F.FLIGHT_PRICE");
+				vo = new PayVo();
+				vo.setMypoint(myPoint);
+				vo.setFlightNo(fNo);
+				vo.setFlightGoPay(fp);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+			
+		}
+
+		
+		return vo;
+		
+	}
+	
+	public PayVo cfPay(String id) {
 
 		String sqlCf = "SELECT F.FLIGHT_NO, F.FLIGHT_PRICE\r\n" + "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
@@ -23,35 +64,19 @@ public class PayDao {
 		Connection conn = null;
 		PayVo vo = null;
 
-		PreparedStatement pstmtGf = null;
-		PreparedStatement pstmtf = null;
+		PreparedStatement pstmt = null;
 
-		ResultSet rsGf = null;
-		ResultSet rsf = null;
+		ResultSet rs = null;
 
 		try {
 			conn = JDBCTemplate.getConnection();
-			pstmtGf = conn.prepareStatement(sqlGf);
-			pstmtGf.setString(1, id);
-			pstmtf = conn.prepareStatement(sqlCf);
-			pstmtf.setString(1, id);
+			pstmt = conn.prepareStatement(sqlCf);
+			pstmt.setString(1, id);
 
-			rsGf = pstmtGf.executeQuery();
-			rsf = pstmtf.executeQuery();
-			if (rsGf.last()) {
-
-				int myPoint = rsGf.getInt("M.POINT");
-				int fNo = rsGf.getInt("F.FLIGHT_NO");
-				int fp = rsGf.getInt("F.FLIGHT_PRICE");
-				vo = new PayVo();
-				vo.setMypoint(myPoint);
-				vo.setFlightNo(fNo);
-				vo.setFlightGoPay(fp);
-
-			}
-			if (rsf.last()) {
-				int fNo = rsf.getInt("F.FLIGHT_NO");
-				int fp = rsf.getInt("F.FLIGHT_PRICE");
+			rs = pstmt.executeQuery();
+			if (rs.last()) {
+				int fNo = rs.getInt("F.FLIGHT_NO");
+				int fp = rs.getInt("F.FLIGHT_PRICE");
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
 				vo.setFlightComePay(fp);
@@ -61,10 +86,8 @@ public class PayDao {
 		}finally {
 
 			JDBCTemplate.close(conn);
-			JDBCTemplate.close(pstmtGf);
-			JDBCTemplate.close(pstmtf);
-			JDBCTemplate.close(rsGf);
-			JDBCTemplate.close(rsf);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
 			
 		}
 

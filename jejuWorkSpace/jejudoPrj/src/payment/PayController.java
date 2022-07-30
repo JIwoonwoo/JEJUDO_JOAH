@@ -17,37 +17,51 @@ public class PayController {
 	
 	public void payment() {
 		//로그인 체크
-		String id = "";
-		if(loginCheck() != null) {
-			id = loginCheck();
-		} else {
-			return;
-		}
+		String id = loginCheck();
+		
 		//이전예약정보 확인 후
 		//id로 회원의 예약번호 조회
 		PayVo vo = new PayVo();
 		PayDao dao = new PayDao();
 		//항공 예약정보
-		PayVo vof = dao.fPay(id);
+		PayVo vogf = dao.cfPay(id);
+		PayVo vocf = dao.gfPay(id);
 		//방 예약정보
-		PayVo vop = dao.rPay(id);
+		PayVo vor = dao.rPay(id);
 		//차 예약정보
 		PayVo voc = dao.cPay(id);
-			
+		
+		//총 금액 계산
+		int totalPay = totalPay(vogf,vocf,vor,voc);
 		
 		//포인트 보여주기, 사용유무, 사용량
-		int myPoint = usePoint(vo);
-		
+		int myUsePoint = usePoint(vo);
+		System.out.println(myUsePoint + "원 할인되었습니다.");
+		//결제금액 보여주기
+		int lastPay = totalPay - myUsePoint;
+		System.out.println("총 결제금액 : " + lastPay+ "원");
 		//결제종류선택, 결제하기
-		
+		howPay();
+		System.out.println(lastPay + "원 결제되었습니다.");
+		//예약 내역 보여주기
+		System.out.println("예약 내역을 확인 하시겠습니까?");
+		System.out.println("1. 확인");
+		System.out.println("2. 건너뛰기");
 		
 		
 	}
+	
 	//로그인 체크
 	private String loginCheck(){
 		MemberVo vo = new MemberVo();
 		String id = vo.getId();
-		return id;
+		if(loginCheck() != null) {
+			return id;
+		} else {
+			System.out.println("로그인 상태가 아닙니다.");
+			return;
+		}
+		
 	}
 
 	
@@ -119,7 +133,14 @@ public class PayController {
 			paidCredit();
 		}else if(choice == 2) {
 			System.out.println("계좌이체를 선택하셨습니다.");
+			paidTransfer();
 		}
+	}
+	private void paidTransfer() {
+		System.out.println("싱싱한은행 오대식");
+		System.out.println("110-987-123456");
+		System.out.println("위 계좌로 입금해주세요.");
+		
 	}
 	private void paidCredit() {
 		while(true) {
@@ -132,6 +153,7 @@ public class PayController {
 			System.out.println("MM");
 			System.out.print(">");
 			int b = InputUtil.getInt();
+			
 			System.out.println("YY");
 			System.out.print(">");
 			int c = InputUtil.getInt();
@@ -152,7 +174,7 @@ public class PayController {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
 			}
-			else if((int)(Math.log10(d)+1)>2) {
+			else if((int)(Math.log10(d)+1)>3) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
 			}else {
@@ -161,6 +183,16 @@ public class PayController {
 			}
 			
 		}
+		
+	}
+	
+	private int totalPay(PayVo vogf,PayVo vocf, PayVo vor, PayVo voc) {
+		int fg = vogf.getFlightGoPay();
+		int fc = vocf.getFlightComePay();
+		int p = vor.getAccomPay();
+		int c = vor.getCarPay();
+		int total =  fg+fc+p+c;
+		return total;
 		
 	}
 	
