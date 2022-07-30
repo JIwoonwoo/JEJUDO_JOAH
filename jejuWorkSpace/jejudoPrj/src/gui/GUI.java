@@ -19,6 +19,7 @@ import gui.panel.FindPwdPanel;
 import gui.panel.JoinPanel;
 import gui.panel.LoginPanel;
 import gui.panel.MainPanel;
+import gui.panel.MyPagePanel;
 import gui.panel.PayInforPanel;
 import gui.panel.ReservInforPanel;
 import gui.panel.ReservedAccomPanel;
@@ -34,6 +35,7 @@ import member.MemberVo;
 public class GUI {
 
 	private JFrame frame;
+	private String where = "";
 
 	/**
 	 * Launch the application.
@@ -80,6 +82,7 @@ public class GUI {
 		PayInforPanel payInforPanel = new PayInforPanel();
 		ReservInforPanel reservInforPanel = new ReservInforPanel();
 		SugTripPanel sugTripPanel = new SugTripPanel();
+		MyPagePanel myPagePanel = new MyPagePanel();
 
 		MemberService ms = new MemberService();
 

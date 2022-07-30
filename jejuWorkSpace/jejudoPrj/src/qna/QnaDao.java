@@ -58,8 +58,8 @@ public class QnaDao {
 	/**
 	 * 
 	 * @param conn
-	 * @param vo(  title, content )
-	 * @return
+	 * @param vo (  title, content )
+	 * @return true false
 	 * @throws Exception
 	 */
 	public boolean writeQna(Connection conn, QnaVo vo) throws Exception {
@@ -85,7 +85,15 @@ public class QnaDao {
 
 	}
 
+	/**
+	 *  answerQ
+	 * @param conn
+	 * @param vo (qNo, acontent)
+	 * @return true, flase
+	 * @throws Exception
+	 */
 	public boolean answerQ(Connection conn, QnaVo vo) throws Exception {
+		
 		PreparedStatement pstmt = null;
 		int result = -1;
 		
@@ -102,6 +110,101 @@ public class QnaDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return (result == 1) ? true : false;
+	}
+	
+	/**
+	 * 
+	 * @param conn
+	 * @param questionNo
+	 * @return vo( title, answerYn, qcontent, acontent )
+	 * @throws Exception
+	 */
+	public QnaVo search(Connection conn, int questionNo) throws Exception {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		QnaVo vo = null;
+		
+		try {
+			String sql = "SELECT QUESTION_TITLE, ANSWER_YN, Q_CONTENT, A_CONTENT FROM QNA WHERE QUESTION_NO = ? AND DELETE_YN = 'N'";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, questionNo);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+
+				vo = new QnaVo();
+				vo.setQuestionTitle(rs.getString("QUESTION_TITLE"));
+				vo.setAnswerYN(getYNtoBoolean(rs.getString("ANSWER_YN")));
+				vo.setqContent(rs.getString("Q_CONTENT"));
+				vo.setaContent(rs.getString("A_CONTENT"));
+			}
+
+		} finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+		}
+
+		return vo;
+		
+	}
+	
+	/**
+	 * 
+	 * @param conn
+	 * @param vo (title, qcontent)
+	 * @return true false
+	 * @throws Exception
+	 */
+	public boolean updateQ(Connection conn, QnaVo vo) throws Exception {
+		
+		PreparedStatement pstmt = null;
+		int result = -1;
+		
+		try {
+			String sql = "UPDATE QNA SET QUESTION_TITLE = ?, Q_CONTENT = ? , MODIFY_TIME = SYSDATE WHERE QUESTION_NO = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getQuestionTitle());
+			pstmt.setString(2, vo.getqContent());
+			pstmt.setInt(3, vo.getQuestionNo());
+
+			result = pstmt.executeUpdate();
+
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return (result == 1) ? true : false;
+		
+	}
+	
+	/**
+	 * 
+	 * @param conn
+	 * @param questionNo
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean deleteQ(Connection conn, int questionNo) throws Exception {
+		
+		PreparedStatement pstmt = null;
+		int result = -1;
+		
+		try {
+			String sql = "UPDATE QNA SET DELETE_YN = 'Y' DELETE_DATE = SYSDATE WHERE QUESTION_NO = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, questionNo);
+
+			result = pstmt.executeUpdate();
+
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return (result == 1) ? true : false;
+		
 	}
 
 	private boolean getYNtoBoolean(String s) {

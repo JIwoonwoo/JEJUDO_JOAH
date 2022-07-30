@@ -1,13 +1,10 @@
 package gui.panel;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import gui.button.BackBtn;
