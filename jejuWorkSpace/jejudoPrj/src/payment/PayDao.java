@@ -11,6 +11,7 @@ public class PayDao {
 	// 예약정보가 맞는지 확인
 	// 회원 id로 예약번호 조회와 금액 조회
 	
+	// 가는 항공금액
 	public PayVo gfPay(String id) {
 		String sql = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE, M.POINT\r\n" + "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
@@ -54,7 +55,7 @@ public class PayDao {
 		return vo;
 		
 	}
-	
+	// 오는 항공 금액
 	public PayVo cfPay(String id) {
 
 		String sqlCf = "SELECT F.FLIGHT_NO, F.FLIGHT_PRICE\r\n" + "FROM MEMBER M\r\n"
@@ -95,7 +96,7 @@ public class PayDao {
 		return vo;
 
 	}
-
+	// 방 금액
 	public PayVo rPay(String id)  {
 		String sqlRoom = "SELECT A.ACCOM_NO, R.ROOM_PRICE , A.CHECK_OUT - A.CHECK_IN\r\n" + "FROM MEMBER M\r\n"
 				+ "JOIN ACCOM_RESERVATION A ON M.MEMBER_NO = A.MEMBER_NO\r\n"
@@ -135,7 +136,7 @@ public class PayDao {
 		return vo;
 
 	}
-
+	// 렌트카 금액
 	public PayVo cPay(String id) {
 
 		String sql = "SELECT C.CAR_NO, R.DAY_PRICE,C.INSURANCE, C.RETURN_DATE-C.RENTAL_DATE\r\n"
@@ -175,9 +176,54 @@ public class PayDao {
 			JDBCTemplate.close(rs);
 		}
 		
-		
-		
 
 		return vo;
 	}
+	
+	//결제내역저장, INSERT
+	public void payInsert(PayVo vogf, PayVo vocf, PayVo vor, PayVo voc, int totalPay, int myUsePoint, int lastPay, int earnPoint, char howPay) {
+		
+		
+		
+		String sql = "INSERT INTO MEMBER(PAY_NO,FLIGHT_NO,ACCOM_NO,CAR_NO,TOTAL,POINT_USED,CUT_PRICE,POINT,PAY_METHOD) \r\n"
+				+ "VALUES(SEQ_PAYMENT.NEXTVAL,?,?,?,?,?,?,?,?');";
+		
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			conn = JDBCTemplate.getConnection();
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vogf.getFlightNo());
+			pstmt.setInt(2, vor.getAccomNo());
+			pstmt.setInt(3, voc.getCarNo());
+			pstmt.setInt(4, totalPay);
+			pstmt.setInt(5, myUsePoint);
+			pstmt.setInt(6, lastPay);
+			pstmt.setInt(7, earnPoint);
+			pstmt.setInt(8, howPay);
+			
+			result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
+			
+		} catch (Exception e) {
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		
+	}
+	
+	
 }

@@ -21,8 +21,8 @@ public class PayController {
 		
 		//이전예약정보 확인 후
 		//id로 회원의 예약번호 조회
-		PayVo vo = new PayVo();
 		PayDao dao = new PayDao();
+		
 		//항공 예약정보
 		PayVo vogf = dao.cfPay(id);
 		PayVo vocf = dao.gfPay(id);
@@ -35,15 +35,22 @@ public class PayController {
 		int totalPay = totalPay(vogf,vocf,vor,voc);
 		
 		//포인트 보여주기, 사용유무, 사용량
-		int myUsePoint = usePoint(vo);
-		System.out.println(myUsePoint + "원 할인되었습니다.");
+		int myUsePoint = usePoint(vogf);
+		
 		//결제금액 보여주기
 		int lastPay = totalPay - myUsePoint;
-		System.out.println("총 결제금액 : " + lastPay+ "원");
+		
+		//적립금
+		int earnPoint = lastPay/10;
+		
 		//결제종류선택, 결제하기
-		howPay();
-		System.out.println(lastPay + "원 결제되었습니다.");
-		//예약 내역 보여주기
+		char howPay = howPay(lastPay);
+		
+		//결제 내역 저장
+		dao.payInsert(vogf,vocf,vor,voc,totalPay,myUsePoint,lastPay,earnPoint,howPay);
+		
+		
+		//예약 내역 확인
 		System.out.println("예약 내역을 확인 하시겠습니까?");
 		System.out.println("1. 확인");
 		System.out.println("2. 건너뛰기");
@@ -59,13 +66,13 @@ public class PayController {
 			return id;
 		} else {
 			System.out.println("로그인 상태가 아닙니다.");
-			return;
+			return "이거 어떻게 하지....";
 		}
 		
 	}
 
 	
-	
+	//포인트사용
 	private int usePoint(PayVo vo) {
 		
 		int myPoint = vo.getMypoint();
@@ -79,71 +86,79 @@ public class PayController {
 		System.out.println("1. 포인트 사용");
 		System.out.println("0. 사용안함");
 			
-		try {
-			while(true) {
-				int c = InputUtil.getInt();
+	
+		while(true) {
+			int c = InputUtil.getInt();
+			
+			if(c == 0) {
+				System.out.println("결제를 바로 진행합니다.");
+				return 0;
+			}else if (c == 1) {
+				System.out.println("포인트를 얼마나 사용하시겠습니까?");
+				System.out.println("1. 모두사용");
+				System.out.println("2. 직접입력");
+				int a = InputUtil.getInt();
 				
-				if(c == 0) {
-					return 0;
-				}else if (c == 1) {
-					System.out.println("포인트를 얼마나 사용하시겠습니까?");
-					System.out.println("1. 모두사용");
-					System.out.println("2. 직접입력");
-					int a = InputUtil.getInt();
+				if(a==1) {
+					System.out.println("포인트가 " + myPoint + "원 사용되었습니다.");
+					return myPoint;
+				}else if(c==2) {
+					int usePoint = InputUtil.getInt();
 					
-					if(a==1) {
-						return myPoint;
-					}else if(c==2) {
-						int usePoint = InputUtil.getInt();
-						
-						while(true) {
-							if(usePoint <= myPoint && usePoint > 0) {
-								myPoint = usePoint;
-								return myPoint;
-							}else {
-								System.out.println("입력값을 벗어났습니다.");
-								continue;
-							}
-						}	
-					}else {
-						System.out.println("다시 입력해 주세요");
-						continue;
-					}
+					while(true) {
+						if(usePoint <= myPoint && usePoint > 0) {
+							myPoint = usePoint;
+							System.out.println("포인트가 "+ myPoint + "원 사용되었습니다.");
+							return myPoint;
+						}else {
+							System.out.println("입력값을 벗어났습니다.");
+							continue;
+						}
+					}	
 				}else {
 					System.out.println("다시 입력해 주세요");
 					continue;
 				}
-				
+			}else {
+				System.out.println("다시 입력해 주세요");
+				continue;
 			}
 			
-		} catch (Exception e) {
-			System.out.println("입력 오류");
-			e.printStackTrace();
 		}
-		return 0;
 	}
-
-	private void howPay() {
+	//결제수단 선택
+	private char howPay(int lastPay) {
 		System.out.println("결제 수단을 선택 해 주세요");
 		System.out.println("1. 신용카드");
 		System.out.println("2. 계좌이체");
-		int choice = InputUtil.getInt();
-		if(choice == 1) {
-			System.out.println("신용카드를 선택하셨습니다.");
-			paidCredit();
-		}else if(choice == 2) {
-			System.out.println("계좌이체를 선택하셨습니다.");
-			paidTransfer();
+		while(true){
+			int choice = InputUtil.getInt();
+			if(choice == 1) {
+				System.out.println("신용카드를 선택하셨습니다.");
+				paidCredit(lastPay);
+				return 'c';
+			}if(choice == 2) {
+				System.out.println("계좌이체를 선택하셨습니다.");
+				paidTransfer(lastPay);
+				return 't';
+			}else {
+				System.out.println("다시 입력해 주세요.");
+				continue;
+			}
 		}
 	}
-	private void paidTransfer() {
+	// 계좌이체
+	private void paidTransfer(int lastPay) {
+		System.out.println("총 결제금액 : " + lastPay);
 		System.out.println("싱싱한은행 오대식");
 		System.out.println("110-987-123456");
 		System.out.println("위 계좌로 입금해주세요.");
 		
 	}
-	private void paidCredit() {
+	// 신용카드 사용
+	private void paidCredit(int lastPay) {
 		while(true) {
+			System.out.println("총 결제금액 : " + lastPay);
 			System.out.println("카드 정보를 입력해 주세요");
 			System.out.println("카드 번호");
 			System.out.print("> ");
@@ -179,14 +194,16 @@ public class PayController {
 				continue;
 			}else {
 				System.out.println("카드 정보가 입력되었습니다.");
+				System.out.println(lastPay + "원 결제되었습니다.");
 				break;
 			}
 			
 		}
 		
 	}
-	
+	//결제금액 더하기
 	private int totalPay(PayVo vogf,PayVo vocf, PayVo vor, PayVo voc) {
+		
 		int fg = vogf.getFlightGoPay();
 		int fc = vocf.getFlightComePay();
 		int p = vor.getAccomPay();
