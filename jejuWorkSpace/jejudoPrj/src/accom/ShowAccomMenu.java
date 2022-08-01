@@ -1,6 +1,6 @@
 package accom;
 
-import main.InputUtil;
+import util.InputUtil;
 
 public class ShowAccomMenu {
 	
