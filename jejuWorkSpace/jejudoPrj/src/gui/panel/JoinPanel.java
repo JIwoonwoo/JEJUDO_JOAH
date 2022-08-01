@@ -93,7 +93,7 @@ public class JoinPanel extends ImgPanel {
 						dialog.run();
 						textFieldPhone.requestFocus();
 					}
-				}else {textFieldPhone.setText(null);}
+				}
 			}
 
 			@Override

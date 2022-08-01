@@ -1,9 +1,5 @@
 package gui.panel;
 
-import java.awt.Component;
-import java.util.Enumeration;
-
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 

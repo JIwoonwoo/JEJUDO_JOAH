@@ -27,7 +27,7 @@ public class TextFieldDialog extends JDialog {
 	    setLocation(loc.x+225,loc.y+450);
 	    
 //		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/textDialog.jpg").getImage());
-		JPanel panel = new ImgPanel(new ImageIcon("././image/page/labelDialog.jpg").getImage());
+		JPanel panel = new ImgPanel(new ImageIcon("././image/page/textDialog.jpg").getImage());
 //		JPanel panel = new ImgPanel("labelDialog");
 		getContentPane().add(panel);
 		panel.setLayout(null);

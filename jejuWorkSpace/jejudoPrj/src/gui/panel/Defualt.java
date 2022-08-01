@@ -1,47 +1,46 @@
 package gui.panel;
 
+import javax.swing.JButton;
+
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
+import gui.button.ImgButton;
+import gui.button.InvisiableButton;
 import gui.button.NextBtn;
 
-public class ReservInforPanel extends ImgPanel {
+import javax.swing.JTextField;
+
+public class Defualt extends ImgPanel {
 
 	private HomeBtn homeBtn;
-	private NextBtn nextBtn;
 	private BackBtn backBtn;
-
-	public ReservInforPanel() {
-		super("reservInfor");
+	private NextBtn nextBtn;
+	
+	public Defualt() {
+		super("mypage");
 
 		homeBtn = new HomeBtn();
 		add(homeBtn);
 
-		nextBtn = new NextBtn();
-		add(nextBtn);
-		
 		backBtn = new BackBtn();
 		add(backBtn);
-
+		
+		nextBtn = new NextBtn();
+		add(nextBtn);
+				
 	}
 	
 	public HomeBtn getHomeBtn() {
 		return homeBtn;
 	}
 
-	public NextBtn getNextBtn() {
-		return nextBtn;
-	}
-
-	
-	
 	public BackBtn getBackBtn() {
 		return backBtn;
 	}
 
-	public void set() {
-		// TODO Auto-generated method stub
-		
+	public NextBtn getNextBtn() {
+		return nextBtn;
 	}
-
-
+	
+	
 }

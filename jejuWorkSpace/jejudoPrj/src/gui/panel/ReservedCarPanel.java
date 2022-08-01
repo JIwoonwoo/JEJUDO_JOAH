@@ -1,12 +1,8 @@
 package gui.panel;
 
-import java.awt.Component;
 import java.awt.Font;
-import java.util.Enumeration;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.text.PlainDocument;
@@ -14,7 +10,6 @@ import javax.swing.text.PlainDocument;
 import gui.button.BackBtn;
 import gui.button.ButtonGroupController;
 import gui.button.HomeBtn;
-import gui.button.ImgButton;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
 import gui.document.MyIntFilter;

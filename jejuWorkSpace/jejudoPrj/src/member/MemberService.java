@@ -160,6 +160,15 @@ public class MemberService {
 	 * @return true / false
 	 */
 	public boolean update(MemberVo vo) {
+		
+		if(vo.getEmail()==null || vo.getEmail().equals("")) {
+			return false;
+		}
+		
+		if(vo.getMemberNick()==null || vo.getMemberNick().equals("")) {
+			vo.setMemberNick(vo.getMemberName());
+		}
+		
 
 		boolean result = false;
 		Connection conn = null;
