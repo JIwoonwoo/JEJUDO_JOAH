@@ -14,13 +14,16 @@ public class AccDto {
     public String Around;
     public String Roomview;
     
+    public String Checkin;
+    public String Checkout;
+    public int People;
     
     public AccDto() {
     	
     }
     
 	public AccDto(int roomno, String accomname, String address, String poolYN, String roomname, int price, int capacity,
-			String animalYN, String poolableYN, String around, String roomview) {
+			String animalYN, String poolableYN, String around, String roomview, String checkin, String checkout, int people) {
 		super();
 		this.Roomno = roomno;
 		this.Accomname = accomname;
@@ -33,6 +36,9 @@ public class AccDto {
 		this.PoolableYN = poolableYN;
 		this.Around = around;
 		this.Roomview = roomview;
+		this.Checkin = checkin;
+		this.Checkout = checkout;
+		this.People = people;
 	}
 
 	@Override
@@ -107,6 +113,30 @@ public class AccDto {
 	}
 	public void setRoomview(String roomview) {
 		Roomview = roomview;
+	}
+
+	public String getCheckin() {
+		return Checkin;
+	}
+
+	public void setCheckin(String checkin) {
+		Checkin = checkin;
+	}
+
+	public String getCheckout() {
+		return Checkout;
+	}
+
+	public void setCheckout(String checkout) {
+		Checkout = checkout;
+	}
+
+	public int getPeople() {
+		return People;
+	}
+
+	public void setPeople(int people) {
+		People = people;
 	}
 
 	
