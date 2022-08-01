@@ -28,6 +28,19 @@ public class PayVo{
 	
 	
 	
+	public PayVo(int flightNo, int accomNo, int carNo, int totalPay, int flightGoPay, int flightComePay, int accomPay,
+			int carPay) {
+		this.flightNo = flightNo;
+		this.accomNo = accomNo;
+		this.carNo = carNo;
+		this.totalPay = totalPay;
+		this.flightGoPay = flightGoPay;
+		this.flightComePay = flightComePay;
+		this.accomPay = accomPay;
+		this.carPay = carPay;
+	}
+
+
 	// 전체 using 필드
 	public PayVo(int flightNo, int accomNo, int carNo, int flightGoPay, int flightComePay, int accomPay, int carPay,
 			int totalPay, int pointUsed, int mypoint, String payMethod, Timestamp payDate, char cancelYN,
