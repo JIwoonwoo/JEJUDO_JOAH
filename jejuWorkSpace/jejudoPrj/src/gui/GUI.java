@@ -39,6 +39,8 @@ import member.MemberService;
 import member.MemberVo;
 import qna.QnaService;
 import qna.QnaVo;
+import survey.SurveyService;
+import survey.SurveyVo;
 
 public class GUI {
 
@@ -100,6 +102,7 @@ public class GUI {
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
+		SurveyService ss = new SurveyService();
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -862,14 +865,35 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(faveratePanel.getQ1());
-				System.out.println(faveratePanel.getQ2());
-				System.out.println(faveratePanel.getQ3());
-				System.out.println(faveratePanel.getQ4());
-				System.out.println(faveratePanel.getQ5());
 
-				faveratePanel.setVisible(false);
-				reservedPanel.setVisible(true);
+				SurveyVo vo = new SurveyVo();
+				
+				String[] arr = faveratePanel.getQ2();
+				
+				if(faveratePanel.getQ5().equals("있다")) {
+					vo.setAnimal_yn("Y");
+				}else {vo.setAnimal_yn("N");}
+				if(faveratePanel.getQ3().equals("너무무겁다")) {
+					vo.setBudget("Y");
+				}else {vo.setBudget("N");}
+				
+				vo.setPurpose(arr[0]);
+				vo.setPurpose2(arr[1]);
+				vo.setLocation(faveratePanel.getQ1());
+				vo.setGroup(faveratePanel.getQ4());
+				
+				System.out.println(vo);
+				System.out.println(Main.loginNo);
+				
+				if(ss.survey(vo)) {
+					faveratePanel.setVisible(false);
+					reservedPanel.setVisible(true);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "설문조사", "다시 확인해주시기 바랍니다.");
+					dialog.run();
+				}
+				
+
 
 			}
 		});
