@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class TravelVo {
 
-	private String trable_no;
+	private String travel_no;
 	private String recommend_type;
-	private String theme;
+
 	private String category;
 	private String travel_name;
 	private String travel_address;
@@ -19,23 +19,24 @@ public class TravelVo {
 	private String closed;
 	private String like_cnt;
 	private String closed_day;
-	private Timestamp delete_date; // 타입 이게 맞나요..?
+
 	private String purpose;
-	
+
 	// 기본생성자
-	public void TravelVo() {
-		
+	public TravelVo() {
+
 	}
 
+
 	// 생성자 (파라미터)
-	public TravelVo(String trable_no, String recommend_type, String theme, String category, String travel_name,
+	public TravelVo(String travel_no, String recommend_type, String category, String travel_name,
 			String travel_address, String activity_yn, String travel_price, String animal_yn, String travel_info,
 			String travel_phone, String open, String closed, String like_cnt, String closed_day,
-			Timestamp delete_date, String purpose) {
+			String purpose) {
 		super();
-		this.trable_no = trable_no;
+		this.travel_no = travel_no;
 		this.recommend_type = recommend_type;
-		this.theme = theme;
+
 		this.category = category;
 		this.travel_name = travel_name;
 		this.travel_address = travel_address;
@@ -48,16 +49,16 @@ public class TravelVo {
 		this.closed = closed;
 		this.like_cnt = like_cnt;
 		this.closed_day = closed_day;
-		this.delete_date = delete_date;
+
 		this.purpose = purpose;
 	}
 
-	public String getTrable_no() {
-		return trable_no;
+public String getTravel_no() {
+		return travel_no;
 	}
 
-	public void setTrable_no(String trable_no) {
-		this.trable_no = trable_no;
+	public void setTravel_no(String travel_no) {
+		this.travel_no = travel_no;
 	}
 
 	public String getRecommend_type() {
@@ -68,13 +69,7 @@ public class TravelVo {
 		this.recommend_type = recommend_type;
 	}
 
-	public String getTheme() {
-		return theme;
-	}
-
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
+	
 
 	public String getCategory() {
 		return category;
@@ -172,15 +167,6 @@ public class TravelVo {
 		this.closed_day = closed_day;
 	}
 
-	public Timestamp getDelete_date() {
-		return delete_date;
-	}
-
-	public void setDelete_date(Timestamp delete_date) {
-		this.delete_date = delete_date;
-	}
-	
-	
 
 	public String getPurpose() {
 		return purpose;
@@ -192,20 +178,14 @@ public class TravelVo {
 
 	@Override
 	public String toString() {
-		return "TravelVo [trable_no=" + trable_no + ", recommend_type=" + recommend_type + ", theme=" + theme
-				+ ", category=" + category + ", travel_name=" + travel_name + ", travel_address=" + travel_address
-				+ ", activity_yn=" + activity_yn + ", travel_price=" + travel_price + ", animal_yn=" + animal_yn
-				+ ", travel_info=" + travel_info + ", travel_phone=" + travel_phone + ", open=" + open + ", closed="
-				+ closed + ", like_cnt=" + like_cnt + ", closed_day=" + closed_day + ", delete_date=" + delete_date
-				+ ", purpose=" + purpose + "]";
+		return 
+		" 여행지 NO = " + travel_no + ", 카테고리 = " + category + ", 테마 = " + purpose + ", 인원 수 = " + recommend_type 
+		 + "\n 여행지 이름 : " + travel_name + ", 주소 = " + travel_address + ", 여행지 정보 = " + travel_info 
+		 + "\n 가격 = " + travel_price
+		+ ", 전화번호 = " + travel_phone + ", 좋아요 = " + like_cnt 
+		+ ", 여는시간 = " + open + ", 닫는시간 = " + closed + ", 휴무요일 = " + closed_day  
+		+ "\n 액티비티 여부= " + activity_yn + ", 동물동반 가능 여부 = " + animal_yn
+		+  "\n -------------------------------------------------------------------------------------------------";
 	}
 
-	
-	
-
-	
-	
-	
-	
-	
 }
