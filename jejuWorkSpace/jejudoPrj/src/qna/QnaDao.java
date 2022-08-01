@@ -126,7 +126,7 @@ public class QnaDao {
 		QnaVo vo = null;
 		
 		try {
-			String sql = "SELECT QUESTION_TITLE, ANSWER_YN, Q_CONTENT, A_CONTENT FROM QNA WHERE QUESTION_NO = ? AND DELETE_YN = 'N'";
+			String sql = "SELECT QUESTION_NO, QUESTION_TITLE, ANSWER_YN, Q_CONTENT, A_CONTENT FROM QNA WHERE QUESTION_NO = ? AND DELETE_YN = 'N'";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, questionNo);
@@ -136,6 +136,7 @@ public class QnaDao {
 			if (rs.next()) {
 
 				vo = new QnaVo();
+				vo.setQuestionNo(rs.getInt("QUESTION_NO"));
 				vo.setQuestionTitle(rs.getString("QUESTION_TITLE"));
 				vo.setAnswerYN(getYNtoBoolean(rs.getString("ANSWER_YN")));
 				vo.setqContent(rs.getString("Q_CONTENT"));
@@ -193,7 +194,7 @@ public class QnaDao {
 		int result = -1;
 		
 		try {
-			String sql = "UPDATE QNA SET DELETE_YN = 'Y' DELETE_DATE = SYSDATE WHERE QUESTION_NO = ?";
+			String sql = "UPDATE QNA SET DELETE_YN = 'Y', DELETE_DATE = SYSDATE WHERE QUESTION_NO = ?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, questionNo);

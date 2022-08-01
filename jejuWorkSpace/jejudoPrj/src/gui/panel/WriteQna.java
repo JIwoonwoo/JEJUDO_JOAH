@@ -22,6 +22,8 @@ public class WriteQna extends ImgPanel {
 	private JTextField textField;
 	private JTextArea textArea;
 	
+	private int no;
+	
 	public WriteQna() {
 		super("writeQA");
 
@@ -79,6 +81,22 @@ public class WriteQna extends ImgPanel {
 	public String getTextArea() {
 		return textArea.getText();
 	}
+
 	
+	public void setTextField(String textField) {
+		this.textField.setText(textField);
+	}
+
+	public void setTextArea(String textArea) {
+		this.textArea.setText(textArea);
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
 	
 }

@@ -17,6 +17,7 @@ import gui.dialog.PopUpDialog;
 import gui.field.InvisiablePasswordField;
 import gui.field.InvisiableTextField;
 import member.MemberService;
+import member.MemberVo;
 
 public class UpdateMemberPanel extends ImgPanel {
 	
@@ -202,6 +203,7 @@ public class UpdateMemberPanel extends ImgPanel {
 		this.email.setText(email);
 	}
 	
-	
-	
+	public JPasswordField getPwdField() {
+		return pwd;
+	}
 }

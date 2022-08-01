@@ -4,21 +4,23 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
 import gui.button.ImgButton;
+import qna.QnaVo;
 
 public class ViewQna extends ImgPanel {
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
-	private JLabel lblNewLabel;
-	private JTextPane textPane;
-	private JLabel lblNewLabel_1;
-	private JTextPane textPane_1;
+	private JLabel qTitle;
+	private JTextArea qContent;
+	private JTextArea aContent;
 	private JButton updateBtn;
+	private JButton deleteBtn;
+	private int no;
 	
 	public ViewQna() {
 		super("viewQA");
@@ -29,34 +31,32 @@ public class ViewQna extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 		
-		lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(105, 120, 394, 46);
-		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 18));
-		add(lblNewLabel);
+		qTitle = new JLabel();
+		qTitle.setBounds(105, 120, 394, 46);
+		qTitle.setFont(new Font("굴림", Font.BOLD, 18));
+		add(qTitle);
 		
-		textPane = new JTextPane();
-		textPane.setBounds(53, 185, 446, 285);
-		textPane.setFont(new Font("굴림", Font.PLAIN, 15));
-		add(textPane);
+		qContent = new JTextArea();
+		qContent.setEditable(false);
+		qContent.setBounds(53, 198, 446, 272);
+		qContent.setFont(new Font("굴림", Font.PLAIN, 15));
+		qContent.setOpaque(false);
+		add(qContent);
 		
-		lblNewLabel_1 = new JLabel();
-		lblNewLabel_1.setBounds(105, 534, 394, 46);
-		lblNewLabel_1.setFont(new Font("굴림", Font.BOLD, 18));
-		add(lblNewLabel_1);
-		
-		textPane_1 = new JTextPane();
-		textPane_1.setBounds(53, 597, 446, 189);
-		textPane_1.setFont(new Font("굴림", Font.PLAIN, 15));
-		add(textPane_1);
+		aContent = new JTextArea();
+		aContent.setBounds(53, 605, 446, 181);
+		aContent.setFont(new Font("굴림", Font.PLAIN, 15));
+		aContent.setOpaque(false);
+		add(aContent);
 		
 		updateBtn = new ImgButton("수정하기");
 		updateBtn.setLocation(0, 828);
 		add(updateBtn);
 		
-		updateBtn = new ImgButton("삭제하기");
-		updateBtn.setLocation(275, 828);
-		add(updateBtn);
-				
+		deleteBtn = new ImgButton("삭제하기");
+		deleteBtn.setLocation(275, 828);
+		add(deleteBtn);
+						
 	}
 	
 	public HomeBtn getHomeBtn() {
@@ -67,22 +67,34 @@ public class ViewQna extends ImgPanel {
 		return backBtn;
 	}
 
-	
-	public JLabel getLblNewLabel() {
-		return lblNewLabel;
+	public String getqTitle() {
+		return qTitle.getText();
 	}
 
-	public JTextPane getTextPane() {
-		return textPane;
+	public String getqContent() {
+		return qContent.getText();
 	}
 
-	public JLabel getLblNewLabel_1() {
-		return lblNewLabel_1;
+	public String getaContent() {
+		return aContent.getText();
 	}
 
-	public JTextPane getTextPane_1() {
-		return textPane_1;
+	public JButton getUpdateBtn() {
+		return updateBtn;
 	}
 
-	
+	public JButton getDeleteBtn() {
+		return deleteBtn;
+	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void set(QnaVo vo) {
+		no = vo.getQuestionNo();
+		qTitle.setText(vo.getQuestionTitle());
+		qContent.setText(vo.getqContent());
+		aContent.setText(vo.getaContent());
+	}
 }

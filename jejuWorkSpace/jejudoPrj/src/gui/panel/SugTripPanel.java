@@ -130,4 +130,10 @@ public class SugTripPanel extends ImgPanel {
 		return restaurantScroll;
 	}
 
+	
+	public void set() {
+		
+		
+	}
+
 }

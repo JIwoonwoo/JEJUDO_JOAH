@@ -19,10 +19,8 @@ public class PointPanel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 	private JTable table;
-	private JLabel lblNewLabel;
+	private JLabel point;
 	private JScrollPane getPointList;
-	private JTable restaurant;
-	private JScrollPane tourismScroll;
 	
 	public PointPanel() {
 		super("point");
@@ -33,11 +31,11 @@ public class PointPanel extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 		
-		lblNewLabel = new JLabel("0000");
-		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 80));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 264, 550, 113);
-		add(lblNewLabel);
+		point = new JLabel("0000");
+		point.setFont(new Font("굴림", Font.BOLD, 80));
+		point.setHorizontalAlignment(SwingConstants.CENTER);
+		point.setBounds(0, 264, 550, 113);
+		add(point);
 		
 		Integer[][] data = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 		String[] cols = { "A", "B", "C" };
@@ -71,4 +69,21 @@ public class PointPanel extends ImgPanel {
 	public BackBtn getBackBtn() {
 		return backBtn;
 	}
+
+	
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+
+	public void setPoint(String s) {
+		this.point.setText(s);
+	}
+
+	
+
 }

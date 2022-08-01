@@ -17,25 +17,34 @@ import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
 import gui.panel.JoinPanel;
+import gui.panel.ListQnaPanel;
 import gui.panel.LoginPanel;
 import gui.panel.MainPanel;
 import gui.panel.MyPagePanel;
 import gui.panel.PayInforPanel;
+import gui.panel.PointPanel;
 import gui.panel.ReservInforPanel;
 import gui.panel.ReservedAccomPanel;
 import gui.panel.ReservedCar2Panel;
 import gui.panel.ReservedCarPanel;
 import gui.panel.ReservedFlightPanel;
 import gui.panel.ReservedPanel;
+import gui.panel.ServicePanel;
 import gui.panel.SugTripPanel;
+import gui.panel.UpdateMemberPanel;
+import gui.panel.ViewQna;
+import gui.panel.WriteQna;
 import main.Main;
 import member.MemberService;
 import member.MemberVo;
+import qna.QnaService;
+import qna.QnaVo;
 
 public class GUI {
 
 	private JFrame frame;
 	private String where = "";
+	public static ViewQna viewQna;
 
 	/**
 	 * Launch the application.
@@ -65,7 +74,6 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("JEJUDO JOAH");
-//		frame.setIconImage(new ImageIcon("D:\\miniPrj\\jejuWorkSpace\\jejudoPrj\\image\\icon.png").getImage());
 		frame.setIconImage(new ImageIcon(".\\.\\image\\icon.png").getImage());
 
 		LoginPanel loginPanel = new LoginPanel();
@@ -83,8 +91,401 @@ public class GUI {
 		ReservInforPanel reservInforPanel = new ReservInforPanel();
 		SugTripPanel sugTripPanel = new SugTripPanel();
 		MyPagePanel myPagePanel = new MyPagePanel();
+		ListQnaPanel listQnaPanel = new ListQnaPanel();
+		viewQna = new ViewQna();
+		WriteQna writeQna = new WriteQna();
+		ServicePanel servicePanel = new ServicePanel();
+		UpdateMemberPanel updateMemberPanel = new UpdateMemberPanel();
+		PointPanel pointPanel = new PointPanel();
 
 		MemberService ms = new MemberService();
+		QnaService qs = new QnaService();
+
+		/** 회원정보수정 **/
+		frame.getContentPane().add(updateMemberPanel);
+		updateMemberPanel.setVisible(false);
+		
+		updateMemberPanel.getCheckPwdBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (ms.checkPwd(updateMemberPanel.getPwd())) {
+					TextFieldDialog dialog = new TextFieldDialog(frame, "비밀번호 확인", "한번 더 입력해주세요");
+
+					if (updateMemberPanel.getPwd().equals(dialog.run())) {
+						PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "확인되었습니다.");
+						dialog2.run();
+						updateMemberPanel.getPwdField().setEnabled(false);
+						updateMemberPanel.getCheckPwdBtn().setSelected(true);
+					} else {
+						PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "비밀번호가 동일하지 않습니다.");
+						dialog2.run();
+						updateMemberPanel.getCheckPwdBtn().setSelected(false);
+					}
+
+				} else {
+					PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "비밀번호는 4자리 이상입니다.");
+					dialog2.run();
+					updateMemberPanel.getCheckPwdBtn().setSelected(false);
+				}
+			}
+		});
+
+		// 홈
+		updateMemberPanel.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateMemberPanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		updateMemberPanel.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateMemberPanel.setVisible(false);
+				myPagePanel.setVisible(true);
+			}
+		});
+
+		// 회원정보수정
+		updateMemberPanel.getNextBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (updateMemberPanel.getCheckPwdBtn().isSelected()) {
+					MemberVo vo = new MemberVo();
+					vo.setEmail(updateMemberPanel.getEmail());
+					vo.setMemberNick(updateMemberPanel.getNick());
+					vo.setPhone(updateMemberPanel.getPhone());
+					vo.setPwd(updateMemberPanel.getPwd());
+
+					if (ms.update(vo)) {
+						PopUpDialog dialog = new PopUpDialog(frame, "회원정보수정", "수정이 완료되었습니다.");
+						dialog.run();
+						updateMemberPanel.setVisible(false);
+						myPagePanel.setVisible(true);
+						return;
+					}
+				}
+				PopUpDialog dialog = new PopUpDialog(frame, "회원정보수정", "내용을 확인해 주시기 바랍니다.");
+				dialog.run();
+			}
+		});
+
+		/** 포인트확인 **/
+		frame.getContentPane().add(pointPanel);
+		pointPanel.setVisible(false);
+
+		// 홈
+		pointPanel.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pointPanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		// 뒤로가기
+		pointPanel.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pointPanel.setVisible(false);
+				myPagePanel.setVisible(true);
+			}
+		});
+
+		/** 마이페이지 **/
+		frame.getContentPane().add(myPagePanel);
+		myPagePanel.setVisible(false);
+
+		// 홈
+		myPagePanel.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		// 뒤로가기
+		myPagePanel.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 회원정보수정
+		myPagePanel.getMemberUpdateBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				MemberVo vo = ms.search();
+				if (vo != null) {
+					myPagePanel.setVisible(false);
+					updateMemberPanel.setId(vo.getId());
+					updateMemberPanel.setPwd(vo.getPwd());
+					updateMemberPanel.setName(vo.getMemberName());
+					updateMemberPanel.setNick(vo.getMemberNick());
+					updateMemberPanel.setPhone(vo.getPhone());
+					updateMemberPanel.setEmail(vo.getEmail());
+					updateMemberPanel.setVisible(true);
+				}
+
+			}
+		});
+		// 추천여행지
+		myPagePanel.getSuggestionBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				sugTripPanel.setVisible(true);
+				sugTripPanel.getNextBtn().setVisible(false);
+				where = "myPage";
+			}
+		});
+
+		// 문의확인
+		myPagePanel.getInquiryBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				listQnaPanel.setList(qs.myQnaList());
+				listQnaPanel.setVisible(true);
+			}
+		});
+
+		// 포인트확인
+		myPagePanel.getPointBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				pointPanel.setPoint(Integer.toString(ms.hasPoint()));
+				pointPanel.setVisible(true);
+			}
+		});
+
+		// 예약관리
+		myPagePanel.getReservationBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				reservInforPanel.getBackBtn().setVisible(true);
+				reservInforPanel.getNextBtn().setVisible(false);
+				reservInforPanel.setVisible(true);
+			}
+		});
+
+		// 회원탈퇴
+		myPagePanel.getQuit().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				myPagePanel.setVisible(false);
+				ms.quit();
+				Main.loginNo = 0;
+				loginPanel.setVisible(true);
+			}
+		});
+		
+		/** 문의내역확인 **/
+		frame.getContentPane().add(viewQna);
+		viewQna.setVisible(false);
+		
+		//뒤로가기
+		viewQna.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				viewQna.setVisible(false);
+				listQnaPanel.setVisible(true);
+			}
+		});
+		
+		//홈
+		viewQna.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				viewQna.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		viewQna.getUpdateBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				viewQna.setVisible(false);
+				where = "viewQna";
+				writeQna.setTextArea(viewQna.getqTitle());
+				writeQna.setTextField(viewQna.getqContent());
+				writeQna.setNo(viewQna.getNo());
+				writeQna.setVisible(true);
+			}
+		});
+		viewQna.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				viewQna.setVisible(false);
+				qs.deleteQ(viewQna.getNo());
+				listQnaPanel.setList(qs.myQnaList());
+				listQnaPanel.setVisible(true);
+				
+			}
+		});
+
+		/** 문의게시판 **/
+		frame.getContentPane().add(listQnaPanel);
+		listQnaPanel.setVisible(false);
+
+		//뒤로가기
+		listQnaPanel.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listQnaPanel.setVisible(false);
+				myPagePanel.setVisible(true);
+			}
+		});
+		
+		//홈
+		listQnaPanel.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listQnaPanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		
+		//글쓰기
+		listQnaPanel.getWriteBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listQnaPanel.setVisible(false);
+				writeQna.setVisible(true);
+				where = "listQna";
+			}
+		});
+
+		/** 문의작성 **/
+		frame.getContentPane().add(writeQna);
+		writeQna.setVisible(false);
+
+		// 홈
+		writeQna.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				writeQna.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		
+		// 뒤로가기
+		writeQna.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				writeQna.setVisible(false);
+				if (where.equals("service")) {
+					servicePanel.setVisible(true);
+				} else {
+					listQnaPanel.setVisible(true);
+				}
+
+			}
+		});
+		
+		writeQna.getNextBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				QnaVo vo = new QnaVo();
+				vo.setQuestionNo(writeQna.getNo());
+				vo.setQuestionTitle(writeQna.getTextField());
+				vo.setqContent(writeQna.getTextArea());
+				
+				if(where.equals("viewQna")) {
+					if(qs.updateQ(vo)) {
+						writeQna.setVisible(false);
+						PopUpDialog dialog = new PopUpDialog(frame, "문의작성", "수정이 완료되었습니다!");
+						dialog.run();
+						viewQna.set(qs.search(vo.getQuestionNo()));
+						viewQna.setVisible(true);
+					}else {
+						PopUpDialog dialog = new PopUpDialog(frame, "문의작성", "수정실패! 내용을 확인해 주세요");
+						dialog.run();
+					}
+				}else {
+					if(qs.writeQna(vo)) {
+						writeQna.setVisible(false);
+						
+						PopUpDialog dialog = new PopUpDialog(frame, "문의작성", "작성이 완료되었습니다!");
+						dialog.run();
+						if (where.equals("service")) {
+							servicePanel.setVisible(true);
+						} else {
+							listQnaPanel.setList(qs.myQnaList());
+							listQnaPanel.setVisible(true);
+						}
+					}else {
+						PopUpDialog dialog = new PopUpDialog(frame, "문의작성", "작성실패! 내용을 확인해 주세요");
+						dialog.run();
+					}
+				}
+			}
+		});
+
+		/** 고객센터 **/
+		frame.getContentPane().add(servicePanel);
+		servicePanel.setVisible(false);
+
+		// 홈
+		servicePanel.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		// 뒤로가기
+		servicePanel.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		// 글쓰기
+		servicePanel.getWriteBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				writeQna.setVisible(true);
+				where = "service";
+			}
+		});
 
 		/** 추천관광지 **/
 		frame.getContentPane().add(sugTripPanel);
@@ -105,7 +506,12 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sugTripPanel.setVisible(false);
-				reservInforPanel.setVisible(true);
+				if (where.equals("myPage")) {
+					myPagePanel.setVisible(true);
+				} else {
+					reservInforPanel.setVisible(true);
+				}
+
 			}
 		});
 		// 다음
@@ -168,6 +574,15 @@ public class GUI {
 				mainPanel.setVisible(true);
 			}
 		});
+		//뒤로가기
+		reservInforPanel.getBackBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reservInforPanel.setVisible(false);
+				myPagePanel.setVisible(true);				
+			}
+		});
 		// 다음
 		reservInforPanel.getNextBtn().addActionListener(new ActionListener() {
 
@@ -175,7 +590,10 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				reservInforPanel.setVisible(false);
 				// 테이블 데이터 셋
+				sugTripPanel.set();
+				sugTripPanel.getNextBtn().setVisible(true);
 				sugTripPanel.setVisible(true);
+				where = "reservInfor";
 			}
 		});
 
@@ -207,7 +625,9 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				payInforPanel.setVisible(false);
-				reservInforPanel.reset();
+				reservInforPanel.set();
+				reservInforPanel.getBackBtn().setVisible(false);
+				reservInforPanel.getNextBtn().setVisible(true);
 				reservInforPanel.setVisible(true);
 				// 결제 완료!
 			}
@@ -484,6 +904,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainPanel.setVisible(false);
+				myPagePanel.setVisible(true);
 
 			}
 		});
@@ -493,6 +914,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainPanel.setVisible(false);
+				servicePanel.setVisible(true);
 
 			}
 		});
@@ -518,9 +940,9 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (ms.checkId(joinPanel.getId())) {
-					
+
 					if (ms.checkDubleId(joinPanel.getId())) {
 						PopUpDialog dialog = new PopUpDialog(frame, "아이디 중복확인", "생성가능한 아이디 입니다.");
 						dialog.run();
@@ -531,7 +953,7 @@ public class GUI {
 						dialog.run();
 						joinPanel.getCheckIdBtn().setSelected(false);
 					}
-					
+
 				} else {
 					PopUpDialog dialog = new PopUpDialog(frame, "아이디 중복확인", "형식을 맞춰주시기 바랍니다.");
 					dialog.run();
@@ -544,10 +966,10 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if (ms.checkPwd(joinPanel.getPwd())) {
 					TextFieldDialog dialog = new TextFieldDialog(frame, "비밀번호 확인", "한번 더 입력해주세요");
-					
+
 					if (joinPanel.getPwd().equals(dialog.run())) {
 						PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "확인되었습니다.");
 						dialog2.run();
@@ -558,7 +980,7 @@ public class GUI {
 						dialog2.run();
 						joinPanel.getCheckPwdBtn().setSelected(false);
 					}
-					
+
 				} else {
 					PopUpDialog dialog2 = new PopUpDialog(frame, "비밀번호 확인", "비밀번호는 4자리 이상입니다.");
 					dialog2.run();
@@ -592,7 +1014,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (joinPanel.getCheckIdBtn().isSelected() 	&& joinPanel.getCheckPwdBtn().isSelected()){
+				if (joinPanel.getCheckIdBtn().isSelected() && joinPanel.getCheckPwdBtn().isSelected()) {
 
 					MemberVo vo = new MemberVo();
 					vo.setEmail(joinPanel.getTextFieldEmail());
@@ -654,7 +1076,7 @@ public class GUI {
 				vo.setMemberName(findIdPanel.getTextFieldName());
 
 				String id = ms.findId(vo);
-				
+
 				if (id != null) {
 					PopUpDialog dialog = new PopUpDialog(frame, "아이디 찾기", "아이디는 " + id + " 입니다.");
 					dialog.run();
@@ -705,7 +1127,7 @@ public class GUI {
 				vo.setMemberName(findPwdPanel.getTextFieldName());
 				System.out.println(vo);
 				String pwd = ms.findPwd(vo);
-				
+
 				if (pwd != null) {
 					PopUpDialog dialog = new PopUpDialog(frame, "비밀번호 찾기", "비밀번호는 " + pwd + " 입니다.");
 					dialog.run();
