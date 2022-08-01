@@ -17,7 +17,11 @@ public class SurveyService {
 		
 		vo.setLocation(checkLocation(vo.getLocation()));
 		vo.setPurpose(checkPurpose(vo.getPurpose()));
-		vo.setPurpose2(checkPurpose(vo.getPurpose2()));
+		if(vo.getPurpose2()==null) {
+			vo.setPurpose2(null);
+		}else {
+			vo.setPurpose2(checkPurpose(vo.getPurpose2()));
+		}
 		vo.setGroup(checkGroup(vo.getGroup()));
 		
 		Connection conn = null;

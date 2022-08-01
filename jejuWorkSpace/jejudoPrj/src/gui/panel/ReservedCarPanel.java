@@ -55,11 +55,11 @@ public class ReservedCarPanel extends ImgPanel {
 		contPerson.setBorder(null);
 		add(contPerson);
 
-		goDay = new InvisiableTextField("YYYY-MM-DD");
+		goDay = new InvisiableTextField("YYMMDD");
 		goDay.setBounds(171, 196, 312, 41);
 		add(goDay);
 
-		backDay = new InvisiableTextField("YYYY-MM-DD");
+		backDay = new InvisiableTextField("YYMMDD");
 		backDay.setBounds(171, 290, 312, 41);
 		add(backDay);
 
@@ -84,14 +84,17 @@ public class ReservedCarPanel extends ImgPanel {
 		sizeG = new ButtonGroup();
 		
 		carSize1 = new InvisiableRadio("소형");
+		carSize1.setText("1");
 		sizeG.add(carSize1);
 		add(carSize1);
 		
 		carSize2 = new InvisiableRadio("중형");
+		carSize2.setText("2");
 		sizeG.add(carSize2);
 		add(carSize2);
 		
 		carSize3 = new InvisiableRadio("대형");
+		carSize3.setText("3");
 		sizeG.add(carSize3);
 		add(carSize3);
 		
@@ -120,8 +123,8 @@ public class ReservedCarPanel extends ImgPanel {
 	
 	public void reset() {
 		contPerson.setValue(Integer.valueOf(0));
-		goDay.setText("YYYY-MM-DD");
-		backDay.setText("YYYY-MM-DD");
+		goDay.setText("YYMMDD");
+		backDay.setText("YYMMDD");
 		minMoney.setText("0");
 		maxMoney.setText("0");
 		if(energyG!=null)energyG.clearSelection();
