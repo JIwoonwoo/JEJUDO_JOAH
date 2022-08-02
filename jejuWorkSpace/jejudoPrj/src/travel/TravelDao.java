@@ -31,13 +31,8 @@ public class TravelDao {
 				String travelName = rs.getString("TRAVEL_NAME");
 				String travelAddress = rs.getString("TRAVEL_ADDRESS");
 
-//				vo.setPurpose(rs.getString("PURPOSE"));
-//				vo.setCategory(rs.getString("CATEGORY"));
-//				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
-//				vo.setTravel_address(rs.getString("TRAVEL_ADDRESS"));
-
-				System.out.println(  "[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose + " | [주소] "
-						+ travelAddress);
+				System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
+						+ " | [주소] " + travelAddress);
 
 			}
 
@@ -60,33 +55,35 @@ public class TravelDao {
 	}
 
 	// 카테고리 3 : 여행지 상세 정보
-	public TravelVo detailInfo(String order) {
 
+	public TravelVo infoSelect(int inputnum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		TravelVo vo = null;
+		ResultSet rs = null;
 
 		try {
 			conn = JDBCTemplate.getConnection();
-			
-				String sql = "SELECT TRAVEL_NO, RECOMMEND_TYPE, PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT\r\n"
-						+ "FROM TRAVEL T JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO ? ";
-			
+
+			String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS , ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT \r\n"
+					+ "FROM TRAVEL T \r\n" + "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO WHERE TRAVEL_NO = ? ORDER BY TRAVEL_NO ";
 			// TRAVEL_NO
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, order);
+			pstmt.setInt(1, inputnum);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				vo = new TravelVo();
 
-				// TRAVEL_NO, RECOMMEND_TYPE, PURPOSE, C.CATEGORY, TRAVEL_NAME,
+				// TRAVEL_NO, PERSON_GROUP, PURPOSE, C.CATEGORY, TRAVEL_NAME,
 				// TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO,
 				// TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT
 				vo.setTravel_no(rs.getString("TRAVEL_NO"));
-				vo.setRecommend_type(rs.getString("RECOMMEND_TYPE"));
+				vo.setRecommend_type(rs.getString("PERSON_GROUP"));
 				vo.setPurpose(rs.getString("PURPOSE"));
 				vo.setCategory(rs.getString("CATEGORY"));
 				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
@@ -99,7 +96,11 @@ public class TravelDao {
 				vo.setOpen(rs.getString("OPEN"));
 				vo.setClosed(rs.getString("CLOSED"));
 				vo.setClosed_day(rs.getString("CLOSED_DAY"));
-				vo.setLike_cnt(rs.getString("LIKE_CNT"));
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
+
+				/*
+				 * String no = rs.getString("TRAVEL_NO");
+				 */
 
 				System.out.println(vo);
 
@@ -117,10 +118,344 @@ public class TravelDao {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
 		}
 
 		return vo;
 
 	}
+
+	public TravelVo detailInfo() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		TravelVo vo = null;
+		ResultSet rs = null;
+
+		try {
+			conn = JDBCTemplate.getConnection();
+
+			String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS , ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT \r\n"
+					+ "FROM TRAVEL T \r\n" + "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO ORDER BY TRAVEL_NO ";
+			// TRAVEL_NO
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				vo = new TravelVo();
+
+				// TRAVEL_NO, PERSON_GROUP, PURPOSE, C.CATEGORY, TRAVEL_NAME,
+				// TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO,
+				// TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT
+				vo.setTravel_no(rs.getString("TRAVEL_NO"));
+				vo.setRecommend_type(rs.getString("PERSON_GROUP"));
+				vo.setPurpose(rs.getString("PURPOSE"));
+				vo.setCategory(rs.getString("CATEGORY"));
+				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
+				vo.setTravel_address(rs.getString("TRAVEL_ADDRESS"));
+				vo.setActivity_yn(rs.getString("ACTIVITY_YN"));
+				vo.setTravel_price(rs.getString("TRAVEL_PRICE"));
+				vo.setAnimal_yn(rs.getString("ANIMAL_YN"));
+				vo.setTravel_info(rs.getString("TRAVEL_INFO"));
+				vo.setTravel_phone(rs.getString("TRAVEL_PHONE"));
+				vo.setOpen(rs.getString("OPEN"));
+				vo.setClosed(rs.getString("CLOSED"));
+				vo.setClosed_day(rs.getString("CLOSED_DAY"));
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
+
+				/*
+				 * String no = rs.getString("TRAVEL_NO");
+				 */
+
+				System.out.println(vo);
+
+			}
+
+			if (vo != null) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+
+	public TravelVo detailLike() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		TravelVo vo = null;
+		ResultSet rs = null;
+
+		try {
+			conn = JDBCTemplate.getConnection();
+
+			String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS , ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT \r\n"
+					+ "FROM TRAVEL T \r\n" + "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO ORDER BY LIKE_CNT DESC ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				vo = new TravelVo();
+
+				// TRAVEL_NO, PERSON_GROUP, PURPOSE, C.CATEGORY, TRAVEL_NAME,
+				// TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO,
+				// TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT
+				vo.setTravel_no(rs.getString("TRAVEL_NO"));
+				vo.setRecommend_type(rs.getString("PERSON_GROUP"));
+				vo.setPurpose(rs.getString("PURPOSE"));
+				vo.setCategory(rs.getString("CATEGORY"));
+				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
+				vo.setTravel_address(rs.getString("TRAVEL_ADDRESS"));
+				vo.setActivity_yn(rs.getString("ACTIVITY_YN"));
+				vo.setTravel_price(rs.getString("TRAVEL_PRICE"));
+				vo.setAnimal_yn(rs.getString("ANIMAL_YN"));
+				vo.setTravel_info(rs.getString("TRAVEL_INFO"));
+				vo.setTravel_phone(rs.getString("TRAVEL_PHONE"));
+				vo.setOpen(rs.getString("OPEN"));
+				vo.setClosed(rs.getString("CLOSED"));
+				vo.setClosed_day(rs.getString("CLOSED_DAY"));
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
+
+				System.out.println(vo);
+
+			}
+
+			if (vo != null) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+
+	public TravelVo detailPrice() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		TravelVo vo = null;
+		ResultSet rs = null;
+
+		try {
+			conn = JDBCTemplate.getConnection();
+
+			String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS , ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT \r\n"
+					+ "FROM TRAVEL T \r\n" + "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO ORDER BY TRAVEL_PRICE NULLS FIRST ";
+			// TRAVEL_NO
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				vo = new TravelVo();
+
+				// TRAVEL_NO, PERSON_GROUP, PURPOSE, C.CATEGORY, TRAVEL_NAME,
+				// TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO,
+				// TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT
+				vo.setTravel_no(rs.getString("TRAVEL_NO"));
+				vo.setRecommend_type(rs.getString("PERSON_GROUP"));
+				vo.setPurpose(rs.getString("PURPOSE"));
+				vo.setCategory(rs.getString("CATEGORY"));
+				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
+				vo.setTravel_address(rs.getString("TRAVEL_ADDRESS"));
+				vo.setActivity_yn(rs.getString("ACTIVITY_YN"));
+				vo.setTravel_price(rs.getString("TRAVEL_PRICE"));
+				vo.setAnimal_yn(rs.getString("ANIMAL_YN"));
+				vo.setTravel_info(rs.getString("TRAVEL_INFO"));
+				vo.setTravel_phone(rs.getString("TRAVEL_PHONE"));
+				vo.setOpen(rs.getString("OPEN"));
+				vo.setClosed(rs.getString("CLOSED"));
+				vo.setClosed_day(rs.getString("CLOSED_DAY"));
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
+
+				System.out.println(vo);
+
+			}
+
+			if (vo != null) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+
+	public TravelVo detailanimalYn() {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		TravelVo vo = null;
+		ResultSet rs = null;
+
+		try {
+			conn = JDBCTemplate.getConnection();
+
+			String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS , ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO, TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT \r\n"
+					+ "FROM TRAVEL T \r\n" + "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO WHERE ANIMAL_YN = 'Y' ";
+			// TRAVEL_NO
+
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				vo = new TravelVo();
+
+				// TRAVEL_NO, PERSON_GROUP, PURPOSE, C.CATEGORY, TRAVEL_NAME,
+				// TRAVEL_ADDRESS, ACTIVITY_YN, TRAVEL_PRICE, ANIMAL_YN, TRAVEL_INFO,
+				// TRAVEL_PHONE, OPEN, CLOSED, CLOSED_DAY, LIKE_CNT
+				vo.setTravel_no(rs.getString("TRAVEL_NO"));
+				vo.setRecommend_type(rs.getString("PERSON_GROUP"));
+				vo.setPurpose(rs.getString("PURPOSE"));
+				vo.setCategory(rs.getString("CATEGORY"));
+				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
+				vo.setTravel_address(rs.getString("TRAVEL_ADDRESS"));
+				vo.setActivity_yn(rs.getString("ACTIVITY_YN"));
+				vo.setTravel_price(rs.getString("TRAVEL_PRICE"));
+				vo.setAnimal_yn(rs.getString("ANIMAL_YN"));
+				vo.setTravel_info(rs.getString("TRAVEL_INFO"));
+				vo.setTravel_phone(rs.getString("TRAVEL_PHONE"));
+				vo.setOpen(rs.getString("OPEN"));
+				vo.setClosed(rs.getString("CLOSED"));
+				vo.setClosed_day(rs.getString("CLOSED_DAY"));
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
+
+				System.out.println(vo);
+
+			}
+
+			if (vo != null) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+
+	// SQL문만 만들어 놓음
+//	public TravelVo surveyRecomm() {
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//		TravelVo vo = null;
+//
+//		try {
+//			conn = JDBCTemplate.getConnection();
+//			String sql = 
+//					"SELECT TRAVEL_NO, G.PERSON_GROUP ,P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, TRAVEL_PRICE, ANIMAL_YN\r\n"
+//					+ "FROM TRAVEL T \r\n"
+//					+ "JOIN CATEGORY C ON T.CATEGORY = C.NO \r\n"
+//					+ "JOIN PURPOSE P ON T.THEME = P.NO \r\n"
+//					+ "JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO\r\n"
+//					+ "WHERE P.PURPOSE = ? \r\n"
+//					+ "AND C.CATEGORY = ? \r\n"
+//					+ "AND TRAVEL_ADDRESS LIKE ? \r\n"
+//					+ "AND TRAVEL_PRICE ? \r\n"
+//					+ "AND ANIMAL_YN = ? ";
+//			
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setInt(1, );
+//			pstmt.setInt(2, );
+//			pstmt.setInt(3, );
+//			pstmt.setInt(4, );
+//			pstmt.setInt(5, );
+//			
+//			ResultSet rs = pstmt.executeQuery();
+//
+//			while (rs.next()) {
+//				vo = new TravelVo();
+//				String no = rs.getString("TRAVEL_NO");
+//				String purpose = rs.getString("PURPOSE");
+//				String category = rs.getString("CATEGORY");
+//				String travelName = rs.getString("TRAVEL_NAME");
+//				String travelAddress = rs.getString("TRAVEL_ADDRESS");
+//
+//				System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
+//						+ " | [주소] " + travelAddress);
+//
+//			}
+//
+//			if (vo != null) {
+//				JDBCTemplate.commit(conn);
+//			} else {
+//				JDBCTemplate.rollback(conn);
+//			}
+//
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			JDBCTemplate.rollback(conn);
+//			e.printStackTrace();
+//		} finally {
+//			JDBCTemplate.close(conn);
+//		}
+//
+//		return vo;
+//
+//	}
 
 }
