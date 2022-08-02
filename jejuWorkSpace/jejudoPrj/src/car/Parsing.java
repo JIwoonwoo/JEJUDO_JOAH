@@ -22,7 +22,7 @@ public class Parsing {
 		try {
 			parse = Integer.parseInt(sc.nextLine());
 		}catch(Exception e) {
-			System.out.println("제대로 입력해주세요 !");
+			System.out.println("제대로 입력해주세요 안녕!");
 		}
 		return parse;
 	}
