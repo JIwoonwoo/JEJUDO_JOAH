@@ -2,10 +2,12 @@ package car_main;
 
 import car.CarController;
 import car.CarVo;
+import car.ReserveVo;
 
 public class Main {
 	// 예약할 때 필요
 	public static CarVo inquiryCar;
+	public static ReserveVo reserveCar;
 	
 	public static void main(String[] args) {
 		CarController carCon = new CarController();
@@ -22,8 +24,10 @@ public class Main {
 				carCon.carReserve();
 				break;
 			case 3 :
+				new CarMenu().showReserveEdit();
 				break;
 			case 4 :
+				carCon.carCancel();
 				break;
 			}
 		}
