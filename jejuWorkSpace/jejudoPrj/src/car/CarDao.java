@@ -153,7 +153,7 @@ public class CarDao {
 				rVo.setDayPrice(dayPrice);
 				
 				reserveVoList.add(rVo);
-				
+				System.out.println(rVo);
 			}
 			
 		} finally {

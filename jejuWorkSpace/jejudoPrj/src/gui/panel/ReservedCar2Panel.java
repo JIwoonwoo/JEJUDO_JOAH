@@ -39,25 +39,25 @@ public class ReservedCar2Panel extends ImgPanel {
 		bg = new ButtonGroup();
 		
 		noInsurance = new InvisiableRadio("보험없음");
-		noInsurance.setText("1");
+		noInsurance.setText("0");
 		noInsurance.setLocation(28, 288);
 		bg.add(noInsurance);
 		add(noInsurance);
 		
 		nomalInsurance = new InvisiableRadio("일반자차");
-		nomalInsurance.setText("2");
+		nomalInsurance.setText("1");
 		nomalInsurance.setLocation(283, 288);
 		bg.add(nomalInsurance);
 		add(nomalInsurance);
 		
 		veryInsurance = new InvisiableRadio("완전자차");
-		veryInsurance.setText("3");
+		veryInsurance.setText("2");
 		veryInsurance.setLocation(28, 463);
 		bg.add(veryInsurance);
 		add(veryInsurance);
 		
 		superInsurance = new InvisiableRadio("슈퍼자차");
-		superInsurance.setText("4");
+		superInsurance.setText("3");
 		superInsurance.setLocation(283, 463);
 		bg.add(superInsurance);
 		add(superInsurance);

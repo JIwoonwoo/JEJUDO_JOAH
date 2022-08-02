@@ -285,9 +285,14 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myPagePanel.setVisible(false);
-				pointPanel.setPoint(Integer.toString(ms.hasPoint()));
-				pointPanel.setVisible(true);
+				
+				List<PayVo> list = ps.pointAddList(Main.loginNo);
+				if(list!=null) {
+					myPagePanel.setVisible(false);
+					pointPanel.setList(list);
+					pointPanel.setPoint(Integer.toString(ms.hasPoint()));
+					pointPanel.setVisible(true);
+				}
 			}
 		});
 
@@ -297,6 +302,14 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				myPagePanel.setVisible(false);
+				
+				List<ReserveVo> list = cs.reserveInquiry(Main.loginNo);
+				
+				if(list!=null) {
+					reservInforPanel.setCarList(list);
+					
+				}
+				
 				reservInforPanel.getBackBtn().setVisible(true);
 				reservInforPanel.getNextBtn().setVisible(false);
 				reservInforPanel.setVisible(true);
@@ -620,7 +633,14 @@ public class GUI {
 				int point = ps.userInfo(Main.loginNo).getPoint() - payInforPanel.getUsePoint() + (payInforPanel.getSumPrice() / 20);
 				if(ps.payEnd(Main.loginNo, point, vo)) {
 					payInforPanel.setVisible(false);
-					reservInforPanel.set();
+					
+					List<ReserveVo> list = cs.reserveInquiry(Main.loginNo);
+					
+					if(list!=null) {
+						reservInforPanel.setCarList(list);
+						
+					}
+					
 					reservInforPanel.getBackBtn().setVisible(false);
 					reservInforPanel.getNextBtn().setVisible(true);
 					reservInforPanel.setVisible(true);
@@ -820,7 +840,9 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reservedFlightPanel.setVisible(false);
-				reservedPanel.setVisible(true);
+//				reservedPanel.setVisible(true);
+				faveratePanel.reset();
+				faveratePanel.setVisible(true);
 			}
 		});
 
@@ -842,46 +864,46 @@ public class GUI {
 		});
 
 		/** 예약페이지 1 **/
-		frame.getContentPane().add(reservedPanel);
-		reservedPanel.setVisible(false);
-
-		// 뒤로가기
-		reservedPanel.getBackBtn().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				reservedPanel.setVisible(false);
-				faveratePanel.setVisible(true);
-			}
-		});
-		// 홈으로
-		reservedPanel.getHomeBtn().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				reservedPanel.setVisible(false);
-				mainPanel.setVisible(true);
-			}
-		});
-		// 일반예약
-		reservedPanel.getNomalBtn().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				reservedPanel.setVisible(false);
-				reservedFlightPanel.reset();
-				reservedFlightPanel.setVisible(true);
-
-			}
-		});
-		// 패키지 예약
-		reservedPanel.getPackBtn().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
+//		frame.getContentPane().add(reservedPanel);
+//		reservedPanel.setVisible(false);
+//
+//		// 뒤로가기
+//		reservedPanel.getBackBtn().addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				reservedPanel.setVisible(false);
+//				faveratePanel.setVisible(true);
+//			}
+//		});
+//		// 홈으로
+//		reservedPanel.getHomeBtn().addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				reservedPanel.setVisible(false);
+//				mainPanel.setVisible(true);
+//			}
+//		});
+//		// 일반예약
+//		reservedPanel.getNomalBtn().addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				reservedPanel.setVisible(false);
+//				reservedFlightPanel.reset();
+//				reservedFlightPanel.setVisible(true);
+//
+//			}
+//		});
+//		// 패키지 예약
+//		reservedPanel.getPackBtn().addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//
+//			}
+//		});
 
 		/** 설문페이지 **/
 		frame.getContentPane().add(faveratePanel);
@@ -934,7 +956,9 @@ public class GUI {
 				
 				if(ss.survey(vo)) {
 					faveratePanel.setVisible(false);
-					reservedPanel.setVisible(true);
+					reservedFlightPanel.reset();
+					reservedFlightPanel.setVisible(true);
+//					reservedPanel.setVisible(true);
 				}else {
 					PopUpDialog dialog = new PopUpDialog(frame, "설문조사", "다시 확인해주시기 바랍니다.");
 					dialog.run();
