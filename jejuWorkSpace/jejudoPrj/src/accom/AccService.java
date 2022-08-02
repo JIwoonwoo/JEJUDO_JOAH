@@ -3,6 +3,9 @@ package accom;
 import java.sql.Connection;
 import java.util.List;
 
+import main.Main;
+import survey.SurveyService;
+import survey.SurveyVo;
 import util.JDBCTemplate;
 
 public class AccService {
@@ -20,8 +23,8 @@ public class AccService {
 				
 			try {
 				conn = JDBCTemplate.getConnection();
-				
-				 new AccDao().accSearch(dto, conn);
+				SurveyVo svo = new SurveyService().search(Main.loginNo);
+				 new AccDao().accSearch(dto, conn,svo);
 
 			} catch (Exception e) {
 				e.printStackTrace(); 

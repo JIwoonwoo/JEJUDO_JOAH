@@ -8,24 +8,32 @@ import java.util.List;
 
 import main.Main;
 import member.MemberVo;
-
+import survey.SurveyVo;
 import util.InputUtil;
 import util.JDBCTemplate;
 
 public class AccDao {
 	
-	public void accSearch(AccDto dto, Connection conn) {
+	public void accSearch(AccDto dto, Connection conn, SurveyVo svo) {
 		
-		//conn 준비
-		
-		String budgetanswer = "<";
-		
-//		  if (예산에서 지갑이 무겁다를 골랐을 경우) {
-//			 budgetanswer = ">";
-//		  }else {
-//			  budgetanswer = "<";
-//			  
-//		  } 
+		//설문조사 정보 받아오기
+		//예산
+		String budgetanswer;
+		  if (svo.getBudget().equals("Y")) {
+			 budgetanswer = ">";
+		  }else {
+			  budgetanswer = "<";
+		  }
+		  
+		//여행지역
+		  String locationanswer;
+		  if(svo.getLocation().equals(1)) {
+			  locationanswer =  "%제주시%";
+		  }else if(svo.getLocation().equals(2)) {
+			  locationanswer =  "%서귀포시%";
+		  }else{
+			  locationanswer =  "%제주%";
+		  }
 		
 		//SQL 준비
 		String sql = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN,R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN,R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ? AND ROOM_PRICE "+ budgetanswer +"= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY >= ? AND CAPACITY <= ?) AND ANIMAL_YN = ? AND ACCOM_ADDRESS LIKE ?"; // 위치
@@ -39,8 +47,8 @@ public class AccDao {
 			pstmt.setInt(2, dto.getPeople() + 1);
 			pstmt.setInt(3, dto.getPeople());
 			pstmt.setInt(4, dto.getPeople() + 1);
-			pstmt.setString(5, "Y");// 설문결과로가져옴 반려동물
-			pstmt.setString(6, "%제주시%");// 설문결과 위치
+			pstmt.setString(5,svo.getAnimal_yn());// 설문결과로가져옴 반려동물
+			pstmt.setString(6, locationanswer);// 설문결과 위치
 			
 			rs = pstmt.executeQuery();
 			
@@ -80,11 +88,12 @@ public class AccDao {
 
 	public int accSelect(AccDto dto, Connection conn) {
 		
-		//sql준비
-		String sql2 = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE R.ROOM_NO = ?";
-
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
+		
+		//sql준비 --------------------------------------삭제가능
+		String sql2 = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE R.ROOM_NO = ?";
+
 		
 		try {
 		pstmt = conn.prepareStatement(sql2);
@@ -111,7 +120,7 @@ public class AccDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("[ERROR]선택하신 숙소 조회 오류");
-		}
+		} //-------------------------------------------- gui할때삭제됨
 		
 		System.out.println("선택하신 방을 예약하시겠습니까?  (Y/N 으로 대답)");
 		String answer = InputUtil.sc.nextLine();
