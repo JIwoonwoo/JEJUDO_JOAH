@@ -24,7 +24,7 @@ public class CarSearch extends JDialog {
 	
 	private JTable table;
 	
-	private int cancle = 0;
+	private int select = -1;
 	
 	public CarSearch(Frame parent, String name) {
 		super(parent,name,true);
@@ -32,7 +32,7 @@ public class CarSearch extends JDialog {
 	    setLocation(loc.x+225,loc.y+450);
 	    
 //		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/carDialog.jpg").getImage());
-		JPanel panel = new ImgPanel(new ImageIcon("././image/page/labelDialog.jpg").getImage());
+		JPanel panel = new ImgPanel(new ImageIcon("././image/page/carDialog.jpg").getImage());
 //		JPanel panel = new ImgPanel("labelDialog");
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -56,6 +56,11 @@ public class CarSearch extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String result = null;
+				if(table.getSelectedRow() != -1) {
+					result = table.getValueAt(table.getSelectedRow(), 0).toString();
+				}
+				select = Integer.parseInt(result);
 				dispose();
 			}
 		});
@@ -67,7 +72,7 @@ public class CarSearch extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancle = -1;
+				select = -1;
 				dispose();
 			}
 		});
@@ -81,17 +86,8 @@ public class CarSearch extends JDialog {
 	}
 	
 	public int run() {
-		cancle = 0;
 		this.setVisible(true);
-		String result = null;
-		if(table.getSelectedRow() != -1) {
-			result = table.getValueAt(table.getSelectedRow(), 0).toString();
-		}
-		
-		if(cancle == -1) {
-			return -1;
-		}
-		return Integer.parseInt(result);
+		return select;
 	}
 	
 	public void set(List<CarVo> list) {
