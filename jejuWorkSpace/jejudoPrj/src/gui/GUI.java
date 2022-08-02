@@ -694,7 +694,7 @@ public class GUI {
 						rv.setRentalNo(no);
 						rv.setRentalDate(vo.getRentalDate());
 						rv.setReturnDate(vo.getReturnDate());
-						rv.setMemberNo(Integer.toString(Main.loginNo));
+						rv.setMemberNo(Main.loginNo);
 						reservedCarPanel.setVisible(false);
 						reservedCar2Panel.reset();
 						reservedCar2Panel.setVo(rv);

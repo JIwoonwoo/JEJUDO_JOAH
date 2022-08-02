@@ -3,6 +3,8 @@ package payment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import member.MemberVo;
@@ -65,14 +67,18 @@ public class PayDao {
 			pstmt.setInt(1, no);
 
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
-
+			
+			if(rs.next()) {
 				int fNo = rs.getInt("FLIGHT_NO");
 				int fp = rs.getInt("FLIGHT_PRICE");
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
 				vo.setFlightGoPay(fp);
 
+			}else if(!rs.next()) {
+				vo = new PayVo();
+				vo.setFlightNo(0);
+				
 			}
 		} finally {
 
@@ -105,12 +111,17 @@ public class PayDao {
 			pstmt.setInt(1, no);
 
 			rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				int fNo = rs.getInt("FLIGHT_NO");
 				int fp = rs.getInt("FLIGHT_PRICE");
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
 				vo.setFlightComePay(fp);
+			}else if(!rs.next()) {
+				vo = new PayVo();
+				vo.setFlightNo(0);
+				
 			}
 		} finally {
 
@@ -148,6 +159,10 @@ public class PayDao {
 				vo = new PayVo();
 				vo.setAccomNo(no);
 				vo.setAccomPay(rp);
+			}else if(!rs.next()) {
+				vo = new PayVo();
+				vo.setAccomNo(0);
+				
 			}
 
 		} finally {
@@ -168,7 +183,6 @@ public class PayDao {
 				+ "JOIN RENTAL_CAR R ON C.RENTAL_NO = R.RENTAL_NO\r\n"
 				+ "WHERE M.MEMBER_NO = ? AND C.CANCEL_YN = 'N' AND C.PAID_YN = 'N'";
 		PayVo vo = null;
-
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
@@ -176,14 +190,19 @@ public class PayDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
+			if(!rs.next()) {
+				vo = new PayVo();
+				vo.setCarNo(0);
+				vo.setCarPay(0);
+				
+			}else if (rs.next()) {
 				int cNo = rs.getInt("CAR_NO");
 				int cp = rs.getInt("DAY_PRICE");
 				int cDay = rs.getInt("DAYS");
 				int cIns = rs.getInt("INSURANCE");
 				
 				int rentPay = rentPayCount(cp,cDay,cIns);
+				
 				
 				vo = new PayVo();
 				vo.setCarNo(cNo);
@@ -224,7 +243,12 @@ public class PayDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getFlightNo());
 			pstmt.setInt(2, vo.getAccomNo());
-			pstmt.setInt(3, vo.getCarNo());
+			
+			if(vo.getCarNo() == 0) {
+				pstmt.setNull(3,Types.INTEGER);
+			}else {
+				pstmt.setInt(3, vo.getCarNo());
+			}
 			pstmt.setInt(4, vo.getTotalPay());
 			pstmt.setInt(5, vo.getPointUsed());
 			pstmt.setInt(6, vo.getCutPrice());
@@ -268,7 +292,7 @@ public class PayDao {
 		String sql3 = "UPDATE FLIGHT_RESERVATION SET PAID_YN = 'Y' WHERE FLIGHT_NO = ?";
 		
 
-		int result = 0;
+		int result;
 		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
@@ -282,10 +306,11 @@ public class PayDao {
 			pstmt2.setInt(1, vo.getAccomNo());
 			pstmt3.setInt(1, vo.getFlightNo());
 
-			result += pstmt1.executeUpdate();
-			result += pstmt1.executeUpdate();
-			result += pstmt1.executeUpdate();
-
+			int a = pstmt1.executeUpdate();
+			int b = pstmt2.executeUpdate();
+			int c = pstmt3.executeUpdate();
+			
+			result = a+b+c;
 		} finally {
 			JDBCTemplate.close(pstmt1);
 			JDBCTemplate.close(pstmt2);
@@ -295,46 +320,19 @@ public class PayDao {
 		return result;
 	}
 
-	public List<PayVo> pointAddList(Connection conn, int memberNo) throws Exception {
+	public List<PayVo> pointAddList(Connection conn, int no) throws Exception {
 
 		PreparedStatement pstmt = null;
-		List<PayVo> list = null;
+		List<PayVo> pointList = new ArrayList<PayVo>();
 		ResultSet rs = null;
 
 		try {
 
-			String sql = "SELECT PAY_DATE, CUT_PRICE, POINT FROM PAYMENT JOIN FLIGHT_RESERVATION USING(FLIGHT_NO) WHERE MEMBER_NO = ? ORDER BY PAY_DATE DESC";
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, memberNo);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				PayVo vo = new PayVo();
-				vo.setPayDate(rs.getTimestamp("PAY_DATE"));
-				vo.setCutPrice(rs.getInt("CUT_PRICE"));
-				vo.setMypoint(rs.getInt("POINT"));
-
-				list.add(vo);
-			}
-
-		} finally {
-			JDBCTemplate.close(rs);
-			JDBCTemplate.close(pstmt);
-		}
-		return list;
-	}
-
-	public List<PayVo> myPayment(int no, Connection conn) throws Exception {
-		
-		PreparedStatement pstmt = null;
-		List<PayVo> list = null;
-		ResultSet rs = null;
-
-		try {
-
-			String sql = "SELECT PAY_DATE, CUT_PRICE, POINT FROM PAYMENT JOIN FLIGHT_RESERVATION USING(FLIGHT_NO) WHERE MEMBER_NO = ? ORDER BY PAY_DATE DESC";
+			String sql = "SELECT P.PAY_DATE, P.CUT_PRICE, P.POINT \r\n"
+					+ "FROM PAYMENT P\r\n"
+					+ "JOIN FLIGHT_RESERVATION FR ON P.FLIGHT_NO = FR.FLIGHT_NO \r\n"
+					+ "WHERE FR.MEMBER_NO = ? \r\n"
+					+ "ORDER BY P.PAY_DATE DESC";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
@@ -346,15 +344,54 @@ public class PayDao {
 				vo.setPayDate(rs.getTimestamp("PAY_DATE"));
 				vo.setCutPrice(rs.getInt("CUT_PRICE"));
 				vo.setMypoint(rs.getInt("POINT"));
-
-				list.add(vo);
+				
+				pointList.add(vo);
 			}
 
 		} finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		return list;
+		return pointList;
 	}
+
+	public List<PayVo> myPayment(int no, Connection conn) throws Exception {
+		
+		PreparedStatement pstmt = null;
+		List<PayVo> payList = new ArrayList<PayVo>();
+		ResultSet rs = null;
+
+		try {
+
+			String sql = "SELECT P.PAY_DATE, P.TOTAL, P.CUT_PRICE, P.POINT_USED, P.PAY_METHOD \r\n"
+					+ "FROM PAYMENT P\r\n"
+					+ "JOIN FLIGHT_RESERVATION FR ON P.FLIGHT_NO = FR.FLIGHT_NO\r\n"
+					+ "JOIN PAY_METHOD_NO PM ON P.PAY_METHOD = PM.METHOD_NO\r\n"
+					+ "WHERE FR.MEMBER_NO = 1 \r\n"
+					+ "ORDER BY P.PAY_DATE DESC";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				PayVo vo = new PayVo();
+				vo.setPayDate(rs.getTimestamp("PAY_DATE"));
+				vo.setTotalPay(rs.getInt("TOTAL"));
+				vo.setCutPrice(rs.getInt("CUT_PRICE"));
+				vo.setPointUsed(rs.getInt("POINT_USED"));
+				vo.setPayMethod(rs.getInt("PAY_METHOD"));
+
+				payList.add(vo);
+			}
+
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return payList;
+	}
+	
 
 }

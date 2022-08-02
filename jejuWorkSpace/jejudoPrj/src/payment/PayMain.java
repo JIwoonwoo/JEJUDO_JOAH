@@ -6,7 +6,7 @@ public class PayMain {
 		
 		System.out.println("결제를 시작");
 		
-		new PayController().payment();
+		new PayController().payMenu();
 		
 	}
 

@@ -16,19 +16,16 @@ public class PayController {
 	 * 결제내역 및 예약정보 insert
 	 */
 	
-	public void payment() {
+	public void payment(int no) {
 		
-		int no = 1;
-//		int no = Main.loginNo;
-		//로그인 체크
-		if(no == 0) {
-			System.out.println("로그인 상태가 아닙니다.");
-			return;
-		}
+		
 		PayService ps = new PayService();
 		MemberVo mvo = ps.userInfo(no);
 		
 		PayVo vo = ps.reservation(no);
+		if(vo == null) {
+			return;
+		}
 		
 		// 포인트 보여주기, 사용유무, 사용량
 		int pointUsed = ps.usePoint(mvo);
@@ -75,14 +72,43 @@ public class PayController {
 			}
 		}
 		//결제 내역 확인
-//		ps.checkPayment(no);
+//		
 		
 		//포인트 적립 내역
-//		ps.pointAddList(no);
+//		
 		
 		
 		
 		
+	}
+	
+	public void payMenu() {
+		int no = 1;
+//		int no = Main.loginNo;
+		//로그인 체크
+		if(no == 0) {
+			System.out.println("로그인 상태가 아닙니다.");
+			return;
+		}
+		
+		System.out.println("\r---결제---");
+		System.out.println("1. 결제 진행");
+		System.out.println("2. 결제 내역 조회");
+		System.out.println("3. 포인트 조회");
+		System.out.println("0. 뒤로가기");
+		
+		PayService ps = new PayService();
+		while(true) {
+			int c = InputUtil.getInt();
+			
+			switch(c) {
+			case 1 : payment(no);break;
+			case 2 : ps.choicePayment(no);break;
+			case 3 : ps.pointAddList(no);break;
+			case 0 : return;
+			default : System.out.println("다시 입력해 주세요");continue;
+			}
+		}
 	}
 	
 	
