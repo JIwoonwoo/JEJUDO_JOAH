@@ -13,6 +13,7 @@ public class AccDto {
     public String PoolableYN;
     public String Around;
     public String Roomview;
+    public String type;
     
     public String Checkin;
     public String Checkout;
@@ -139,6 +140,15 @@ public class AccDto {
 		People = people;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	
 	
 
 	

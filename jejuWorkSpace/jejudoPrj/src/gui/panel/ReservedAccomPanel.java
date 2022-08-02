@@ -80,11 +80,13 @@ public class ReservedAccomPanel extends ImgPanel {
 		g = new ButtonGroup();
 
 		hotelBtn = new InvisiableCheck("호텔");
+		hotelBtn.setText("H");
 		hotelBtn.setLocation(55, 528);
 		g.add(hotelBtn);
 		add(hotelBtn);
 
 		gestBtn = new InvisiableCheck("게하");
+		gestBtn.setText("G");
 		gestBtn.setLocation(287, 528);
 		g.add(gestBtn);
 		add(gestBtn);

@@ -8,9 +8,12 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import accom.AccDto;
+import accom.AccService;
 import car.CarService;
 import car.CarVo;
 import car.ReserveVo;
+import gui.dialog.AccomSearch;
 import gui.dialog.CarSearch;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
@@ -105,6 +108,7 @@ public class GUI {
 		QnaService qs = new QnaService();
 		SurveyService ss = new SurveyService();
 		CarService cs = new CarService();
+		AccService as = new AccService();
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -737,13 +741,33 @@ public class GUI {
 				reservedAccomPanel.getGoDay();
 				reservedAccomPanel.getBackDay();
 				reservedAccomPanel.getContPerson();
-				reservedAccomPanel.getMinMoney();
-				reservedAccomPanel.getMaxMoney();
+//				reservedAccomPanel.getMinMoney();
+//				reservedAccomPanel.getMaxMoney();
 				reservedAccomPanel.getHotel();
-
-				reservedAccomPanel.setVisible(false);
-				reservedCarPanel.reset();
-				reservedCarPanel.setVisible(true);
+				
+				AccDto dto = new AccDto();
+				dto.setCheckin(reservedAccomPanel.getGoDay());
+				dto.setCheckout(reservedAccomPanel.getBackDay());
+				dto.setPeople(reservedAccomPanel.getContPerson());
+				dto.setType(reservedAccomPanel.getHotel());
+				
+				List<AccDto> list = as.accSearch(dto);
+				
+				if(list!=null) {
+					AccomSearch dialog = new AccomSearch(frame, "숙소조회");
+					dialog.set(list);
+					int no = dialog.run();
+					if(no>0) {
+						//성공
+						reservedAccomPanel.setVisible(false);
+						reservedCarPanel.reset();
+						reservedCarPanel.setVisible(true);
+						
+					}
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
+					dialog.run();
+				}
 			}
 		});
 
@@ -865,6 +889,8 @@ public class GUI {
 				}else {vo.setAnimal_yn("N");}
 				if(faveratePanel.getQ3()!=null && faveratePanel.getQ3().equals("너무무겁다")) {
 					vo.setBudget("Y");
+				}else if(faveratePanel.getQ3().equals("모르겠다")){
+					vo.setBudget("S");
 				}else {vo.setBudget("N");}
 				
 				vo.setPurpose(arr[0]);

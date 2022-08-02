@@ -11,26 +11,37 @@ import util.JDBCTemplate;
 public class AccService {
 
 		
-		public void accSearch(AccDto dto) {
+		public List<AccDto> accSearch(AccDto dto) {
 			
 			//비지니스 로직
 			if(dto.getPeople() < 1) {
 				//인원이 1명이 안되므로 진행 불가
-					return;
+					return null;
 			}
 			
 			Connection conn = null;
+			List<AccDto> list = null;
 				
 			try {
 				conn = JDBCTemplate.getConnection();
 				SurveyVo svo = new SurveyService().search(Main.loginNo);
-				 new AccDao().accSearch(dto, conn,svo);
+				
+				list = new AccDao().accSearch(dto, conn,svo);
+				
+				if(list!=null) {
+					System.out.println("성공");
+				}else {
+					System.out.println("숙소 조회 실패");
+				}
 
 			} catch (Exception e) {
+				System.out.println("에러; 숙소 조회 실패");
 				e.printStackTrace(); 
 			} finally {
 				JDBCTemplate.close(conn);
 			}
+			
+			return list;
 		
 			
 		}//accSearch
