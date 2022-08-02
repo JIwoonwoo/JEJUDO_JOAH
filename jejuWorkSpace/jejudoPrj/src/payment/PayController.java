@@ -2,6 +2,7 @@ package payment;
 
 import main.Main;
 import member.MemberVo;
+import util.InputUtil;
 
 public class PayController {
 	/*
@@ -17,7 +18,8 @@ public class PayController {
 	
 	public void payment() {
 		
-		int no = Main.loginNo;
+		int no = 1;
+//		int no = Main.loginNo;
 		//로그인 체크
 		if(no == 0) {
 			System.out.println("로그인 상태가 아닙니다.");
@@ -27,26 +29,58 @@ public class PayController {
 		MemberVo mvo = ps.userInfo(no);
 		
 		PayVo vo = ps.reservation(no);
+		
 		// 포인트 보여주기, 사용유무, 사용량
-		int myUsePoint = ps.usePoint(mvo);
+		int pointUsed = ps.usePoint(mvo);
+		System.out.println("사용한 포인트 : " + pointUsed);
 		
 		// 결제금액 보여주기
-		int lastPay = totalPay - myUsePoint;
+		int cutPrice = vo.getTotalPay() - pointUsed;
+		System.out.println("최종금액 : " + cutPrice);
 
 		// 적립금
-		int earnPoint = lastPay / 10;
+		int myPoint = cutPrice / 20;
+		System.out.println("획득한 적립금 : " + myPoint);
 
 		// 결제종류선택, 결제하기
-		char howPay = ps.howPay(lastPay);
-
+		int payMethod = ps.howPay(cutPrice);
+		System.out.println("결제 방법 : " + payMethod);
+		
+		//결제정보 집어넣기
+		vo.setPointUsed(pointUsed);
+		vo.setCutPrice(cutPrice);
+		vo.setMypoint(myPoint);
+		vo.setPayMethod(payMethod);
+		
+		//최종 포인트
+		int leavePoint = (mvo.getPoint()-pointUsed)+myPoint;
+		
+		//결제 입력
+		System.out.println("결제 정보");
+		System.out.println(vo);
+		System.out.println("\r결제를 완료?");
+		System.out.println("1. 완료 , 0. 뒤로가기");
+		while(true) {
+			int a = InputUtil.getInt();
+			if(a==1) {
+				System.out.println("결제를 완료하러 갑니다.");
+				ps.payEnd(no,leavePoint,vo);
+				break;
+			}if (a==0) {
+				System.out.println("결제를 다시 진행해 주세요");
+				return;
+			}else {
+				System.out.println("다시 입력해 주세요.");
+				continue;
+			}
+		}
+		//결제 내역 확인
+//		ps.checkPayment(no);
+		
+		//포인트 적립 내역
+//		ps.pointAddList(no);
 		
 		
-		
-		
-		//예약 내역 확인
-		System.out.println("예약 내역을 확인 하시겠습니까?");
-		System.out.println("1. 확인");
-		System.out.println("2. 건너뛰기");
 		
 		
 	}
