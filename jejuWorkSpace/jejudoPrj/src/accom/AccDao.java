@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Main;
+import member.MemberVo;
+
 import util.InputUtil;
 import util.JDBCTemplate;
 
@@ -122,9 +125,9 @@ public class AccDao {
 				
 				//sql날리기
 				pstmt = conn.prepareStatement(sql3);
-				
+				MemberVo vo = new MemberVo();
 				pstmt.setInt(1, dto.getRoomno());
-				pstmt.setInt(2, 1); //여기에는 회원번호
+				pstmt.setInt(2, Main.loginNo); //여기에는 회원번호
 				pstmt.setString(3, dto.getCheckin());
 				pstmt.setString(4, dto.getCheckout());
 				
