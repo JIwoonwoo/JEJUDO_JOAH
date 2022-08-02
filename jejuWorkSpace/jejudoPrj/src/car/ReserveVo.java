@@ -4,16 +4,20 @@ package car;
 import java.sql.Timestamp;
 
 public class ReserveVo {
+	
+	private int memberNo;
 	private int reserveNo;
 	private int rentalNo;
-	private String memberNo;
 	private String rentalDate;
 	private String returnDate;
 	private String reserveDate;
 	private String insurance;
 	private Timestamp cancelDate;
 	private String cancleYn;
-	
+	private String dayPrice;
+	private String size;
+	private String name;
+	private String carUq;
 	
 	public int getReserveNo() {
 		return reserveNo;
@@ -27,13 +31,32 @@ public class ReserveVo {
 	public void setRentalNo(int rentalNo) {
 		this.rentalNo = rentalNo;
 	}
-	public String getMemberNo() {
+	
+	
+	public int getMemberNo() {
 		return memberNo;
 	}
-	public void setMemberNo(String memberNo) {
+	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
 	}
-	
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCarUq() {
+		return carUq;
+	}
+	public void setCarUq(String carUq) {
+		this.carUq = carUq;
+	}
 	public String getRentalDate() {
 		return rentalDate;
 	}
@@ -70,4 +93,18 @@ public class ReserveVo {
 	public void setCancleYn(String cancleYn) {
 		this.cancleYn = cancleYn;
 	}
+	
+	public String getDayPrice() {
+		return dayPrice;
+	}
+	public void setDayPrice(String dayPrice) {
+		this.dayPrice = dayPrice;
+	}
+	@Override
+	public String toString() {
+		return "ReserveVo [reserveNo=" + reserveNo + ", rentalNo=" + rentalNo + ", memberNo=" + memberNo
+				+ ", rentalDate=" + rentalDate + ", returnDate=" + returnDate + ", reserveDate=" + reserveDate
+				+ ", insurance=" + insurance + ", cancelDate=" + cancelDate + ", cancleYn=" + cancleYn + "]";
+	}
+	
 }
