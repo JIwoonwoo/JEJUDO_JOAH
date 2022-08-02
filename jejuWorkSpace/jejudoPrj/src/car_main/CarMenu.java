@@ -9,8 +9,9 @@ public class CarMenu {
 	public int showMenu() {
 		System.out.println("1. 렌터카 조회");
 		System.out.println("2. 렌터카 예약");
-		System.out.println("3. 렌터카 예약 수정");
-		System.out.println("4. 렌터카 예약 취소");
+		System.out.println("3. 렌터카 예약 조회");
+		System.out.println("4. 렌터카 예약 수정");
+		System.out.println("5. 렌터카 예약 취소");
 		
 		return Parsing.getInt();
 		
@@ -22,25 +23,11 @@ public class CarMenu {
 		
 		return Parsing.getInt();
 	}
-	public void showReserveEdit() {
-		System.out.println("----- 예약 수정 -----");
-		System.out.println("1. 날짜 변경");
-		System.out.println("2. 보험 변경");
-		System.out.println("3. 자동차 변경");
-		System.out.println("9. 뒤로 가기");
+	public int showReserveEdit() {		
+		System.out.println("보험 변경하시겠습니까?");
+		System.out.println("1. 예");
+		System.out.println("2. 아니오");
 		
-		int input = Parsing.getInt();
-		switch(input) {
-		case 1 :
-			new CarController().dateEdit();
-			break;
-		case 2 :
-			break;
-		case 3 :
-			break;
-		case 9 :
-			return;
-		}
-		
+		return Parsing.getInt();
 	}
 }

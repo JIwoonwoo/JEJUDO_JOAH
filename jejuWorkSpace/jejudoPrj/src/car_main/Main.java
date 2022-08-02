@@ -24,11 +24,17 @@ public class Main {
 				carCon.carReserve();
 				break;
 			case 3 :
-				new CarMenu().showReserveEdit();
+				carCon.reserveInquiry();
 				break;
 			case 4 :
+				carCon.insuranceEdit();
+				break;
+			case 5 :
 				carCon.carCancel();
 				break;
+			case 9 :
+			default :
+				return;
 			}
 		}
 	}

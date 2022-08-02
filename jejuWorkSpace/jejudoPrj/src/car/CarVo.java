@@ -116,7 +116,6 @@ public class CarVo {
 	public void setCarFuel(String carFuel) {
 		this.carFuel = carFuel;
 	}
-	
 	@Override
 	public String toString() {
 		return "CarVo [memberNO=" + memberNO + ", money=" + money + ", reserveNo=" + reserveNo + ", rentalNo="
@@ -126,9 +125,8 @@ public class CarVo {
 				+ "]";
 	}
 	
-	public String test() {
-		return "고유 번호 : "+rentalNo+" / 시작일 : "+rentalDate+" / 반납일 : "+returnDate+" / 자동차 : "+carName+" / 사이즈 : "+carSize+" / 1박 금액 : "+dayPrice+ " / 연료"+carFuel;
-	}
+	
+	
 	
 	
 	

@@ -150,9 +150,42 @@ public class CarService {
 		try {
 			conn = JDBCTemplate.getConnection();
 			vo = dao.detailInquiry(rentalNo,conn);
-		}catch (Exception e) {
 			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
 		}
+		return vo;
+	}
+	public int insuranceEdit(ReserveVo rVo) {
+		int insurance = Parsing.getInt(rVo.getInsurance());
+		
+		if(insurance >= 5) {
+			System.out.println("잘못된 입력입니다.");
+			return -2;
+		}
+		
+		int result = 0;
+		Connection conn = null;
+		try {
+			conn = JDBCTemplate.getConnection();
+			result = dao.insuranceEdit(rVo,conn);
+			
+			if(result == 1) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+			
+		} catch (Exception e) {
+			JDBCTemplate.rollback(conn);
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		
+		return result;
 	}
 	
 	

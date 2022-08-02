@@ -3,6 +3,7 @@ package car;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,12 +125,16 @@ public class CarDao {
 					+ "JOIN RENTAL_CAR 렌트 USING(RENTAL_NO)\r\n"
 					+ "WHERE CANCEL_YN = 'N'\r\n"
 					+ "AND 예약.MEMBER_NO = ?";
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, input);
 			rs = pstmt.executeQuery();
+			
+			reserveVoList = new ArrayList<ReserveVo>();
+	
 			while(rs.next()) {
+			
 				ReserveVo rVo = new ReserveVo();
-				reserveVoList = new ArrayList<ReserveVo>();
 				
 				int reserveNo = rs.getInt("CAR_NO");
 				int rentalNo = rs.getInt("RENTAL_NO");
@@ -176,12 +181,54 @@ public class CarDao {
 		
 		return result;
 	}
-	public ReserveVo detailInquiry(int rentalNo, Connection conn) {
+	public ReserveVo detailInquiry(int rentalNo, Connection conn) throws Exception {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ReserveVo vo = null;
 		
-		return null;
+		try {
+			String sql = "SELECT C.CAR_NAME,T.CAR_SIZE,F.FUEL,R.CAR_UQ FROM CAR C JOIN RENTAL_CAR R USING(CAR_NO) JOIN FUEL F ON C.FUEL = F.FUEL_NO JOIN TB_SIZE T ON C.CAR_SIZE = T.SIZE_NO WHERE R.RENTAL_NO = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, rentalNo);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				String size = (rs.getString("CAR_SIZE"));
+				String uq = (rs.getString("CAR_UQ"));
+				String name = (rs.getString("CAR_NAME"));
+				String fuel = (rs.getString("FUEL"));
+				
+				vo = new ReserveVo();
+				vo.setCarUq(uq);
+				vo.setSize(size);
+				vo.setName(name);
+				vo.setFuel(fuel);
+			}
+			
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+		
+		return vo;
+	}
+	public int insuranceEdit(ReserveVo rVo, Connection conn) throws Exception {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			String sql = "UPDATE CAR_RESERVATION SET INSURANCE = ? WHERE MEMBER_NO = ? AND CAR_NO = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, rVo.getInsurance());
+			pstmt.setInt(2, rVo.getMemberNo());
+			pstmt.setInt(3, rVo.getReserveNo());
+			
+			result = pstmt.executeUpdate();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 	
 	
