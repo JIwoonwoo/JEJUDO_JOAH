@@ -7,6 +7,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Main;
 import member.MemberVo;
 import util.JDBCTemplate;
 
@@ -118,11 +119,12 @@ public class PayDao {
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
 				vo.setFlightComePay(fp);
-			}else if(!rs.next()) {
-				vo = new PayVo();
-				vo.setFlightNo(0);
-				
 			}
+//			else if(!rs.next()) {
+//				vo = new PayVo();
+//				vo.setFlightNo(0);
+//				
+//			}
 		} finally {
 
 			JDBCTemplate.close(pstmt);
@@ -136,41 +138,52 @@ public class PayDao {
 
 	// 방 금액
 	public PayVo rPay(int no, Connection conn) throws Exception {
-		String sql = "SELECT A.ACCOM_NO, R.ROOM_PRICE , TO_DATE(TO_CHAR(A.CHECK_OUT,'YYMMDD')) - TO_DATE(TO_CHAR(A.CHECK_IN,'YYMMDD')) AS DAYS \r\n"
-				+ "FROM MEMBER M\r\n"
-				+ "JOIN ACCOM_RESERVATION A ON M.MEMBER_NO = A.MEMBER_NO\r\n"
-				+ "JOIN ROOM R ON A.ROOM_NO = R.ROOM_NO\r\n"
-				+ "WHERE M.MEMBER_NO = ? AND A.PAID_YN = 'N'";
+		
 		PayVo vo = null;
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
+			String sql = "SELECT A.ACCOM_NO, R.ROOM_PRICE , TO_DATE(TO_CHAR(A.CHECK_OUT,'YYMMDD')) - TO_DATE(TO_CHAR(A.CHECK_IN,'YYMMDD')) AS DAYS \r\n"
+					+ "FROM MEMBER M\r\n"
+					+ "JOIN ACCOM_RESERVATION A ON M.MEMBER_NO = A.MEMBER_NO\r\n"
+					+ "JOIN ROOM R ON A.ROOM_NO = R.ROOM_NO\r\n"
+					+ "WHERE M.MEMBER_NO = ? AND A.PAID_YN = 'N'";
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
-
+			System.out.println("test");
 			if (rs.next()) {
+				vo = new PayVo();
+				
 				int rNo = rs.getInt("ACCOM_NO");
 				int rp = rs.getInt("ROOM_PRICE");
 				int rDay = rs.getInt("DAYS");
-				rp = rp * rDay;
-				vo = new PayVo();
-				vo.setAccomNo(no);
-				vo.setAccomPay(rp);
-			}else if(!rs.next()) {
-				vo = new PayVo();
-				vo.setAccomNo(0);
 				
+				System.out.println(rNo);
+				System.out.println(rp);
+				System.out.println(rDay);
+				rp = rp * rDay;
+				
+				vo.setAccomNo(rNo);
+				vo.setAccomPay(rp);
 			}
+//			else if(!rs.next()) {
+//				vo = new PayVo();
+//				vo.setAccomNo(0);
+//			}
 
 		} finally {
 			JDBCTemplate.close(pstmt);
 			JDBCTemplate.close(rs);
 		}
 
-		return vo;
+		System.out.println(Main.loginNo);
+		System.out.println(vo);
+		
+		return vo;	
 
 	}
 

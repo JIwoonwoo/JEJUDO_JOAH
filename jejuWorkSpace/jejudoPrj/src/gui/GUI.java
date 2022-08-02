@@ -15,6 +15,8 @@ import car.CarVo;
 import car.ReserveVo;
 import gui.dialog.AccomSearch;
 import gui.dialog.CarSearch;
+import gui.dialog.Card;
+import gui.dialog.Cash;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
 import gui.panel.FaveratePanel;
@@ -41,6 +43,8 @@ import gui.panel.WriteQna;
 import main.Main;
 import member.MemberService;
 import member.MemberVo;
+import payment.PayService;
+import payment.PayVo;
 import qna.QnaService;
 import qna.QnaVo;
 import survey.SurveyService;
@@ -48,7 +52,7 @@ import survey.SurveyVo;
 
 public class GUI {
 
-	private JFrame frame;
+	public static JFrame frame;
 	private String where = "";
 	public static ViewQna viewQna;
 
@@ -109,6 +113,7 @@ public class GUI {
 		SurveyService ss = new SurveyService();
 		CarService cs = new CarService();
 		AccService as = new AccService();
+		PayService ps = new PayService();
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -597,11 +602,29 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				payInforPanel.setVisible(false);
-				reservInforPanel.set();
-				reservInforPanel.getBackBtn().setVisible(false);
-				reservInforPanel.getNextBtn().setVisible(true);
-				reservInforPanel.setVisible(true);
+				
+				if(payInforPanel.getCardorCash().equals("1")) {
+					Card dialog = new Card(frame, "카드결제" ,"");
+					dialog.run();
+				}else {
+					Cash dialog = new Cash(frame, "계좌이체" ,"");
+					dialog.run();
+				}
+				PayVo vo = payInforPanel.getVo();
+				
+				vo.setPointUsed(payInforPanel.getUsePoint());
+				vo.setCutPrice(payInforPanel.getSumPrice());
+				vo.setMypoint(payInforPanel.getSumPrice() / 20);
+				vo.setPayMethod(Integer.parseInt(payInforPanel.getCardorCash()));
+				
+				int point = ps.userInfo(Main.loginNo).getPoint() - payInforPanel.getUsePoint() + (payInforPanel.getSumPrice() / 20);
+				if(ps.payEnd(Main.loginNo, point, vo)) {
+					payInforPanel.setVisible(false);
+					reservInforPanel.set();
+					reservInforPanel.getBackBtn().setVisible(false);
+					reservInforPanel.getNextBtn().setVisible(true);
+					reservInforPanel.setVisible(true);
+				}
 				// 결제 완료!
 			}
 		});
@@ -633,20 +656,28 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				reservedCar2Panel.setVisible(false);
 				
 				ReserveVo vo = reservedCar2Panel.getVo();
 				vo.setInsurance(reservedCar2Panel.getInsurance());
 				
 				if(cs.carReserve(vo)>0) {
-					payInforPanel.reset();
-					payInforPanel.setFlightPrice(null);
-					payInforPanel.setAccomPrice(null);
-					payInforPanel.setCarPrice(null);
-					payInforPanel.setHavePoint(null);
-					payInforPanel.setSumPrice(null);
-
-					payInforPanel.setVisible(true);
+					
+					PayVo pvo = ps.reservation(Main.loginNo);
+					
+					if(pvo!=null) {
+						reservedCar2Panel.setVisible(false);
+						
+						payInforPanel.setFlightPrice(pvo.getFlightGoPay()+pvo.getFlightComePay());
+						payInforPanel.setAccomPrice(pvo.getAccomPay());
+						payInforPanel.setCarPrice(pvo.getCarPay());
+						payInforPanel.setHavePoint(ps.userInfo(Main.loginNo).getPoint());
+//						payInforPanel.setSumPrice(pvo.getTotalPay());
+						
+						payInforPanel.setVo(pvo);
+						payInforPanel.reset();
+						payInforPanel.setVisible(true);
+					}
+					
 				}else {
 					PopUpDialog dialog = new PopUpDialog(frame, "예약", "예약실패! 내용을 확인해 주세요");
 					dialog.run();

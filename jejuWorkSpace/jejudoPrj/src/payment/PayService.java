@@ -3,12 +3,15 @@ package payment;
 import java.sql.Connection;
 import java.util.List;
 
+import gui.GUI;
+import gui.dialog.YesOrNo;
 import member.MemberVo;
 import util.InputUtil;
 import util.JDBCTemplate;
 
 public class PayService {
 
+	//포인트도가지고옴
 	public MemberVo userInfo(int no) {
 		// 회원 닉네임, 포인트 가져오기
 		Connection conn = null;
@@ -37,13 +40,14 @@ public class PayService {
 
 		try {
 			conn = JDBCTemplate.getConnection();
-			// 항공 예약정보
+			// 항공 예약정보 비행기 예약번호, 금액 출발
 			PayVo vogf = dao.gfPay(no, conn);
 			
 			if(vogf.getFlightGoPay()==0) {
 				System.out.println("항공 예약 정보가 없습니다.");
 				return vo;
 			}
+			//항공 예약정보 비행기 예약번호, 금액 복귀
 			PayVo vocf = dao.cfPay(no, conn);
 			
 			if(vocf.getFlightComePay()==0) {
@@ -54,8 +58,8 @@ public class PayService {
 			// 방 예약정보
 			PayVo vor = dao.rPay(no, conn);
 			
-			if(vor.getAccomPay()==0) {
-				System.out.println("항공 예약 정보가 없습니다.");
+			if(vor==null) {
+				System.out.println("숙박 예약 정보가 없습니다.");
 				return vo;
 			}
 			// 차 예약정보
@@ -64,11 +68,14 @@ public class PayService {
 			
 			
 			if (voc.getCarNo() == 0) {
-				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
-				System.out.println("1. 진행, 0.다시 예약하기");
+//				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
+//				System.out.println("1. 진행, 0.다시 예약하기");
+				YesOrNo dialog = new YesOrNo(GUI.frame, "결제", "렌트카를 예약하지 않았습니다. 진행 하시겠습니까?");
+				
 				while(true) {
-					int c = InputUtil.getInt();
-						if(c == 0) {
+//					int c = InputUtil.getInt();
+					int c = dialog.run();
+						if(c == -1) {
 							return vo;
 						}else if(c==1) {
 							break;
@@ -88,9 +95,11 @@ public class PayService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
 		}
 
-		return vo;
+		return vo;// 출발비행기예약번호, ㅅ숙소 예약넘버, 자동차 예약넘버, 총가격, 가는비행기 가격, 오는비행기가격, 숙소 가격, 자동차 가격
 	}
 
 	// 포인트사용
@@ -264,29 +273,45 @@ public class PayService {
 
 	}
 
+	// 회원넘버, 가져야할 포인트(계산완료) 기존포인트 + 적립포인트 - 사용한포인트 , vo
+	// 출발비행기예약번호, ㅅ숙소 예약넘버, 자동차 예약넘버, 총가격, 가는비행기 가격, 오는비행기가격, 숙소 가격, 자동차 가격
+//	vo.setPointUsed(pointUsed);
+//	vo.setCutPrice(cutPrice);
+//	vo.setMypoint(myPoint);
+//	vo.setPayMethod(payMethod);
 	// 결제 내역 저장
-	public void payEnd(int no, int leavePoint, PayVo vo) {
+	public boolean payEnd(int no, int leavePoint, PayVo vo) {
 		Connection conn = null;
-		
+		boolean result = false;
 		// 결제 내역 저장 -> 리턴 int 가져와서 결과 확인
 		try {
 			conn = JDBCTemplate.getConnection();
 			int result1 = new PayDao().payInsert(vo, conn);
 			int result2 = new PayDao().pointUpdate(no, leavePoint, conn);
 			int result3 = new PayDao().paidUpdate(vo, conn);
-			if (result1 == 1) {
+			
+			if (result1 == 1 && result2 == 1 && (result3 == 2 || result3 == 3)) {
 				System.out.println("결제 정보 저장 완료");
 				JDBCTemplate.commit(conn);
-			}if (result2 == 1) {
-				System.out.println("포인트 저장 완료");
-				JDBCTemplate.commit(conn);
-			}if (result3 == 2 || result3 == 3) {
-				System.out.println("결제 완료 변경 완료");
-				JDBCTemplate.commit(conn);
+				result = true;
 			}else {
 				System.out.println("결제 정보 인서트 오류");
 				JDBCTemplate.rollback(conn);
 			}
+			
+//			if (result2 == 1) {
+//				System.out.println("포인트 저장 완료");
+//				JDBCTemplate.commit(conn);
+//			}
+//			
+//			if (result3 == 2 || result3 == 3) {
+//				System.out.println("결제 완료 변경 완료");
+//				JDBCTemplate.commit(conn);
+//			}else {
+//				System.out.println("결제 정보 인서트 오류");
+//				JDBCTemplate.rollback(conn);
+//			}
+			
 		} catch (Exception e) {
 			System.out.println("결제 인서트 오류");
 			e.printStackTrace();
@@ -295,6 +320,8 @@ public class PayService {
 			JDBCTemplate.commit(conn);
 			JDBCTemplate.close(conn);
 		}
+		
+		return result;
 
 	}
 

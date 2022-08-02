@@ -6,6 +6,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import gui.button.BackBtn;
 import gui.button.ButtonGroupController;
@@ -13,6 +15,7 @@ import gui.button.HomeBtn;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
 import gui.field.InvisiableTextField;
+import payment.PayVo;
 
 public class PayInforPanel extends ImgPanel {
 	
@@ -22,14 +25,17 @@ public class PayInforPanel extends ImgPanel {
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
 	private InvisiableTextField usePoint;
-	private JLabel sumPrice;
 	private JLabel havePoint;
+	private JLabel sumPrice;
 	private JLabel carPrice;
 	private JLabel accomPrice;
 	private JLabel flightPrice;
 	private ButtonGroup g;
 	private JRadioButton card;
 	private JRadioButton cash;
+	
+	private PayVo vo;
+	private int total;
 
 	public PayInforPanel() {
 		super("payInfor");
@@ -61,41 +67,57 @@ public class PayInforPanel extends ImgPanel {
 		carPrice.setBounds(327, 332, 124, 29);
 		add(carPrice);
 		
-		havePoint = new JLabel();
-		havePoint.setHorizontalAlignment(SwingConstants.RIGHT);
-		havePoint.setFont(new Font("굴림", Font.PLAIN, 15));
-		havePoint.setBounds(327, 532, 124, 29);
-		add(havePoint);
-		
 		sumPrice = new JLabel();
 		sumPrice.setHorizontalAlignment(SwingConstants.RIGHT);
-		sumPrice.setFont(new Font("굴림", Font.PLAIN, 10));
-		sumPrice.setBounds(385, 441, 54, 18);
+		sumPrice.setFont(new Font("굴림", Font.PLAIN, 15));
+		sumPrice.setBounds(327, 532, 124, 29);
 		add(sumPrice);
+		
+		havePoint = new JLabel();
+		havePoint.setHorizontalAlignment(SwingConstants.RIGHT);
+		havePoint.setFont(new Font("굴림", Font.PLAIN, 10));
+		havePoint.setBounds(385, 441, 54, 18);
+		add(havePoint);
 		
 		usePoint = new InvisiableTextField(null);
 		usePoint.setHorizontalAlignment(SwingConstants.RIGHT);
 		usePoint.setBounds(224, 467, 214, 35);
+		usePoint.getDocument().addDocumentListener(new DocumentListener() {
+			  public void changedUpdate(DocumentEvent e) {
+					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
+					sumPrice.setText(Integer.toString(total));
+			  }
+			  public void removeUpdate(DocumentEvent e) {
+					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
+					sumPrice.setText(Integer.toString(total));
+			  }
+			  public void insertUpdate(DocumentEvent e) {
+					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
+					sumPrice.setText(Integer.toString(total));
+			  }
+		});
+
 		add(usePoint);
 		
 		g = new ButtonGroup();
 		
 		card =  new InvisiableRadio("카드");
+		card.setText("1");
 		card.setLocation(60, 685);
 		g.add(card);
 		add(card);
 		
 		cash =  new InvisiableRadio("계좌이체");
+		card.setText("2");
 		cash.setLocation(291, 685);
 		g.add(cash);
 		add(cash);
 		
-		
-
-		
 	}
 	
 	public void reset() {
+		total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
+		sumPrice.setText(Integer.toString(total));
 		usePoint.setText(null);
 		if(g!=null)g.clearSelection();
 		
@@ -117,36 +139,36 @@ public class PayInforPanel extends ImgPanel {
 		return backBtn;
 	}
 
-	public String getUsePoint() {
-		return usePoint.getText();
+	public int getUsePoint() {
+		return Integer.parseInt(usePoint.getText());
 	}
 
-	public void setSumPrice(String s) {
-		this.sumPrice.setText(s);
+	public void setSumPrice(int s) {
+		this.sumPrice.setText(Integer.toString(s));
 	}
 
-	public void setHavePoint(String s) {
-		this.havePoint.setText(s);
+	public void setHavePoint(int s) {
+		this.havePoint.setText(Integer.toString(s));
 	}
 
-	public void setCarPrice(String s) {
-		this.carPrice.setText(s);
+	public void setCarPrice(int s) {
+		this.carPrice.setText(Integer.toString(s));
 	}
 
-	public void setAccomPrice(String s) {
-		this.accomPrice.setText(s);
+	public void setAccomPrice(int s) {
+		this.accomPrice.setText(Integer.toString(s));
 	}
 
-	public void setFlightPrice(String s) {
-		this.flightPrice.setText(s);
+	public void setFlightPrice(int s) {
+		this.flightPrice.setText(Integer.toString(s));
 	}
 
-	public String getSumPrice() {
-		return sumPrice.getText();
+	public int getSumPrice() {
+		return Integer.parseInt(sumPrice.getText());
 	}
 
-	public String getHavePoint() {
-		return havePoint.getText();
+	public int getHavePoint() {
+		return Integer.parseInt(havePoint.getText());
 	}
 
 	public String getCarPrice() {
@@ -160,5 +182,15 @@ public class PayInforPanel extends ImgPanel {
 	public String getFlightPrice() {
 		return flightPrice.getText();
 	}
+
+	public PayVo getVo() {
+		return vo;
+	}
+
+	public void setVo(PayVo vo) {
+		this.vo = vo;
+	}
+	
+	
 	
 }
