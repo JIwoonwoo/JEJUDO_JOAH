@@ -1,0 +1,80 @@
+diff a/jejuWorkSpace/jejudoPrj/src/car/CarDao.java b/jejuWorkSpace/jejudoPrj/src/car/CarDao.java	(rejected hunks)
+@@ -112,5 +112,78 @@
+ 		
+ 		return result;
+ 	}
++	public List<ReserveVo> reserveInquiry(Connection conn, int input)throws Exception {
++		PreparedStatement pstmt = null;
++		ResultSet rs = null;
++		List<ReserveVo> reserveVoList = null;
++		
++		try {
++			String sql = "SELECT 예약.CAR_NO,RENTAL_NO, RENTAL_DATE, RETURN_DATE, RESERVE_DATE, 보험.INSURANCE, DAY_PRICE\r\n"
++					+ "FROM CAR_RESERVATION 예약\r\n"
++					+ "JOIN INSURANCE 보험 ON 예약.INSURANCE = 보험.INSURANCE_NO\r\n"
++					+ "JOIN RENTAL_CAR 렌트 USING(RENTAL_NO)\r\n"
++					+ "WHERE CANCEL_YN = 'N'\r\n"
++					+ "AND 예약.MEMBER_NO = ?";
++			pstmt = conn.prepareStatement(sql);
++			pstmt.setInt(1, input);
++			rs = pstmt.executeQuery();
++			while(rs.next()) {
++				ReserveVo rVo = new ReserveVo();
++				reserveVoList = new ArrayList<ReserveVo>();
++				
++				int reserveNo = rs.getInt("CAR_NO");
++				int rentalNo = rs.getInt("RENTAL_NO");
++				String rentalDate = rs.getString("RENTAL_DATE");
++				String returnDate = rs.getString("RETURN_DATE");
++				String reserveDate = rs.getString("RESERVE_DATE");
++				String insurance = rs.getString("INSURANCE");
++				String dayPrice = rs.getString("DAY_PRICE");
++				
++				rVo.setReserveNo(reserveNo);
++				rVo.setRentalNo(rentalNo);
++				rVo.setRentalDate(rentalDate);
++				rVo.setReturnDate(returnDate);
++				rVo.setReserveDate(reserveDate);
++				rVo.setInsurance(insurance);
++				rVo.setDayPrice(dayPrice);
++				
++				reserveVoList.add(rVo);
++				
++			}
++			
++		} finally {
++			JDBCTemplate.close(pstmt);
++			JDBCTemplate.close(rs);
++		}
++		return reserveVoList;
++	}
++	public int carCancel(ReserveVo rVo, Connection conn) throws Exception {
++		PreparedStatement pstmt = null;
++		int result = 0;
++		try {
++			String sql = "UPDATE CAR_RESERVATION SET CANCEL_YN = 'Y' WHERE MEMBER_NO = ? AND CAR_NO = ?";
++			pstmt = conn.prepareStatement(sql);
++			pstmt.setInt(1, rVo.getMemberNo());
++			pstmt.setInt(2, rVo.getReserveNo());
++			
++			result = pstmt.executeUpdate();
++			
++		}finally {
++			JDBCTemplate.close(pstmt);
++		}
++		
++		
++		
++		return result;
++	}
++	public ReserveVo detailInquiry(int rentalNo, Connection conn) {
++		PreparedStatement pstmt = null;
++		ResultSet rs = null;
++		ReserveVo vo = null;
++		
++		return null;
++	}
++	
++	
+ 
+ }
