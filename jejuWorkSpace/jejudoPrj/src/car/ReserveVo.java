@@ -18,7 +18,16 @@ public class ReserveVo {
 	private String size;
 	private String name;
 	private String carUq;
+	private String fuel;
 	
+	
+	
+	public String getFuel() {
+		return fuel;
+	}
+	public void setFuel(String fuel) {
+		this.fuel = fuel;
+	}
 	public int getReserveNo() {
 		return reserveNo;
 	}
@@ -100,6 +109,7 @@ public class ReserveVo {
 	public void setDayPrice(String dayPrice) {
 		this.dayPrice = dayPrice;
 	}
+	
 	@Override
 	public String toString() {
 		return "ReserveVo [reserveNo=" + reserveNo + ", rentalNo=" + rentalNo + ", memberNo=" + memberNo
