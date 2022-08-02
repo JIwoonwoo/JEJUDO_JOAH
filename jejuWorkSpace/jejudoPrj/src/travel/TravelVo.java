@@ -17,7 +17,7 @@ public class TravelVo {
 	private String travel_phone;
 	private String open;
 	private String closed;
-	private String like_cnt;
+	private int like_cnt;
 	private String closed_day;
 
 	private String purpose;
@@ -31,7 +31,7 @@ public class TravelVo {
 	// 생성자 (파라미터)
 	public TravelVo(String travel_no, String recommend_type, String category, String travel_name,
 			String travel_address, String activity_yn, String travel_price, String animal_yn, String travel_info,
-			String travel_phone, String open, String closed, String like_cnt, String closed_day,
+			String travel_phone, String open, String closed, int like_cnt, String closed_day,
 			String purpose) {
 		super();
 		this.travel_no = travel_no;
@@ -151,11 +151,11 @@ public String getTravel_no() {
 		this.closed = closed;
 	}
 
-	public String getLike_cnt() {
+	public int getLike_cnt() {
 		return like_cnt;
 	}
 
-	public void setLike_cnt(String like_cnt) {
+	public void setLike_cnt(int like_cnt) {
 		this.like_cnt = like_cnt;
 	}
 
