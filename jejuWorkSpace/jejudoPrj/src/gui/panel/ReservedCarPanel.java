@@ -4,15 +4,12 @@ import java.awt.Font;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.text.PlainDocument;
 
 import gui.button.BackBtn;
 import gui.button.ButtonGroupController;
 import gui.button.HomeBtn;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
-import gui.document.MyIntFilter;
 import gui.field.InvisiableTextField;
 
 public class ReservedCarPanel extends ImgPanel {
@@ -25,16 +22,10 @@ public class ReservedCarPanel extends ImgPanel {
 	private JSpinner contPerson;
 	private InvisiableTextField goDay;
 	private InvisiableTextField backDay;
-	private InvisiableTextField minMoney;
-	private InvisiableTextField maxMoney;
 	private ButtonGroup sizeG;
 	private InvisiableRadio carSize1;
 	private InvisiableRadio carSize2;
 	private InvisiableRadio carSize3;
-	private ButtonGroup energyG;
-	private InvisiableRadio carEnergy1;
-	private InvisiableRadio carEnergy2;
-	private InvisiableRadio carEnergy3;
 
 	public ReservedCarPanel() {
 		super("reservedCar");
@@ -63,24 +54,6 @@ public class ReservedCarPanel extends ImgPanel {
 		backDay.setBounds(171, 290, 312, 41);
 		add(backDay);
 
-		minMoney = new InvisiableTextField("0");
-		minMoney.setBounds(159, 724, 136, 41);
-		minMoney.setHorizontalAlignment(JTextField.RIGHT);
-
-		PlainDocument doc = (PlainDocument) minMoney.getDocument();
-		doc.setDocumentFilter(new MyIntFilter());
-
-		add(minMoney);
-
-		maxMoney = new InvisiableTextField("0");
-		maxMoney.setBounds(335, 724, 128, 41);
-		maxMoney.setHorizontalAlignment(JTextField.RIGHT);
-
-		PlainDocument doc2 = (PlainDocument) maxMoney.getDocument();
-		doc2.setDocumentFilter(new MyIntFilter());
-
-		add(maxMoney);
-		
 		sizeG = new ButtonGroup();
 		
 		carSize1 = new InvisiableRadio("소형");
@@ -98,23 +71,6 @@ public class ReservedCarPanel extends ImgPanel {
 		sizeG.add(carSize3);
 		add(carSize3);
 		
-		energyG = new ButtonGroup();
-		
-		carEnergy1 = new InvisiableRadio("휘발유");
-		energyG.add(carEnergy1);
-		add(carEnergy1);
-		
-		carEnergy2 = new InvisiableRadio("경유");
-		energyG.add(carEnergy2);
-		add(carEnergy2);
-		
-		carEnergy3 = new InvisiableRadio("전기");
-		energyG.add(carEnergy3);
-		add(carEnergy3);
-		
-		carEnergy3.setLocation(361, 598);
-		carEnergy2.setLocation(198, 598);
-		carEnergy1.setLocation(34, 598);
 		carSize3.setLocation(361, 509);
 		carSize2.setLocation(198, 509);
 		carSize1.setLocation(34, 509);
@@ -125,9 +81,6 @@ public class ReservedCarPanel extends ImgPanel {
 		contPerson.setValue(Integer.valueOf(0));
 		goDay.setText("YYMMDD");
 		backDay.setText("YYMMDD");
-		minMoney.setText("0");
-		maxMoney.setText("0");
-		if(energyG!=null)energyG.clearSelection();
 		if(sizeG!=null)sizeG.clearSelection();
 	}
 
@@ -155,20 +108,9 @@ public class ReservedCarPanel extends ImgPanel {
 		return backDay.getText();
 	}
 
-	public int getMinMoney() {
-		return Integer.parseInt(minMoney.getText());
-	}
-
-	public int getMaxMoney() {
-		return Integer.parseInt(maxMoney.getText());
-	}
-	
 	public String getCarSize() {
 		return bgc.getText(sizeG);
 	}
 	
-	public String getEnergy() {
-		return bgc.getText(energyG);
-	}
 
 }

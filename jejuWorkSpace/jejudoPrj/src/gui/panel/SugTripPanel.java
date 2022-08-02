@@ -2,10 +2,10 @@ package gui.panel;
 
 import java.awt.Color;
 
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
 
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
@@ -16,12 +16,6 @@ public class SugTripPanel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
-	private JTable tourism;
-	private JTable activity;
-	private JTable restaurant;
-	private JScrollPane tourismScroll;
-	private JScrollPane activityScroll;
-	private JScrollPane restaurantScroll;
 
 	public SugTripPanel() {
 		super("sugTrip");
@@ -34,65 +28,62 @@ public class SugTripPanel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(441, 100, 80, 23);
+		add(comboBox);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(30, 155, 491, 159);
+		add(scrollPane);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		scrollPane.setViewportView(panel);
+		
+		panel.setBorder(null);
+		panel.setBackground(new Color(250, 250, 250));
+		scrollPane.setBorder(null);
+		scrollPane.setBackground(null);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_1.setBounds(30, 398, 491, 159);
+		add(scrollPane_1);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		scrollPane_1.setViewportView(panel_1);
+		
+		panel_1.setBorder(null);
+		panel_1.setBackground(new Color(250, 250, 250));
+		scrollPane_1.setBorder(null);
+		scrollPane_1.setBackground(null);
+		scrollPane_1.setOpaque(false);
+		scrollPane_1.getViewport().setOpaque(false);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_2.setBounds(30, 642, 491, 159);
+		add(scrollPane_2);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		scrollPane_2.setViewportView(panel_2);
+		
+		panel_2.setBorder(null);
+		panel_2.setBackground(new Color(250, 250, 250));
+		scrollPane_2.setBorder(null);
+		scrollPane_2.setBackground(null);
+		scrollPane_2.setOpaque(false);
+		scrollPane_2.getViewport().setOpaque(false);
 
-		Integer[][] data = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-		String[] cols = { "A", "B", "C" };
-
-		tourism = new JTable();
-		tourism.setModel(new DefaultTableModel(data, cols) {
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				// all cells false
-				return false;
-			}
-
-		});
-		tourism.setBorder(new LineBorder(new Color(64, 64, 64)));
-		tourism.getTableHeader().setBackground(new Color(244, 147, 73));
-		tourism.getTableHeader().setForeground(Color.white);
-
-		activity = new JTable();
-		activity.setModel(new DefaultTableModel(data, cols) {
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				// all cells false
-				return false;
-			}
-
-		});
-		activity.setBorder(new LineBorder(new Color(64, 64, 64)));
-		activity.getTableHeader().setBackground(new Color(244, 147, 73));
-		activity.getTableHeader().setForeground(Color.white);
-
-		restaurant = new JTable();
-		restaurant.setModel(new DefaultTableModel(data, cols) {
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				// all cells false
-				return false;
-			}
-
-		});
-		restaurant.setBorder(new LineBorder(new Color(64, 64, 64)));
-		restaurant.getTableHeader().setBackground(new Color(244, 147, 73));
-		restaurant.getTableHeader().setForeground(Color.white);
-
-		tourismScroll = new JScrollPane(tourism);
-		tourismScroll.setBounds(25, 124, 495, 191);
-		add(tourismScroll);
-
-		activityScroll = new JScrollPane(activity);
-		activityScroll.setBounds(25, 367, 495, 191);
-		add(activityScroll);
-
-		restaurantScroll = new JScrollPane(restaurant);
-		restaurantScroll.setBounds(25, 610, 495, 191);
-		add(restaurantScroll);
 
 	}
+	
 	
 	public HomeBtn getHomeBtn() {
 		return homeBtn;
@@ -106,34 +97,8 @@ public class SugTripPanel extends ImgPanel {
 		return backBtn;
 	}
 
-	public JTable getTourism() {
-		return tourism;
-	}
-
-	public JTable getActivity() {
-		return activity;
-	}
-
-	public JTable getRestaurant() {
-		return restaurant;
-	}
-
-	public JScrollPane getTourismScroll() {
-		return tourismScroll;
-	}
-
-	public JScrollPane getActivityScroll() {
-		return activityScroll;
-	}
-
-	public JScrollPane getRestaurantScroll() {
-		return restaurantScroll;
-	}
-
-	
 	public void set() {
 		
 		
 	}
-
 }

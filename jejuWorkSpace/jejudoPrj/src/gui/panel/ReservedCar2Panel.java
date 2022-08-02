@@ -9,7 +9,6 @@ import gui.button.ButtonGroupController;
 import gui.button.HomeBtn;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
-import gui.field.InvisiableTextField;
 
 public class ReservedCar2Panel extends ImgPanel {
 	
@@ -18,7 +17,6 @@ public class ReservedCar2Panel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
-	private InvisiableTextField driver;
 	private ButtonGroup bg;
 	private JRadioButton noInsurance;
 	private JRadioButton nomalInsurance;
@@ -37,10 +35,6 @@ public class ReservedCar2Panel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
-		
-		driver = new InvisiableTextField(null);
-		driver.setBounds(156, 195, 312, 41);
-		add(driver);
 		
 		bg = new ButtonGroup();
 		
@@ -72,7 +66,6 @@ public class ReservedCar2Panel extends ImgPanel {
 	
 	public void reset() {
 		vo = null;
-		driver.setText(null);
 		if(bg!=null)bg.clearSelection();
 	}
 
@@ -88,10 +81,6 @@ public class ReservedCar2Panel extends ImgPanel {
 		return backBtn;
 	}
 
-	public String getDriver() {
-		return driver.getText();
-	}
-	
 	public String getInsurance() {
 		return bgc.getText(bg);
 	}

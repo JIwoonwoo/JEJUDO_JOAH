@@ -1,9 +1,7 @@
 package gui.panel;
 
 import java.awt.Font;
-import java.util.Enumeration;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;

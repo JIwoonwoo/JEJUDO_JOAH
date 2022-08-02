@@ -1,14 +1,8 @@
 package gui.panel;
 
-import javax.swing.JButton;
-
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
-import gui.button.ImgButton;
-import gui.button.InvisiableButton;
 import gui.button.NextBtn;
-
-import javax.swing.JTextField;
 
 public class Defualt extends ImgPanel {
 
