@@ -8,3 +8,5 @@ ALTER TABLE QNA MODIFY QUESTION_TITLE VARCHAR(50);
 
 INSERT INTO QNA VALUES(SEQ_QNA.NEXTVAL, 1, '문의작성 테스트', sysdate, default, '문의내역 ㅎㅎ 작성중 ㅎㅎ', null, sysdate, default, null, null);
 COMMIT;
+
+ALTER TABLE SURVEY MODIFY PURPOSE2 NULL;

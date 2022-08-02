@@ -1,16 +1,17 @@
 package gui;
 
 import java.awt.EventQueue;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 
+import car.CarService;
+import car.CarVo;
+import car.ReserveVo;
+import gui.dialog.CarSearch;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
 import gui.panel.FaveratePanel;
@@ -39,6 +40,8 @@ import member.MemberService;
 import member.MemberVo;
 import qna.QnaService;
 import qna.QnaVo;
+import survey.SurveyService;
+import survey.SurveyVo;
 
 public class GUI {
 
@@ -100,6 +103,8 @@ public class GUI {
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
+		SurveyService ss = new SurveyService();
+		CarService cs = new CarService();
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -525,42 +530,6 @@ public class GUI {
 			}
 		});
 
-		JTable tourism = sugTripPanel.getTourism();
-		tourism.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent mouseEvent) {
-				JTable table = (JTable) mouseEvent.getSource();
-				Point point = mouseEvent.getPoint();
-				int row = table.rowAtPoint(point);
-				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-					System.out.println(tourism.getValueAt(tourism.getSelectedRow(), 0).toString());
-				}
-			}
-		});
-
-		JTable activity = sugTripPanel.getActivity();
-		activity.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent mouseEvent) {
-				JTable table = (JTable) mouseEvent.getSource();
-				Point point = mouseEvent.getPoint();
-				int row = table.rowAtPoint(point);
-				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-					System.out.println(activity.getValueAt(activity.getSelectedRow(), 0).toString());
-				}
-			}
-		});
-
-		JTable restaurant = sugTripPanel.getRestaurant();
-		restaurant.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent mouseEvent) {
-				JTable table = (JTable) mouseEvent.getSource();
-				Point point = mouseEvent.getPoint();
-				int row = table.rowAtPoint(point);
-				if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-					System.out.println(restaurant.getValueAt(restaurant.getSelectedRow(), 0).toString());
-				}
-			}
-		});
-
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
 		reservInforPanel.setVisible(false);
@@ -661,15 +630,23 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reservedCar2Panel.setVisible(false);
+				
+				ReserveVo vo = reservedCar2Panel.getVo();
+				vo.setInsurance(reservedCar2Panel.getInsurance());
+				
+				if(cs.carReserve(vo)>0) {
+					payInforPanel.reset();
+					payInforPanel.setFlightPrice(null);
+					payInforPanel.setAccomPrice(null);
+					payInforPanel.setCarPrice(null);
+					payInforPanel.setHavePoint(null);
+					payInforPanel.setSumPrice(null);
 
-				payInforPanel.reset();
-				payInforPanel.setFlightPrice(null);
-				payInforPanel.setAccomPrice(null);
-				payInforPanel.setCarPrice(null);
-				payInforPanel.setHavePoint(null);
-				payInforPanel.setSumPrice(null);
-
-				payInforPanel.setVisible(true);
+					payInforPanel.setVisible(true);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "예약", "예약실패! 내용을 확인해 주세요");
+					dialog.run();
+				}
 			}
 		});
 
@@ -700,17 +677,33 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				reservedCarPanel.getGoDay();
-				reservedCarPanel.getBackDay();
-				reservedCarPanel.getContPerson();
-				reservedCarPanel.getMinMoney();
-				reservedCarPanel.getMaxMoney();
-				reservedCarPanel.getCarSize();
-				reservedCarPanel.getEnergy();
-
-				reservedCarPanel.setVisible(false);
-				reservedCar2Panel.reset();
-				reservedCar2Panel.setVisible(true);
+				
+				CarVo vo = new CarVo();
+				vo.setRentalDate(reservedCarPanel.getGoDay());
+				vo.setReturnDate(reservedCarPanel.getBackDay());
+				vo.setCarPerson(Integer.toString(reservedCarPanel.getContPerson()));
+				vo.setCarSize(reservedCarPanel.getCarSize());
+				
+				List<CarVo> list = cs.carInquiry(vo);
+				if(list!=null) {
+					CarSearch dialog = new CarSearch(frame, "자동차 조회");
+					dialog.set(list);
+					int no = dialog.run();
+					if(no>0) {
+						ReserveVo rv = new ReserveVo();
+						rv.setRentalNo(no);
+						rv.setRentalDate(vo.getRentalDate());
+						rv.setReturnDate(vo.getReturnDate());
+						rv.setMemberNo(Integer.toString(Main.loginNo));
+						reservedCarPanel.setVisible(false);
+						reservedCar2Panel.reset();
+						reservedCar2Panel.setVo(rv);
+						reservedCar2Panel.setVisible(true);
+					}
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
+					dialog.run();
+				}
 			}
 		});
 
@@ -862,14 +855,35 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(faveratePanel.getQ1());
-				System.out.println(faveratePanel.getQ2());
-				System.out.println(faveratePanel.getQ3());
-				System.out.println(faveratePanel.getQ4());
-				System.out.println(faveratePanel.getQ5());
 
-				faveratePanel.setVisible(false);
-				reservedPanel.setVisible(true);
+				SurveyVo vo = new SurveyVo();
+				
+				String[] arr = faveratePanel.getQ2();
+				
+				if(faveratePanel.getQ5()!=null && faveratePanel.getQ5().equals("있다")) {
+					vo.setAnimal_yn("Y");
+				}else {vo.setAnimal_yn("N");}
+				if(faveratePanel.getQ3()!=null && faveratePanel.getQ3().equals("너무무겁다")) {
+					vo.setBudget("Y");
+				}else {vo.setBudget("N");}
+				
+				vo.setPurpose(arr[0]);
+				vo.setPurpose2(arr[1]);
+				vo.setLocation(faveratePanel.getQ1());
+				vo.setGroup(faveratePanel.getQ4());
+				
+				System.out.println(vo);
+				System.out.println(Main.loginNo);
+				
+				if(ss.survey(vo)) {
+					faveratePanel.setVisible(false);
+					reservedPanel.setVisible(true);
+				}else {
+					PopUpDialog dialog = new PopUpDialog(frame, "설문조사", "다시 확인해주시기 바랍니다.");
+					dialog.run();
+				}
+				
+
 
 			}
 		});

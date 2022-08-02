@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JRadioButton;
 
 public class InvisiableCheck extends JCheckBox {
 	

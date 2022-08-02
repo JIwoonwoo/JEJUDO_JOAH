@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import gui.GUI;
 import gui.button.BackBtn;
@@ -52,7 +51,7 @@ public class ListQnaPanel extends ImgPanel {
 		add(scrollPane);
 		
 		panel.setBorder(null);
-		panel.setBackground(Color.white);
+		panel.setBackground(new Color(250, 250, 250));
 		scrollPane.setBorder(null);
 		scrollPane.setBackground(null);
 		scrollPane.setOpaque(false);

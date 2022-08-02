@@ -18,6 +18,7 @@ public class QuestionListTemplate extends JPanel {
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JButton button;
+	private JSeparator separator;
 
 	/**
 	 * Create the panel.
@@ -36,6 +37,7 @@ public class QuestionListTemplate extends JPanel {
 		lblNewLabel.setBounds(12, 22, 117, 18);
 		
 		lblNewLabel_1 = new JLabel(answerYn);
+		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 12));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setForeground(new Color(244, 147, 73));
 		lblNewLabel_1.setBounds(366, 10, 85, 15);
@@ -43,8 +45,8 @@ public class QuestionListTemplate extends JPanel {
 		add(lblNewLabel);
 		add(lblNewLabel_1);
 		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 59, 463, 2);
+		separator = new JSeparator();
+		separator.setBounds(0, 60, 463, 2);
 		add(separator);
 		
 	}
@@ -62,12 +64,15 @@ public class QuestionListTemplate extends JPanel {
 		setBackground(new Color(244, 147, 73));
 		lblNewLabel.setForeground(Color.white);
 		lblNewLabel_1.setForeground(Color.white);
+		separator.setForeground(Color.white);
 	}
 	
 	public void resetColor() {
 		setBackground(null);
+		setOpaque(false);
 		lblNewLabel.setForeground(Color.black);
 		lblNewLabel_1.setForeground(new Color(244, 147, 73));
+		separator.setForeground(new Color(160,160,160));
 	}
 
 	

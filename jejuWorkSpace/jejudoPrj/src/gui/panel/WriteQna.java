@@ -37,7 +37,7 @@ public class WriteQna extends ImgPanel {
 		add(nextBtn);
 		
 		textField = new InvisiableTextField(null);
-		textField.setFont(new Font("굴림", Font.BOLD, 18));
+		textField.setFont(new Font("굴림", Font.PLAIN, 18));
 		textField.setBounds(103, 120, 397, 46);
 		add(textField);
 		

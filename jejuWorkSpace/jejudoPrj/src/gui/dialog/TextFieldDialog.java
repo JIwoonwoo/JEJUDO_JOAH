@@ -11,12 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
 import gui.button.ImgButton;
 import gui.panel.ImgPanel;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 
 public class TextFieldDialog extends JDialog {
 	private JPasswordField passwordField;

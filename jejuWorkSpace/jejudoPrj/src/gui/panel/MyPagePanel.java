@@ -6,7 +6,6 @@ import gui.button.BackBtn;
 import gui.button.HomeBtn;
 import gui.button.ImgButton;
 import gui.button.InvisiableButton;
-import javax.swing.JTextField;
 
 public class MyPagePanel extends ImgPanel {
 
