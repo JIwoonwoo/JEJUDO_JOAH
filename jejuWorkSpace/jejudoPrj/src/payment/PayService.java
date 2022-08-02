@@ -1,71 +1,92 @@
 package payment;
 
+import java.sql.Connection;
+import java.util.List;
+
 import member.MemberVo;
 import util.InputUtil;
+import util.JDBCTemplate;
 
 public class PayService {
-	
+
 	public MemberVo userInfo(int no) {
-		//회원 닉네임, 포인트 가져오기
-		PayDao dao = new PayDao();
-		return dao.myInfo(no);
-		
+		// 회원 닉네임, 포인트 가져오기
+		Connection conn = null;
+		MemberVo mvo = null;
+		try {
+			conn = JDBCTemplate.getConnection();
+			mvo = new PayDao().myInfo(no, conn);
+
+		} catch (Exception e) {
+			System.out.println("회원정보 조회 오류");
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		System.out.println("로그인 상태 입니다");
+		return mvo;
+
 	}
 
-
+	// 예약정보 조회
 	public PayVo reservation(int no) {
 		PayDao dao = new PayDao();
-		
+		Connection conn = null;
+		PayVo vo = null;
 		// 이전예약정보 확인 후 예약번호 조회
-		// 항공 예약정보 -> 트라이캐치 넣기, 데이터 뭉치기
-		PayVo vogf = dao.cfPay(no);
-		PayVo vocf = dao.gfPay(no);
-		if(vogf.getFlightNo() != vocf.getFlightNo()) {
-			 
+
+		try {
+			conn = JDBCTemplate.getConnection();
+			// 항공 예약정보
+			PayVo vogf = dao.gfPay(no, conn);
+			PayVo vocf = dao.cfPay(no, conn);
+		
+			// 방 예약정보
+			PayVo vor = dao.rPay(no, conn);
+			// 차 예약정보
+			PayVo voc = dao.cPay(no, conn);
+			if (voc == null) {
+				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
+				System.out.println("1. 진행, 0.다시 예약하기");
+				while(true) {
+					int c = InputUtil.getInt();
+						if(c == 0) {
+							return vo;
+						}else if(c==1) {
+							break;
+						}else {
+							System.out.println("다시 입력해 주세요.");
+							continue;
+						}
+				}
+			}
+
+			// 총 금액 계산
+			int totalPay = totalPay(vogf, vocf, vor, voc);
+
+			// -> 여기서 넘버와 금액 포인트 뭉쳐서 리턴
+			vo = new PayVo(vogf.getFlightNo(), vor.getAccomNo(), voc.getCarNo(), totalPay, vogf.getFlightGoPay(),
+					vocf.getFlightComePay(), vor.getAccomPay(), voc.getCarPay());
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		// 방 예약정보
-		PayVo vor = dao.rPay(no);
-		// 차 예약정보
-		PayVo voc = dao.cPay(no);
 
-		// 총 금액 계산
-		int totalPay = totalPay(vogf, vocf, vor, voc);
-		
-		//-> 여기서 넘버와 금액 포인트 뭉쳐서 리턴
-		PayVo vo = new PayVo(vogf.getFlightNo(),vor.getAccomNo(),voc.getCarNo(),totalPay,vogf.getFlightGoPay(),vocf.getFlightComePay(),vor.getAccomPay(),voc.getCarPay());
-
-		// 포인트 보여주기, 사용유무, 사용량
-		int myUsePoint = usePoint(mvo);
-		
-		// 결제금액 보여주기
-		int lastPay = vo.getTotalPay() - myUsePoint;
-
-		// 적립금
-		int earnPoint = lastPay / 10;
-
-		// 결제종류선택, 결제하기
-		char howPay = ps.howPay(lastPay);
-	}
-		
-	public void payInsert() {
-		
-		// 결제 내역 저장 -> 리턴 int 가져와서 결과 확인
-		dao.payInsert(vogf, vocf, vor, voc, totalPay, myUsePoint, lastPay, earnPoint, howPay);
-
+		return vo;
 	}
 
 	// 포인트사용
-	public int usePoint(MemberVo vo) {
+	public int usePoint(MemberVo mvo) {
 
-		int myPoint = vo.getPoint();
+		int myPoint = mvo.getPoint();
 
 		if (myPoint == 0) {
 			System.out.println("현재 사용가능한 포인트가 없습니다.");
 			return myPoint;
 		}
 
-		System.out.print("현재 보유 포인트 : " + vo.getPoint());
-		System.out.println("1. 포인트 사용");
+		System.out.print("현재 보유 포인트 : " + mvo.getPoint());
+		System.out.println("\r1. 포인트 사용");
 		System.out.println("0. 사용안함");
 
 		while (true) {
@@ -109,7 +130,7 @@ public class PayService {
 	}
 
 	// 결제수단 선택
-	public char howPay(int lastPay) {
+	public int howPay(int lastPay) {
 		System.out.println("결제 수단을 선택 해 주세요");
 		System.out.println("1. 신용카드");
 		System.out.println("2. 계좌이체");
@@ -118,12 +139,12 @@ public class PayService {
 			if (choice == 1) {
 				System.out.println("신용카드를 선택하셨습니다.");
 				paidCredit(lastPay);
-				return 'c';
+				return 1;
 			}
 			if (choice == 2) {
 				System.out.println("계좌이체를 선택하셨습니다.");
 				paidTransfer(lastPay);
-				return 't';
+				return 2;
 			} else {
 				System.out.println("다시 입력해 주세요.");
 				continue;
@@ -145,9 +166,17 @@ public class PayService {
 		while (true) {
 			System.out.println("총 결제금액 : " + lastPay);
 			System.out.println("카드 정보를 입력해 주세요");
-			System.out.println("카드 번호");
-			System.out.print("> ");
-			int a = InputUtil.getInt();
+			System.out.println("카드 번호 16자리를 입력해 주세요");
+			System.out.println("ex) 1234-1234-1234-1234");
+			int a1 = InputUtil.getInt();
+			System.out.print(" - ");
+			int a2 = InputUtil.getInt();
+			System.out.print(" - ");
+			int a3 = InputUtil.getInt();
+			System.out.print(" - ");
+			int a4 = InputUtil.getInt();
+			System.out.println();
+			
 
 			System.out.println("MM/YY");
 			System.out.println("MM");
@@ -162,16 +191,25 @@ public class PayService {
 			System.out.print(">");
 			int d = InputUtil.getInt();
 
-			if ((int) (Math.log10(a) + 1) > 16) {
+			if ((int) (Math.log10(a1) + 1) > 4) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
-			} else if ((int) (Math.log10(b) + 1) > 2) {
+			}if ((int) (Math.log10(a2) + 1) > 4) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
-			} else if ((int) (Math.log10(c) + 1) > 2) {
+			}if ((int) (Math.log10(a3) + 1) > 4) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
-			} else if ((int) (Math.log10(d) + 1) > 3) {
+			}if ((int) (Math.log10(a4) + 1) > 4) {
+				System.out.println("번호를 다시 입력해 주세요");
+				continue;
+			}if ((int) (Math.log10(b) + 1) > 2) {
+				System.out.println("번호를 다시 입력해 주세요");
+				continue;
+			}if ((int) (Math.log10(c) + 1) > 2) {
+				System.out.println("번호를 다시 입력해 주세요");
+				continue;
+			}if ((int) (Math.log10(d) + 1) > 3) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
 			} else {
@@ -187,13 +225,92 @@ public class PayService {
 	// 결제금액 더하기
 	public int totalPay(PayVo vogf, PayVo vocf, PayVo vor, PayVo voc) {
 
-		int fg = vogf.getFlightGoPay();
+		System.out.println();
+		int fg = vogf.getFlightGoPay();	
 		int fc = vocf.getFlightComePay();
 		int p = vor.getAccomPay();
-		int c = vor.getCarPay();
+		int c = voc.getCarPay();
+		System.out.println("가는 비행기 : " + fg);
+		System.out.println("오는 비행기 : " + fc);
+		System.out.println("방값 : " + p);
+		System.out.println("차값 : " + c);
 		int total = fg + fc + p + c;
+		System.out.println("\r총 금액 : " + total);
 		return total;
 
+	}
+
+	// 결제 내역 저장
+	public void payEnd(int no, int leavePoint, PayVo vo) {
+		Connection conn = null;
+		
+		// 결제 내역 저장 -> 리턴 int 가져와서 결과 확인
+		try {
+			conn = JDBCTemplate.getConnection();
+			int result1 = new PayDao().payInsert(vo, conn);
+			int result2 = new PayDao().pointUpdate(no, leavePoint, conn);
+			int result3 = new PayDao().paidUpdate(vo, conn);
+			if (result1 == 1 && result2 == 1) {
+				System.out.println("결제 정보 저장 완료");
+				JDBCTemplate.commit(conn);
+			} else {
+				System.out.println("결제 정보 인서트 오류");
+				JDBCTemplate.rollback(conn);
+			}
+		} catch (Exception e) {
+			System.out.println("결제 인서트 오류");
+			e.printStackTrace();
+			JDBCTemplate.rollback(conn);
+		} finally {
+			JDBCTemplate.commit(conn);
+			JDBCTemplate.close(conn);
+		}
+
+	}
+
+	// 포인트 내역
+	public List<PayVo> pointAddList(int no) {
+
+		PayDao pd = new PayDao();
+		Connection conn = null;
+		List<PayVo> list = null;
+
+		try {
+
+			conn = JDBCTemplate.getConnection();
+
+			list = pd.pointAddList(conn, no);
+			if (list != null) {
+				System.out.println("성공");
+				System.out.println(list);
+			} else {
+				System.out.println("실패");
+			}
+
+		} catch (Exception e) {
+			System.out.println("에러");
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+
+		return list;
+	}
+
+	// 결제 내역 확인
+	public void checkPayment(int no) {
+		Connection conn = null;
+		List<PayVo> list = null;
+		try {
+			conn = JDBCTemplate.getConnection();
+			list = new PayDao().myPayment(no, conn);
+
+		} catch (Exception e) {
+			System.out.println("회원정보 조회 오류");
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
 	}
 
 }
