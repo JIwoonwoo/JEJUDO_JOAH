@@ -6,34 +6,24 @@ import java.util.List;
 import car_main.Main;
 import util.JDBCTemplate;
 
-
 public class CarService {
 	
 	CarDao dao =new CarDao();
 	
 	public List<CarVo> carInquiry(CarVo vo) {
 		List<CarVo> carVoList = null;
-
-		// 사용자 input String > int로
-//		int person = Integer.parseInt(vo.getCarPerson());
-//		int size = Integer.parseInt(vo.getCarSize());
-//		int fuel = Integer.parseInt(vo.getCarFuel());
-		int person = Parsing.getInt(vo.getCarPerson());
-		int size = Parsing.getInt(vo.getCarSize());
-		int rentalDate = Parsing.getInt(vo.getRentalDate());
-		int returnDate = Parsing.getInt(vo.getReturnDate());
 		
+		// 사용자 input String > int로
+		int person = Integer.parseInt(vo.getCarPerson());
+		int size = Integer.parseInt(vo.getCarSize());
+//		int fuel = Integer.parseInt(vo.getCarFuel());
+	
 		if(vo.getRentalDate().length() != 6) {
 			System.out.println("날짜 형식을 맞춰주세요");
 			return carVoList;
 		}
 		if(vo.getReturnDate().length() != 6) {
 			System.out.println("날짜 형식을 맞춰주세요");
-			return carVoList;
-		}
-
-		if(rentalDate > returnDate) {
-			System.out.println("날짜를 확인해주세요.");
 			return carVoList;
 		}
 		
@@ -47,15 +37,10 @@ public class CarService {
 			return carVoList;
 		}
 		
-		
 		Connection conn = null;
 		try {
 			conn = JDBCTemplate.getConnection();
 		 	carVoList = dao.carInquiry(vo, conn);
-		 	
-		 	if(carVoList != null) {
-				Main.inquiryCar = vo;
-		 	} 
 		 	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,14 +50,9 @@ public class CarService {
 		return carVoList;
 		
 	}
-	private void Parsing() {
-		// TODO Auto-generated method stub
-		
-	}
 	public int carReserve(ReserveVo rVo) {
-		
 		// 사용자 input String > int로
-		int insurance = Parsing.getInt(rVo.getInsurance());
+		int insurance = Integer.parseInt(rVo.getInsurance());
 		
 		
 		if(rVo.getRentalNo() >= 48) {
@@ -98,63 +78,11 @@ public class CarService {
 			
 		} catch (Exception e) {
 			JDBCTemplate.rollback(conn);
-			
-			e.printStackTrace();
-		} finally {
 			JDBCTemplate.close(conn);
+			e.printStackTrace();
 		}
 		return result;
 	
 	}
-	
-	public List<ReserveVo> reserveInquiry(int input) {
-		Connection conn = null;
-		List<ReserveVo> reserveVoList = null;
-		try {
-			conn = JDBCTemplate.getConnection();
-			reserveVoList = dao.reserveInquiry(conn, input);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			JDBCTemplate.close(conn);
-		}
-		return reserveVoList;
-	}
-	
-	public int carCancel(ReserveVo rVo) {
-		int result = 0;
-		Connection conn = null;
-		try {
-			conn = JDBCTemplate.getConnection();
-			result = dao.carCancel(rVo,conn);
-			
-			if(result == 1) {
-				JDBCTemplate.commit(conn);
-			} else {
-				JDBCTemplate.rollback(conn);
-			}
-			
-		} catch (Exception e) {
-			JDBCTemplate.rollback(conn);
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(conn);
-		}
-		
-		return result;
-	}
-	public ReserveVo detailInquiry(int rentalNo) {
-		Connection conn = null;
-		ReserveVo vo = null;
-		try {
-			conn = JDBCTemplate.getConnection();
-			vo = dao.detailInquiry(rentalNo,conn);
-		}catch (Exception e) {
-			
-		}
-	}
-	
-	
 
 }
