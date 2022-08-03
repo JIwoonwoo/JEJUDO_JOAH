@@ -138,15 +138,19 @@ public class CarController {
 		System.out.println("회원 번호(test) : ");
 		int input = Parsing.getInt();
 		
-		List<ReserveVo> reserveVoList = new CarService().reserveInquiry(input);
+		List<ReserveVo> reserveVoList = null;
 		
-		if(reserveVoList == null) {
+		reserveVoList = new CarService().reserveInquiry(input);
+		
+		if(reserveVoList.isEmpty()) {
 			System.out.println("예약된 렌터카가 없습니다.");
 			return;
 		}
+		
 		ReserveVo result = null;
 		System.out.println("------ 내가 예약한 렌터카 목록 ------");
 //		System.out.println(reserveVoList.size());
+		
 		for(int i = 0; i < reserveVoList.size(); i++) {
 			
 			result = reserveVoList.get(i);
