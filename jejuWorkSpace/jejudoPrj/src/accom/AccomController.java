@@ -19,21 +19,17 @@ public class AccomController {
 
 		//필요한 데이터 받기 (체크인, 체크아웃, 인원수, 회원정보, 설문정보
 		System.out.println("숙소에 머무실 일정을 입력해주세요.");
-		System.out.print("체크인 날짜 (00/00/00 형식으로 입력하세요): ");
+		System.out.print("체크인 날짜 (00/00/00 형식으로 입력하세요 /는빼고): ");
 		String checkin = InputUtil.sc.nextLine();
-		System.out.print("체크아웃 날짜 (00/00/00 형식으로 입력하세요) : ");
+		System.out.print("체크아웃 날짜 (00/00/00 형식으로 입력하세요 /는빼고) : ");
 		String checkout = InputUtil.sc.nextLine();
 
 		System.out.print("인원 수 : ");
 		int people = InputUtil.getInt();
 		
-		//로그인한 사람의 회원번호 받기
-//		String memberNo = MemberVo().getNo();
+		System.out.println("한 숙소 타입만 골라서 보기 : 호텔은 H, 게스트하우스는 G 입력 (필수X)");
+		String HG = InputUtil.sc.nextLine();
 		
-		//설문조사 결과 대답 데이터 받기(위치, 예산, 반려동물)
-		//String 위치
-		//String 예산
-		//String 반려동물유무
 		
 		//데이터 뭉치기
 		AccDto dto = new AccDto();
@@ -41,6 +37,7 @@ public class AccomController {
 		dto.setCheckin(checkin);
 		dto.setCheckout(checkout);
 		dto.setPeople(people);
+		dto.setHG(HG);
 		
 		AccTestMenu.Accommodation = dto;
 		
