@@ -8,52 +8,74 @@ import java.util.ArrayList;
 import java.util.List;
 
 import survey.SurveyVo;
-import util.InputUtil;
 import util.JDBCTemplate;
 
 public class TravelDao {
 
 	// 카테고리 1 : 관광지 메소드
-	public TravelVo attraction(int inputnum) {
+	public List<TravelVo> attraction(int inputnum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		TravelVo vo = null;
+//		TravelVo vo = null;
 		ResultSet rs = null;
+		List<TravelVo> list = null;
 
 		try {
 			conn = JDBCTemplate.getConnection();
-			String sql = "SELECT TRAVEL_NO, P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS FROM TRAVEL T JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO WHERE T.CATEGORY = ? ";
+			String sql = "SELECT LIKE_CNT, TRAVEL_NO, P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS FROM TRAVEL T JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO WHERE T.CATEGORY = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, inputnum);
 
 			rs = pstmt.executeQuery();
 
+			list = new ArrayList<TravelVo>();
+			
 			while (rs.next()) {
-				vo = new TravelVo();
-				String no = rs.getString("TRAVEL_NO");
-				String purpose = rs.getString("PURPOSE");
-				String category = rs.getString("CATEGORY");
-				String travelName = rs.getString("TRAVEL_NAME");
-				String travelAddress = rs.getString("TRAVEL_ADDRESS");
+				TravelVo vo = new TravelVo();
+				
+				vo.setTravel_no(rs.getString("TRAVEL_NO"));
+//				String purpose = rs.getString("PURPOSE");
+				vo.setCategory(rs.getString("CATEGORY"));
+				vo.setTravel_name(rs.getString("TRAVEL_NAME"));
+				
+				String adress = rs.getString("TRAVEL_ADDRESS");
+				
+				if(adress.contains("서귀포시")) {
+					adress = "서귀포시";
+				}else {
+					adress = "제주시";
+				}
+				
+				vo.setTravel_address(adress);
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
 
-				System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
-						+ " | [주소] " + travelAddress);
-
+				System.out.println(vo);
+				
+//				String no = rs.getString("TRAVEL_NO");
+//				String purpose = rs.getString("PURPOSE");
+//				String category = rs.getString("CATEGORY");
+//				String travelName = rs.getString("TRAVEL_NAME");
+//				String travelAddress = rs.getString("TRAVEL_ADDRESS");
+//
+//				System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
+//						+ " | [주소] " + travelAddress);
+				
+				list.add(vo);
 			}
 
 			
 
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 			
 		} finally {
 			JDBCTemplate.close(pstmt);
 			JDBCTemplate.close(rs);
+			JDBCTemplate.close(conn);
 		}
 
-		return vo;
+		return list;
 
 	}
 
@@ -563,7 +585,6 @@ public class TravelDao {
 	public TravelVo nowLike(String likeCount) throws Exception {
 
 		Connection conn = JDBCTemplate.getConnection();
-		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		TravelVo vo = null;

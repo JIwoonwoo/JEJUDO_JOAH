@@ -106,6 +106,9 @@ public class ReservInforPanel extends ImgPanel {
 	}
 
 	public void setCarList(List<ReserveVo> list) {
+		panel_2.removeAll();
+		panel_2.revalidate();
+		panel_2.repaint();
 		int i = 0;
 		System.out.println(list);
 		for (ReserveVo vo : list) {

@@ -24,6 +24,7 @@ import gui.panel.CarDetail;
 import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
+import gui.panel.InforActiv;
 import gui.panel.JoinPanel;
 import gui.panel.ListQnaPanel;
 import gui.panel.LoginPanel;
@@ -51,6 +52,8 @@ import qna.QnaService;
 import qna.QnaVo;
 import survey.SurveyService;
 import survey.SurveyVo;
+import travel.TravelDao;
+import travel.TravelVo;
 
 public class GUI {
 
@@ -58,7 +61,7 @@ public class GUI {
 	private String where = "";
 	public static ViewQna viewQna;
 	public static CarDetail carDetail;
-	private VoBox voBox;
+	private VoBox voBox = new VoBox();
 
 	/**
 	 * Launch the application.
@@ -112,6 +115,7 @@ public class GUI {
 		UpdateMemberPanel updateMemberPanel = new UpdateMemberPanel();
 		PointPanel pointPanel = new PointPanel();
 		carDetail = new CarDetail();
+		InforActiv inforActiv = new InforActiv();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -666,6 +670,7 @@ public class GUI {
 					Cash dialog = new Cash(frame, "계좌이체" ,"");
 					dialog.run();
 				}
+				
 				PayVo vo = payInforPanel.getVo();
 				
 				vo.setPointUsed(payInforPanel.getUsePoint());
@@ -674,9 +679,13 @@ public class GUI {
 				vo.setPayMethod(Integer.parseInt(payInforPanel.getCardorCash()));
 				
 				/*각 예약 인설트 후 */
-				if(cs.carReserve(voBox.getRvo())>0);//자동차 인설트
+//				if(as.accReserve(voBox.getAvo())>0);//숙소 인설트
+//				if(cs.carReserve(voBox.getRvo())>0);//자동차 인설트
 				
 				PayVo pvo = ps.getNo(Main.loginNo);
+				if(pvo==null) {
+					//실패 return;
+				}
 				
 				vo.setAccomNo(pvo.getAccomNo());
 				vo.setCarNo(pvo.getCarNo());
@@ -688,10 +697,10 @@ public class GUI {
 					
 					List<ReserveVo> list = cs.reserveInquiry(Main.loginNo);
 					
-					if(list!=null) {
-						reservInforPanel.setCarList(list);
-						
+					if(list==null) {
+						return;
 					}
+					reservInforPanel.setCarList(list);
 					
 					reservInforPanel.getBackBtn().setVisible(false);
 					reservInforPanel.getNextBtn().setVisible(true);
@@ -746,7 +755,6 @@ public class GUI {
 						payInforPanel.setCarPrice(pvo.getCarPay());
 						payInforPanel.setHavePoint(ps.userInfo(Main.loginNo).getPoint());
 //						payInforPanel.setSumPrice(pvo.getTotalPay());
-						System.out.println("자동차 커밋");
 						payInforPanel.setVo(pvo);
 						payInforPanel.reset();
 						payInforPanel.setVisible(true);
@@ -806,6 +814,8 @@ public class GUI {
 						rv.setRentalDate(vo.getRentalDate());
 						rv.setReturnDate(vo.getReturnDate());
 						rv.setMemberNo(Main.loginNo);
+						rv.setDayPrice(dialog.getPrice());
+						
 						reservedCarPanel.setVisible(false);
 						reservedCar2Panel.reset();
 						reservedCar2Panel.setVo(rv);
@@ -856,7 +866,7 @@ public class GUI {
 				dto.setCheckin(reservedAccomPanel.getGoDay());
 				dto.setCheckout(reservedAccomPanel.getBackDay());
 				dto.setPeople(reservedAccomPanel.getContPerson());
-				dto.setType(reservedAccomPanel.getHotel());
+				dto.setHG(reservedAccomPanel.getHotel());
 				
 				List<AccDto> list = as.accSearch(dto);
 				
@@ -864,20 +874,22 @@ public class GUI {
 					AccomSearch dialog = new AccomSearch(frame, "숙소조회");
 					dialog.set(list);
 					int no = dialog.run();
+					dto.setRoomno(no);
+					dto.setPrice(Integer.parseInt(dialog.getPrice()));
 					
-					//no로 해당 숙소 조회 후 vo 저장 box에 저장
+					voBox.setA(dto);
 					
 					if(no>0) {
 						//성공
 						reservedAccomPanel.setVisible(false);
 						reservedCarPanel.reset();
 						reservedCarPanel.setVisible(true);
-						
+						return;
 					}
-				}else {
-					PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
-					dialog.run();
 				}
+				
+				PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
+				dialog.run();
 			}
 		});
 
@@ -1027,6 +1039,29 @@ public class GUI {
 
 			}
 		});
+		/** 문의내역확인 **/
+		frame.getContentPane().add(inforActiv);
+		inforActiv.setVisible(false);
+		
+		// 뒤로가기
+		inforActiv.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforActiv.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforActiv.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforActiv.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
 
 		/** 메인페이지 **/
 		frame.getContentPane().add(mainPanel);
@@ -1048,7 +1083,16 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(3);
+				
+				if(list==null) {
+					return;
+				}
 				mainPanel.setVisible(false);
+				inforActiv.setList(list);
+				inforActiv.setVisible(true);
 
 			}
 		});

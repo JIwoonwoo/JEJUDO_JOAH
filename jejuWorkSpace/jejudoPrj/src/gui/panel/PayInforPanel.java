@@ -18,7 +18,7 @@ import gui.field.InvisiableTextField;
 import payment.PayVo;
 
 public class PayInforPanel extends ImgPanel {
-	
+
 	private ButtonGroupController bgc = new ButtonGroupController();
 
 	private HomeBtn homeBtn;
@@ -33,7 +33,7 @@ public class PayInforPanel extends ImgPanel {
 	private ButtonGroup g;
 	private JRadioButton card;
 	private JRadioButton cash;
-	
+
 	private PayVo vo;
 	private int total;
 
@@ -48,81 +48,97 @@ public class PayInforPanel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
-		
+
 		flightPrice = new JLabel();
 		flightPrice.setHorizontalAlignment(SwingConstants.RIGHT);
 		flightPrice.setFont(new Font("굴림", Font.PLAIN, 15));
 		flightPrice.setBounds(327, 225, 124, 29);
 		add(flightPrice);
-		
+
 		accomPrice = new JLabel();
 		accomPrice.setHorizontalAlignment(SwingConstants.RIGHT);
 		accomPrice.setFont(new Font("굴림", Font.PLAIN, 15));
 		accomPrice.setBounds(327, 279, 124, 29);
 		add(accomPrice);
-		
+
 		carPrice = new JLabel();
 		carPrice.setHorizontalAlignment(SwingConstants.RIGHT);
 		carPrice.setFont(new Font("굴림", Font.PLAIN, 15));
 		carPrice.setBounds(327, 332, 124, 29);
 		add(carPrice);
-		
+
 		sumPrice = new JLabel();
 		sumPrice.setHorizontalAlignment(SwingConstants.RIGHT);
-		sumPrice.setFont(new Font("굴림", Font.PLAIN, 15));
-		sumPrice.setBounds(327, 532, 124, 29);
+		sumPrice.setFont(new Font("굴림", Font.PLAIN, 18));
+		sumPrice.setBounds(274, 526, 177, 41);
 		add(sumPrice);
-		
+
 		havePoint = new JLabel();
 		havePoint.setHorizontalAlignment(SwingConstants.RIGHT);
 		havePoint.setFont(new Font("굴림", Font.PLAIN, 10));
 		havePoint.setBounds(385, 441, 54, 18);
 		add(havePoint);
-		
+
 		usePoint = new InvisiableTextField(null);
 		usePoint.setHorizontalAlignment(SwingConstants.RIGHT);
 		usePoint.setBounds(224, 467, 214, 35);
 		usePoint.getDocument().addDocumentListener(new DocumentListener() {
-			  public void changedUpdate(DocumentEvent e) {
-					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
-					sumPrice.setText(Integer.toString(total));
-			  }
-			  public void removeUpdate(DocumentEvent e) {
-					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
-					sumPrice.setText(Integer.toString(total));
-			  }
-			  public void insertUpdate(DocumentEvent e) {
-					total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
-					sumPrice.setText(Integer.toString(total));
-			  }
+			public void changedUpdate(DocumentEvent e) {
+				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
+					usePoint.setText("0");
+					return;
+				}
+				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
+				sumPrice.setText(sum);
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
+					usePoint.setText("0");
+					return;
+				}
+				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
+				sumPrice.setText(sum);
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
+					usePoint.setText("0");
+					return;
+				}
+				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
+				sumPrice.setText(sum);
+			}
 		});
 
 		add(usePoint);
-		
+
 		g = new ButtonGroup();
-		
-		card =  new InvisiableRadio("카드");
+
+		card = new InvisiableRadio("카드");
 		card.setText("1");
 		card.setLocation(60, 685);
 		g.add(card);
 		add(card);
-		
-		cash =  new InvisiableRadio("계좌이체");
-		card.setText("2");
+
+		cash = new InvisiableRadio("계좌이체");
+		cash.setText("2");
 		cash.setLocation(291, 685);
 		g.add(cash);
 		add(cash);
-		
+
 	}
-	
+
 	public void reset() {
-		total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText()) + Integer.parseInt(accomPrice.getText());
+		total = Integer.parseInt(flightPrice.getText()) + Integer.parseInt(carPrice.getText())
+				+ Integer.parseInt(accomPrice.getText());
 		sumPrice.setText(Integer.toString(total));
 		usePoint.setText(null);
-		if(g!=null)g.clearSelection();
-		
+		if (g != null)
+			g.clearSelection();
+
 	}
-	
+
 	public String getCardorCash() {
 		return bgc.getText(g);
 	}
@@ -190,7 +206,5 @@ public class PayInforPanel extends ImgPanel {
 	public void setVo(PayVo vo) {
 		this.vo = vo;
 	}
-	
-	
-	
+
 }

@@ -59,15 +59,15 @@ public class AccomController {
 		dto.setCheckin(checkin);
 		dto.setCheckout(checkout);
 		
-		int result = new AccService().accSelect(dto);
-		
-		if(result == 1) {
-			//예약 성공
-			System.out.println("선택하신 숙소가 예약 목록에 추가되었습니다. 결제 후 예약 확정됩니다.");
-		}else {
-			//예약 실패
-			System.out.println("숙소 예약에 실패하였습니다. 다시 시도해 주세요.");
-		}
+//		int result = new AccService().accSelect(dto);
+//		
+//		if(result == 1) {
+//			//예약 성공
+//			System.out.println("선택하신 숙소가 예약 목록에 추가되었습니다. 결제 후 예약 확정됩니다.");
+//		}else {
+//			//예약 실패
+//			System.out.println("숙소 예약에 실패하였습니다. 다시 시도해 주세요.");
+//		}
 
 		
 	}

@@ -11,12 +11,13 @@ import payment.PayVo;
 
 public class VoBox {
 	
-	private PayVo vogf; // 가는비행기
-	private PayVo vocf; // 오는비행기
-	private PayVo vor; // 숙소
-	private PayVo voc; // 자동차
+	private PayVo vogf = new PayVo(); // 가는비행기
+	private PayVo vocf = new PayVo(); // 오는비행기
+	private PayVo vor = new PayVo(); // 숙소
+	private PayVo voc = new PayVo(); // 자동차
 	
 	private ReserveVo rvo;
+	private AccDto avo;
 
 	public void setF(Flight_Vo vo) {
 		
@@ -27,14 +28,17 @@ public class VoBox {
 	
 	public void setA(AccDto vo) {
 		
+		avo = vo;
+		
 		String Checkout = vo.getCheckout();
 		String Checkin = vo.getCheckin();
-		
-		Checkout = Checkout.substring(0,10); // 2022/05/05
+		System.out.println(Checkout);
+		System.out.println(Checkin);
+//		Checkout = Checkout.substring(0,10); // 2022/05/05
 		Checkout = Checkout.replace("/", "");
 		Checkout = Checkout.replace("-", "");
 		
-		Checkin = Checkin.substring(0,10); // 2202/05/05
+//		Checkin = Checkin.substring(0,10); // 2202/05/05
 		Checkin = Checkin.replace("/", "");
 		Checkin = Checkin.replace("-", "");
 		
@@ -64,11 +68,14 @@ public class VoBox {
 		String Checkout = vo.getReturnDate();
 		String Checkin = vo.getRentalDate();
 		
-		Checkout = Checkout.substring(0,10); // 2022/05/05
+		System.out.println(Checkout);
+		System.out.println(Checkin);
+		
+//		Checkout = Checkout.substring(0,10); // 2022/05/05
 		Checkout = Checkout.replace("/", "");
 		Checkout = Checkout.replace("-", "");
 		
-		Checkin = Checkin.substring(0,10); // 2202/05/05
+//		Checkin = Checkin.substring(0,10); // 2202/05/05
 		Checkin = Checkin.replace("/", "");
 		Checkin = Checkin.replace("-", "");
 		
@@ -126,6 +133,10 @@ public class VoBox {
 
 	public ReserveVo getRvo() {
 		return rvo;
+	}
+
+	public AccDto getAvo() {
+		return avo;
 	}
 
 	

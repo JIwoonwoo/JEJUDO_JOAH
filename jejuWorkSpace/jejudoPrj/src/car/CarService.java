@@ -92,13 +92,15 @@ public class CarService {
 			
 			if(result == 1) {
 				JDBCTemplate.commit(conn);
+				System.out.println("자동차 인설트 성공");
 			} else {
 				JDBCTemplate.rollback(conn);
+				System.out.println("자동차 인설트 실패");
 			}
 			
 		} catch (Exception e) {
 			JDBCTemplate.rollback(conn);
-			
+			System.out.println("error 자동차 인설트 실패");
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(conn);

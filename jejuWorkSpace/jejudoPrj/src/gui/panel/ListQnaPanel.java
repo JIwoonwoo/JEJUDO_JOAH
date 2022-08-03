@@ -76,6 +76,9 @@ public class ListQnaPanel extends ImgPanel {
 	 * @param list vo(no, title, answerYN, qContent, aContent)
 	 */
 	public void setList(List<QnaVo> list) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 		int i = 0;
 		for (QnaVo vo : list) {
 			String title = vo.getQuestionTitle();

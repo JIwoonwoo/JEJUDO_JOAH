@@ -25,6 +25,7 @@ public class CarSearch extends JDialog {
 	private JTable table;
 	
 	private int select = -1;
+	private String price;
 	
 	public CarSearch(Frame parent, String name) {
 		super(parent,name,true);
@@ -59,6 +60,7 @@ public class CarSearch extends JDialog {
 				String result = null;
 				if(table.getSelectedRow() != -1) {
 					result = table.getValueAt(table.getSelectedRow(), 0).toString();
+					price = table.getValueAt(table.getSelectedRow(), 3).toString();
 				}
 				select = Integer.parseInt(result);
 				dispose();
@@ -116,4 +118,10 @@ public class CarSearch extends JDialog {
 		});
 		
 	}
+
+	public String getPrice() {
+		return price;
+	}
+	
+	
 }

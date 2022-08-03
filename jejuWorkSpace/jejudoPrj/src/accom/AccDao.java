@@ -3,6 +3,7 @@ package accom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +19,18 @@ public class AccDao {
 	public List<AccDto> accSearch(AccDto inputDto, Connection conn, SurveyVo svo) {
 
 		List<AccDto> list = null;
-		
+
 		// 설문조사 정보 받아오기
 		// 예산
 		String budgetanswer;
 		if (svo.getBudget().equals("Y")) {
-			budgetanswer = "AND ROOM_PRICE >= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY >= " + inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople()+1 + ")";
-		} else if(svo.getBudget().equals("N")){
-			budgetanswer = "AND ROOM_PRICE <= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY <= " + inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople()+1 + ")" ;
-		}else {
-			budgetanswer = "" ;
+			budgetanswer = "AND ROOM_PRICE >= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY >= "
+					+ inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople() + 1 + ")";
+		} else if (svo.getBudget().equals("N")) {
+			budgetanswer = "AND ROOM_PRICE <= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY <= "
+					+ inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople() + 1 + ")";
+		} else {
+			budgetanswer = "";
 		}
 
 		// 여행지역
@@ -39,17 +42,16 @@ public class AccDao {
 		} else {
 			locationanswer = "%제주%";
 		}
-		
-		//호텔_게하 구분
+
+		// 호텔_게하 구분
 		String HG;
-		if(inputDto.getHG().equals("H")) {
+		if (inputDto.getHG().equals("H")) {
 			HG = "AND A.TYPE = 'H'";
-		} else if(inputDto.getHG().equals("G")) {
-			HG= "AND A.TYPE = 'G'";
+		} else if (inputDto.getHG().equals("G")) {
+			HG = "AND A.TYPE = 'G'";
 		} else {
 			HG = "";
 		}
-		
 
 		// SQL 준비
 		String sql = "SELECT A.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ?"
@@ -74,7 +76,7 @@ public class AccDao {
 			System.out.println("----- 숙소 검색 목록 -----");
 
 			list = new ArrayList<AccDto>();
-			
+
 			while (rs.next()) {
 
 				AccDto dto = new AccDto();
@@ -93,7 +95,7 @@ public class AccDao {
 
 				System.out.println("1");
 				System.out.println(dto);
-				
+
 				list.add(dto);
 
 			}
@@ -110,23 +112,28 @@ public class AccDao {
 
 	}// accSearch
 
-	public int accSelect(AccDto dto, Connection conn) {
+	public AccDto accSelect(AccDto inputDto, Connection conn) throws Exception {
 
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
+
+		AccDto dto = null;
 
 		// sql준비 --------------------------------------삭제가능
 		String sql2 = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE R.ROOM_NO = ?";
 
 		try {
 			pstmt = conn.prepareStatement(sql2);
-			pstmt.setInt(1, dto.getRoomno());
+			pstmt.setInt(1, inputDto.getRoomno());
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 
 //			dto.setRoomno(rs.getInt("ROOM_NO"));
+
+				dto = new AccDto();
+
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setAddress(rs.getString("ACCOM_ADDRESS"));
 				dto.setPoolYN(rs.getString("POOL_YN"));
@@ -140,17 +147,24 @@ public class AccDao {
 
 				System.out.println(dto);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("[ERROR]선택하신 숙소 조회 오류");
-		} // -------------------------------------------- gui할때삭제됨
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
 
-		System.out.println("선택하신 방을 예약하시겠습니까?  (Y/N 으로 대답)");
-		String answer = InputUtil.sc.nextLine();
+		return dto;
 
+	}// accSelect
+
+	//정한
+	public int accReserve(AccDto dto, Connection conn) throws Exception {
+
+//		System.out.println("선택하신 방을 예약하시겠습니까?  (Y/N 으로 대답)");
+//		String answer = InputUtil.sc.nextLine();
+		
+		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		int result = 0;
 
-		if (answer.equals("Y")) {
 			try {
 				// 예약을 위한 sql 작성
 				String sql3 = "INSERT INTO ACCOM_RESERVATION(ACCOM_NO, ROOM_NO, MEMBER_NO, CHECK_IN, CHECK_OUT) VALUES(SEQ_ACCOM_RESERVATION.NEXTVAL, ?, ?, ? , ?)";
@@ -165,21 +179,12 @@ public class AccDao {
 
 				result = pstmt.executeUpdate();
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("[ERROR] 예약 중 에러 발생. 다시 시도해 주세요.");
-				result = -2;
-			} finally {
+			}  finally {
 				JDBCTemplate.close(pstmt);
-				JDBCTemplate.close(rs);
 			}
-		} else {
-
-			System.out.println("예약을 취소합니다.");
-			result = 0;
-		}
+		 
 
 		return result;
-	}// accSelect
+	}// accReserve
 
 }

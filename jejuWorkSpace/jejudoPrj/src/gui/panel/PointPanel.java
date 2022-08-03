@@ -96,6 +96,9 @@ public class PointPanel extends ImgPanel {
 	}
 	
 	public void setList(List<PayVo> list) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 		int i = 0;
 		for(PayVo vo : list) {
 			Timestamp d = vo.getPayDate();

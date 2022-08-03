@@ -56,17 +56,53 @@ public class AccService {
 			
 		}//accSearch
 
-		public int accSelect(AccDto dto) {
+		public AccDto accSelect(AccDto dto) {
+			
+			Connection conn = null;
+			AccDto result = null;
+			try {
+				conn = JDBCTemplate.getConnection();
+				
+				result = new AccDao().accSelect(dto, conn);
+				if(result!=null) {
+					System.out.println("숙소 조회 1개 성공");
+				}else {
+					System.out.println("숙소 조회 1개 실패");
+				}
+
+			} catch (Exception e) {
+				System.out.println("error 숙소 조회 1개 실패");
+				e.printStackTrace(); 
+			} finally {
+				JDBCTemplate.close(conn);
+			}
+			
+			return result;
+			
+		}//accSelect
+		
+		//정한
+		public int accReserve(AccDto dto) {
 			
 			Connection conn = null;
 			int result = 0;
 			try {
 				conn = JDBCTemplate.getConnection();
 				
-				result = new AccDao().accSelect(dto, conn);
+				result = new AccDao().accReserve(dto, conn);
+				if(result==1) {
+					System.out.println("숙소예약 입력 성공");
+					JDBCTemplate.commit(conn);
+				}else {
+					System.out.println("숙소예약 입력 실패");
+					JDBCTemplate.rollback(conn);
+				}
+				
 
 			} catch (Exception e) {
 				e.printStackTrace(); 
+				System.out.println("error 숙소예약 입력 실패");
+				JDBCTemplate.rollback(conn);
 			} finally {
 				JDBCTemplate.close(conn);
 			}
