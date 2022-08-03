@@ -649,7 +649,7 @@ public class GUI {
 			}
 		});
 
-		/** 예약페이지 랜트카2 **/// 체크박스 만들어야함..
+		/** 예약페이지 랜트카2 **/
 		frame.getContentPane().add(reservedCar2Panel);
 		reservedCar2Panel.setVisible(false);
 
@@ -692,7 +692,7 @@ public class GUI {
 						payInforPanel.setCarPrice(pvo.getCarPay());
 						payInforPanel.setHavePoint(ps.userInfo(Main.loginNo).getPoint());
 //						payInforPanel.setSumPrice(pvo.getTotalPay());
-						
+						System.out.println("자동차 커밋");
 						payInforPanel.setVo(pvo);
 						payInforPanel.reset();
 						payInforPanel.setVisible(true);
