@@ -43,14 +43,14 @@ public class PayService {
 			// 항공 예약정보 비행기 예약번호, 금액 출발
 			PayVo vogf = dao.gfPay(no, conn);
 			
-			if(vogf.getFlightGoPay()==0) {
+			if(vogf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
 				return vo;
 			}
 			//항공 예약정보 비행기 예약번호, 금액 복귀
 			PayVo vocf = dao.cfPay(no, conn);
 			
-			if(vocf.getFlightComePay()==0) {
+			if(vocf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
 				return vo;
 			}
@@ -67,7 +67,7 @@ public class PayService {
 			PayVo voc = dao.cPay(no, conn);
 			
 			
-			if (voc.getCarNo() == 0) {
+			if (voc==null) {
 //				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
 //				System.out.println("1. 진행, 0.다시 예약하기");
 				YesOrNo dialog = new YesOrNo(GUI.frame, "결제", "렌트카를 예약하지 않았습니다. 진행 하시겠습니까?");
@@ -76,6 +76,7 @@ public class PayService {
 //					int c = InputUtil.getInt();
 					int c = dialog.run();
 						if(c == -1) {
+							voc = new PayVo();
 							return vo;
 						}else if(c==1) {
 							break;
@@ -299,18 +300,6 @@ public class PayService {
 				JDBCTemplate.rollback(conn);
 			}
 			
-//			if (result2 == 1) {
-//				System.out.println("포인트 저장 완료");
-//				JDBCTemplate.commit(conn);
-//			}
-//			
-//			if (result3 == 2 || result3 == 3) {
-//				System.out.println("결제 완료 변경 완료");
-//				JDBCTemplate.commit(conn);
-//			}else {
-//				System.out.println("결제 정보 인서트 오류");
-//				JDBCTemplate.rollback(conn);
-//			}
 			
 		} catch (Exception e) {
 			System.out.println("결제 인서트 오류");
