@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import car.ReserveVo;
+import gui.GUI;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
 import gui.button.NextBtn;
@@ -127,7 +128,9 @@ public class ReservInforPanel extends ImgPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-//					setVisible(false);
+					setVisible(false);
+					GUI.carDetail.set(vo);
+					GUI.carDetail.setVisible(true);
 				}
 			});
 			panel_2.add(b);

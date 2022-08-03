@@ -673,9 +673,9 @@ public class GUI {
 				vo.setMypoint(payInforPanel.getSumPrice() / 20);
 				vo.setPayMethod(Integer.parseInt(payInforPanel.getCardorCash()));
 				
-				/**
-				 *  각 예약 인설트 후 
-				 */
+				/*각 예약 인설트 후 */
+				if(cs.carReserve(voBox.getRvo())>0);//자동차 인설트
+				
 				PayVo pvo = ps.getNo(Main.loginNo);
 				
 				vo.setAccomNo(pvo.getAccomNo());
@@ -732,7 +732,9 @@ public class GUI {
 				ReserveVo vo = reservedCar2Panel.getVo();
 				vo.setInsurance(reservedCar2Panel.getInsurance());
 				
-				if(cs.carReserve(vo)>0) {
+				voBox.setC(vo);
+				
+//				if(cs.carReserve(vo)>0) {
 					
 					PayVo pvo = ps.reservation(Main.loginNo, voBox);
 					
@@ -748,7 +750,7 @@ public class GUI {
 						payInforPanel.setVo(pvo);
 						payInforPanel.reset();
 						payInforPanel.setVisible(true);
-					}
+//					}
 					
 				}else {
 					PopUpDialog dialog = new PopUpDialog(frame, "예약", "예약실패! 내용을 확인해 주세요");
@@ -791,7 +793,7 @@ public class GUI {
 				vo.setCarPerson(Integer.toString(reservedCarPanel.getContPerson()));
 				vo.setCarSize(reservedCarPanel.getCarSize());
 				
-				voBox.setC(vo);
+//				voBox.setC(vo);
 				
 				List<CarVo> list = cs.carInquiry(vo);
 				if(list!=null) {
@@ -862,6 +864,9 @@ public class GUI {
 					AccomSearch dialog = new AccomSearch(frame, "숙소조회");
 					dialog.set(list);
 					int no = dialog.run();
+					
+					//no로 해당 숙소 조회 후 vo 저장 box에 저장
+					
 					if(no>0) {
 						//성공
 						reservedAccomPanel.setVisible(false);
@@ -996,7 +1001,7 @@ public class GUI {
 				}else {vo.setAnimal_yn("N");}
 				if(faveratePanel.getQ3()!=null && faveratePanel.getQ3().equals("너무무겁다")) {
 					vo.setBudget("Y");
-				}else if(faveratePanel.getQ3().equals("모르겠다")){
+				}else if(faveratePanel.getQ3()!=null &&faveratePanel.getQ3().equals("모르겠다")){
 					vo.setBudget("S");
 				}else {vo.setBudget("N");}
 				

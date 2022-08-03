@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import car.ReserveVo;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
+import gui.button.ImgButton;
 
 public class CarDetail extends ImgPanel {
 	
@@ -35,6 +36,12 @@ public class CarDetail extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
+		
+		updateBtn = new ImgButton("예약변경");
+		add(updateBtn);
+		
+		deleteBtn = new ImgButton("예약취소");
+		add(deleteBtn);
 		
 		lblNewLabel = new JLabel();
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
