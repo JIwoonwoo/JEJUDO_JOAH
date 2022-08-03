@@ -103,7 +103,7 @@ public class TravelController {
 				if (result == 1) {
 					System.out.println("좋아요 카운팅 성공 !!" );
 					TravelVo vo2 = new TravelDao().nowLike(likeCount);
-					System.out.println(vo2.getLike_cnt());
+					System.out.println("현재 좋아요 수 : "+ vo2.getLike_cnt());
 	
 			}else {
 				// 글 작성 실패
