@@ -3,6 +3,7 @@ package accom;
 import java.sql.Connection;
 import java.util.List;
 
+import car.Parsing;
 import main.Main;
 import survey.SurveyService;
 import survey.SurveyVo;
@@ -18,6 +19,15 @@ public class AccService {
 				//인원이 1명이 안되므로 진행 불가
 					return null;
 			}
+			
+			//날짜예약 로직
+			int checkindate = Parsing.getInt(dto.getCheckin());
+			int checkoutdate = Parsing.getInt(dto.getCheckout());
+			
+			if((checkoutdate - checkindate) <= 0) {
+				return null;
+			}
+			
 			
 			Connection conn = null;
 			List<AccDto> list = null;

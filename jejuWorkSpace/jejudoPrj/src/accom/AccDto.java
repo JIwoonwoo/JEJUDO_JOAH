@@ -18,13 +18,14 @@ public class AccDto {
     public String Checkin;
     public String Checkout;
     public int People;
+    public String HG;
     
     public AccDto() {
     	
     }
     
 	public AccDto(int roomno, String accomname, String address, String poolYN, String roomname, int price, int capacity,
-			String animalYN, String poolableYN, String around, String roomview, String checkin, String checkout, int people) {
+			String animalYN, String poolableYN, String around, String roomview, String checkin, String checkout, int people, String hg) {
 		super();
 		this.Roomno = roomno;
 		this.Accomname = accomname;
@@ -40,6 +41,7 @@ public class AccDto {
 		this.Checkin = checkin;
 		this.Checkout = checkout;
 		this.People = people;
+		this.HG = hg;
 	}
 
 	@Override
@@ -146,6 +148,14 @@ public class AccDto {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getHG() {
+		return HG;
+	}
+
+	public void setHG(String hg) {
+		HG = hg;
 	}
 
 	
