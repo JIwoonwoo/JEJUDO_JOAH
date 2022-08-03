@@ -1,5 +1,7 @@
 package travel;
 
+import java.util.List;
+
 import util.InputUtil;
 
 public class TravelController {
@@ -15,10 +17,10 @@ public class TravelController {
 				int input = tm.cateSelectMenu();
 
 				switch (input) {
-				case 0 : 
-					System.out.println("==== 0. 원하는 여행지 정보 상세 조회 ==== ");
+				
 				case 1:
 					System.out.println("==== 1. 관광지별 여행지 ===== ");
+					
 					new TravelDao().attraction(1);
 					break;
 				case 2:
@@ -53,20 +55,56 @@ public class TravelController {
 	}// cateSelect
 
 	// 추천 여행지 : 설문조사 관련..?
-	public void recommTravel() {
-		// 로그인 후 추천여행지 조회 가능
+//	public void recommTravel() {
+//
+//		// 회원 설문조사 확인
+//			List<TravelVo> travelVoList = new TravelService().recommTravel();//? 이상함
+//
+//		for (int i = 0; i < travelVoList.size(); ++i) {
+//
+//			// ArrayList 이용
+//			// 꺼내오고
+//			TravelVo temp = travelVoList.get(i);
+//			// 담아주고
+//			String no = temp.getTravel_no();
+//			String recommendType = temp.getRecommend_type();
+//			String purpose = temp.getPurpose();
+//			String category = temp.getCategory();
+//			String travelName = temp.getTravel_name();
+//			String travelAddress = temp.getTravel_address();
+//			String animalYn = temp.getAnimal_yn();
+//			
+//			// 출력문
+//			System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
+//					+ " | [주소] " + travelAddress + " | [인원] " + recommendType + " | [반려동물 동반 여부] " + animalYn);
+//		}
+//		
+//
+//	}//
+	
+	public void like_sum() {
+		System.out.println("좋아요 누를 여행지 번호 입력 : ");
+		String likeCount = InputUtil.sc.nextLine();
 		
-		// 회원 설문조사 확인
+		TravelVo vo = new TravelVo();
+		vo.setTravel_no(likeCount);
 		
-		// 
-//		new TravelDao().surveyRecomm();
-		// "좋아요 누를 여행지의 넘버를 입력해주세요." <- 넣기
+		int result = new TravelService().like_sum(vo);
 		
-		
+		if(result == 1) {
+			// 글 작성 성공
+			System.out.println("좋아요 카운팅 성공 !!" );
+			// 새로운메서드 만들어서 최신 좋아요 조회.. 안 됨..
+//			new TravelDao().nowLike(vo.setTravel_no(likeCount));
+		}else {
+			// 글 작성 실패
+			System.out.println("좋아요 카운팅 실패 ..");
+		}
 		
 	}
-
 	
+	
+
 	public void travelInfo() {
 		while (true) {
 
@@ -89,22 +127,22 @@ public class TravelController {
 				case 2:
 					System.out.println("==== 2. 가격순 조회 (* 가격 낮은 순) ===== ");
 					new TravelDao().detailPrice();
-					
+
 					break;
 				case 3:
 					System.out.println("==== 3. 좋아요순 조화(* 좋아요 높은 순) ===== ");
 					new TravelDao().detailLike();
 					break;
-					
+
 				case 4:
 					// [수정] 인원 추천 순서 다시 !!
 					System.out.println("==== 4.반려동물 동반 가능 여행지 조회  ===== ");
 					new TravelDao().detailanimalYn();
 					return;
-					
-				case 5 :
+
+				case 5:
 					return;
-					
+
 				default:
 					System.out.println("");
 					System.out.println("***************************");
