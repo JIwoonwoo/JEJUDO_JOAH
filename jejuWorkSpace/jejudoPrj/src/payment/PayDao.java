@@ -7,7 +7,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.Main;
 import member.MemberVo;
 import util.JDBCTemplate;
 
@@ -54,7 +53,7 @@ public class PayDao {
 		String sql = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE\r\n"
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
-				+ "JOIN FLIGHT F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_NO\r\n"
+//				+ "JOIN FLIGHT F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_NO\r\n"
 				+ "WHERE M.MEMBER_NO = ? AND FR.CANCEL_YN = 'N' AND FR.PAID_YN = 'N'";
 
 		PayVo vo = null;
@@ -68,21 +67,23 @@ public class PayDao {
 			pstmt.setInt(1, no);
 
 			rs = pstmt.executeQuery();
-			System.out.print("가는 비행기 행의 갯수 : "+rs.getRow() + "\r");
-			for(int i = 0;i<rs.getRow();i++) {
+			
 				
-				if(i==1) {
-					return vo;
+			for(int i = 0;rs.next();i++) {
+				
+				int fNo = rs.getInt("FLIGHT_NO");
+				int fp = rs.getInt("FLIGHT_PRICE");
+				vo = new PayVo();
+				vo.setFlightNo(fNo);
+				vo.setFlightGoPay(fp);
+				
+				if(i>0) {
+					vo.setFlightNo(-1);
+					return vo;					
 				}
-				if(rs.next()) {
-					int fNo = rs.getInt("FLIGHT_NO");
-					int fp = rs.getInt("FLIGHT_PRICE");
-					vo = new PayVo();
-					vo.setFlightNo(fNo);
-					vo.setFlightGoPay(fp);
-	
-				}
+				
 			}
+			
 		} finally {
 
 			JDBCTemplate.close(pstmt);
@@ -114,7 +115,6 @@ public class PayDao {
 			pstmt.setInt(1, no);
 
 			rs = pstmt.executeQuery();
-			System.out.print("오는 비행기 행의 갯수 : "+rs.getRow() + "\r");
 			
 			if (rs.next()) {
 				int fNo = rs.getInt("FLIGHT_NO");
@@ -155,7 +155,6 @@ public class PayDao {
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			
-			System.out.print("방 행의 갯수 : "+rs.getRow() + "\r");
 			
 			if (rs.next()) {
 				vo = new PayVo();
@@ -164,9 +163,7 @@ public class PayDao {
 				int rp = rs.getInt("ROOM_PRICE");
 				int rDay = rs.getInt("DAYS");
 				
-				System.out.println(rNo);
-				System.out.println(rp);
-				System.out.println(rDay);
+				//방값계산
 				rp = rp * rDay;
 				
 				vo.setAccomNo(rNo);
@@ -178,8 +175,6 @@ public class PayDao {
 			JDBCTemplate.close(rs);
 		}
 
-		System.out.println(Main.loginNo);
-		System.out.println(vo);
 		
 		return vo;	
 
@@ -202,7 +197,6 @@ public class PayDao {
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			
-			System.out.print("렌트카 행의 갯수 : "+rs.getRow() + "\r");
 			if (rs.next()) {
 				int cNo = rs.getInt("CAR_NO");
 				int cp = rs.getInt("DAY_PRICE");

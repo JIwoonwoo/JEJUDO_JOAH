@@ -21,7 +21,7 @@ public class PayVo {
 	private Timestamp payDate;
 	private char cancelYN;
 	private Timestamp cancelDate;
-
+	
 	// 개별 가격 데이터
 	private int flightGoPay;
 	private int flightComePay;
