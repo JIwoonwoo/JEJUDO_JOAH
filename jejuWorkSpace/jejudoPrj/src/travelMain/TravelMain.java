@@ -7,6 +7,9 @@ public class TravelMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		System.out.println("좋아요 카운트 연습");
+		new TravelController().like_sum();
 
 		try {
 			while (true) {
@@ -20,7 +23,7 @@ public class TravelMain {
 					break;
 
 				case 2:
-
+					
 					break;
 					
 				// 상세정보 조회

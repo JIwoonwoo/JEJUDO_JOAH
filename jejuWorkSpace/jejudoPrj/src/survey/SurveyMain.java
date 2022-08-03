@@ -7,6 +7,7 @@ public class SurveyMain {
 		SurveyVo vo = new SurveyService().search(1);
 		
 		System.out.println(vo);
+		
 	}
 
 }

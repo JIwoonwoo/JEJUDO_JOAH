@@ -18,7 +18,7 @@ public class TravelMenu {
 	
 	}
 	
-	// 1. 카테고리별 조회 : 2번 맛집 항목이 없음.
+	// 1. 카테고리별 조회
 	public int cateSelectMenu() throws Exception  {
 
 		System.out.println("----- 카테고리별 여행지 -----");
@@ -37,7 +37,9 @@ public class TravelMenu {
 	
 	// 2. 추천 여행지 : 설문조사 기반 (아직 어떻게 해야할지 모르겠음.)
 	public void recommMenu() {
-		
+		System.out.println("----- 추천 여행지 -----");
+		System.out.println("1. 추천 여행지 조회 ");
+		System.out.println("2. 좋아요 누르기");
 	}
 	
 	
