@@ -10,28 +10,7 @@ public class Flight_Vo {
 		
 	}
 	//매개변수 있는 생성자
-	public Flight_Vo(Number memberNo, Number flightNo, Number departureFlight, String returnFlight, Date reserveDate,
-			Timestamp cancleDate, String flightName, String departureTime, String arrivalTime, String depAirport,
-			String arrAirport, String departureDate, String returnDate, String flightPerson, String flightPrice,
-			String airline) {
-		super();
-		this.memberNo = memberNo;
-		this.flightNo = flightNo;
-		this.departureFlight = departureFlight;
-		this.returnFlight = returnFlight;
-		this.reserveDate = reserveDate;
-		this.cancleDate = cancleDate;
-		this.flightName = flightName;
-		this.departureTime = departureTime;
-		this.arrivalTime = arrivalTime;
-		this.depAirport = depAirport;
-		this.arrAirport = arrAirport;
-		this.departureDate = departureDate;
-		this.returnDate = returnDate;
-		this.flightPerson = flightPerson;
-		this.flightPrice = flightPrice;
-		this.airline = airline;
-	}
+	
 
 
 	private Number memberNo;
@@ -50,6 +29,7 @@ public class Flight_Vo {
 	private String flightPerson;
 	private String flightPrice;
 	private String airline;
+
 	
 	//getter, setter
 	public Number getMemberNo() {
@@ -150,6 +130,7 @@ public class Flight_Vo {
 	}
 	
 	
+
 	//toString
 	@Override
 	public String toString() {
