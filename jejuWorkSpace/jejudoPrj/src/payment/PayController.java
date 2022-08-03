@@ -93,8 +93,7 @@ public class PayController {
 		
 		System.out.println("\r---결제---");
 		System.out.println("1. 결제 진행");
-		System.out.println("2. 결제 내역 조회");
-		System.out.println("3. 포인트 조회");
+		System.out.println("2. 포인트 조회");
 		System.out.println("0. 뒤로가기");
 		
 		PayService ps = new PayService();
@@ -103,8 +102,7 @@ public class PayController {
 			
 			switch(c) {
 			case 1 : payment(no);break;
-			case 2 : ps.choicePayment(no);break;
-			case 3 : ps.pointAddList(no);break;
+			case 2 : ps.pointAddList(no);break;
 			case 0 : return;
 			default : System.out.println("다시 입력해 주세요");continue;
 			}
