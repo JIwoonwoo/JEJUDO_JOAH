@@ -22,14 +22,14 @@ public class Flight_Main {
 				new Flight_Controller().reservation(); //비행기 조회 , 예약
 				break;
 			case 2 : 
-				new Flight_Controller().change(); //비행기 예약 수정 -> 날짜변경만 가능하다고 쓰기// 예약한거 다 출력하고 update
+				new Flight_Controller().change(); //비행기 예약 수정 -> 날짜변경만 가능하다고 쓰기// 예약한거 다 출력하고 update...set...
 				break;
 			case 3 : 
-				new Flight_Controller().delete(); //비행기 예약 삭제 //update cancelYn = 'y' 
-				break; //update set 
+				new Flight_Controller().delete(); //비행기 예약 삭제 //update... set... cancelYn = 'y' 
+				break; 
 			case 4 : 
-				new Flight_Controller().showList(); //내 예약 조회 //member 번호 이용해서 flight_reservation 다 출력해오기 (조회처럼) where = member = ? and cancelYn = 'n'
-				break;							//join 이용해서 쓰기
+				new Flight_Controller().search(); //내 예약 조회 //member 번호 이용해서 flight_reservation 다 출력해오기 
+				break;							//(조회처럼) where = member = ? and cancelYn = 'n' >> join 이용해서 쓰기
 			}
 			
 			
