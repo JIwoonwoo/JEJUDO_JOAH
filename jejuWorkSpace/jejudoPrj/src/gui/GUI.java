@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import VoBox.VoBox;
 import accom.AccDto;
 import accom.AccService;
 import car.CarService;
@@ -19,6 +20,7 @@ import gui.dialog.Card;
 import gui.dialog.Cash;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
+import gui.panel.CarDetail;
 import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
@@ -55,6 +57,8 @@ public class GUI {
 	public static JFrame frame;
 	private String where = "";
 	public static ViewQna viewQna;
+	public static CarDetail carDetail;
+	private VoBox voBox;
 
 	/**
 	 * Launch the application.
@@ -107,6 +111,7 @@ public class GUI {
 		ServicePanel servicePanel = new ServicePanel();
 		UpdateMemberPanel updateMemberPanel = new UpdateMemberPanel();
 		PointPanel pointPanel = new PointPanel();
+		carDetail = new CarDetail();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -551,6 +556,44 @@ public class GUI {
 				// 결제 완료!
 			}
 		});
+		/** 자동차 디테일 **/
+		frame.getContentPane().add(carDetail);
+		carDetail.setVisible(false);
+		
+		//뒤로가기
+		carDetail.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				carDetail.setVisible(false);
+				reservInforPanel.setVisible(true);
+			}
+		});
+		
+		//홈
+		carDetail.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				carDetail.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		carDetail.getUpdateBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		carDetail.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
@@ -630,6 +673,15 @@ public class GUI {
 				vo.setMypoint(payInforPanel.getSumPrice() / 20);
 				vo.setPayMethod(Integer.parseInt(payInforPanel.getCardorCash()));
 				
+				/**
+				 *  각 예약 인설트 후 
+				 */
+				PayVo pvo = ps.getNo(Main.loginNo);
+				
+				vo.setAccomNo(pvo.getAccomNo());
+				vo.setCarNo(pvo.getCarNo());
+				vo.setFlightNo(pvo.getFlightNo());
+				
 				int point = ps.userInfo(Main.loginNo).getPoint() - payInforPanel.getUsePoint() + (payInforPanel.getSumPrice() / 20);
 				if(ps.payEnd(Main.loginNo, point, vo)) {
 					payInforPanel.setVisible(false);
@@ -682,7 +734,7 @@ public class GUI {
 				
 				if(cs.carReserve(vo)>0) {
 					
-					PayVo pvo = ps.reservation(Main.loginNo);
+					PayVo pvo = ps.reservation(Main.loginNo, voBox);
 					
 					if(pvo!=null) {
 						reservedCar2Panel.setVisible(false);
@@ -738,6 +790,8 @@ public class GUI {
 				vo.setReturnDate(reservedCarPanel.getBackDay());
 				vo.setCarPerson(Integer.toString(reservedCarPanel.getContPerson()));
 				vo.setCarSize(reservedCarPanel.getCarSize());
+				
+				voBox.setC(vo);
 				
 				List<CarVo> list = cs.carInquiry(vo);
 				if(list!=null) {
@@ -863,7 +917,7 @@ public class GUI {
 			}
 		});
 
-		/** 예약페이지 1 **/
+//		/** 예약페이지 1 **/
 //		frame.getContentPane().add(reservedPanel);
 //		reservedPanel.setVisible(false);
 //

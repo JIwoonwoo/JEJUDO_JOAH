@@ -202,7 +202,6 @@ public class PayDao {
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			
-			System.out.print("렌트카 행의 갯수 : "+rs.getRow() + "\r");
 			if (rs.next()) {
 				int cNo = rs.getInt("CAR_NO");
 				int cp = rs.getInt("DAY_PRICE");
