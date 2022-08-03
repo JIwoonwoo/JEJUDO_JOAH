@@ -24,6 +24,7 @@ public class CarMenu {
 		return Parsing.getInt();
 	}
 	public int showReserveEdit() {		
+		System.out.println("자동차와 날짜 변경은 취소 후 다시 예약해주세요.\n");
 		System.out.println("보험 변경하시겠습니까?");
 		System.out.println("1. 예");
 		System.out.println("2. 아니오");

@@ -95,7 +95,6 @@ public class CarDao {
 		int result = 0;
 		
 		try {
-			
 			String sql = "INSERT INTO CAR_RESERVATION (CAR_NO, RENTAL_NO, MEMBER_NO, RENTAL_DATE, RETURN_DATE, RESERVE_DATE,INSURANCE)\r\n"
 					+ "VALUES (SEQ_CAR_RESERVATION.NEXTVAL,?,?,?,?, SYSDATE,?)";
 			
@@ -124,7 +123,8 @@ public class CarDao {
 					+ "JOIN INSURANCE 보험 ON 예약.INSURANCE = 보험.INSURANCE_NO\r\n"
 					+ "JOIN RENTAL_CAR 렌트 USING(RENTAL_NO)\r\n"
 					+ "WHERE CANCEL_YN = 'N'\r\n"
-					+ "AND 예약.MEMBER_NO = ?";
+					+ "AND 예약.MEMBER_NO = ?\r\n"
+					+ "ORDER BY CAR_NO";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, input);
@@ -218,6 +218,7 @@ public class CarDao {
 		int result = 0;
 		
 		try {
+			
 			String sql = "UPDATE CAR_RESERVATION SET INSURANCE = ? WHERE MEMBER_NO = ? AND CAR_NO = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, rVo.getInsurance());

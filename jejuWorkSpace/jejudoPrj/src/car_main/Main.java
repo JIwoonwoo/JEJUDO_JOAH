@@ -7,14 +7,13 @@ import car.ReserveVo;
 public class Main {
 	// 예약할 때 필요
 	public static CarVo inquiryCar;
-	public static ReserveVo reserveCar;
 	
 	public static void main(String[] args) {
 		CarController carCon = new CarController();
 	
 		
 		while(true) {
-			System.out.println("======== 렌터카 ========");
+			System.out.println("\n======== 렌터카 ========");
 			int input = new CarMenu().showMenu();
 			switch(input) {
 			case 1 :

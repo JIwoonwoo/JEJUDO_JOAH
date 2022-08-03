@@ -110,6 +110,7 @@ public class CarService {
 	public List<ReserveVo> reserveInquiry(int input) {
 		Connection conn = null;
 		List<ReserveVo> reserveVoList = null;
+		
 		try {
 			conn = JDBCTemplate.getConnection();
 			reserveVoList = dao.reserveInquiry(conn, input);
