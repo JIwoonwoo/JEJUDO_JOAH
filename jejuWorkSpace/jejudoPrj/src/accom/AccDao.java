@@ -17,13 +17,16 @@ public class AccDao {
 	public List<AccDto> accSearch(AccDto inputDto, Connection conn, SurveyVo svo) {
 
 		List<AccDto> list = null;
+		
 		// 설문조사 정보 받아오기
 		// 예산
 		String budgetanswer;
 		if (svo.getBudget().equals("Y")) {
-			budgetanswer = ">";
-		} else {
-			budgetanswer = "<";
+			budgetanswer ="AND ROOM_PRICE (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY >= " + inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople()+1 ;
+		} else if(svo.getBudget().equals("N")){
+			budgetanswer = "AND ROOM_PRICE (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY <= " + inputDto.getPeople() + "AND CAPACITY <= " + inputDto.getPeople()+1 ;
+		}else {
+			budgetanswer =null ;
 		}
 
 		// 여행지역
@@ -37,9 +40,9 @@ public class AccDao {
 		}
 
 		// SQL 준비
-		String sql = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN,R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN,R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ? AND ROOM_PRICE "
+		String sql = "SELECT R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN,R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN,R.POOL_ABLE_YN, AR.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AR ON A.ACCOM_AROUND = AR.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ? "
 				+ budgetanswer
-				+ "= (SELECT AVG(ROOM_PRICE) FROM ROOM WHERE CAPACITY >= ? AND CAPACITY <= ?) AND ANIMAL_YN = ? AND ACCOM_ADDRESS LIKE ? AND TYPE = ?"; // 위치
+				+ "AND ANIMAL_YN = ? AND ACCOM_ADDRESS LIKE ? AND TYPE = ?"; // 위치
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -48,8 +51,8 @@ public class AccDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, inputDto.getPeople());
 			pstmt.setInt(2, inputDto.getPeople() + 1);
-			pstmt.setInt(3, inputDto.getPeople());
-			pstmt.setInt(4, inputDto.getPeople() + 1);
+//			pstmt.setInt(3, inputDto.getPeople());
+//			pstmt.setInt(4, inputDto.getPeople() + 1);
 			pstmt.setString(5, svo.getAnimal_yn());// 설문결과로가져옴 반려동물
 			pstmt.setString(6, locationanswer);// 설문결과 위치
 			pstmt.setString(7, inputDto.getType());// 설문결과 위치
