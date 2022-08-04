@@ -19,9 +19,24 @@ public class ReserveVo {
 	private String name;
 	private String carUq;
 	private String fuel;
+	private String openable;
 	
 	
 	
+	
+	
+	public String getOpenable() {
+		return openable;
+	}
+	public void setOpenable(String openable) {
+		if(openable.equals("Y")) {
+			openable = "가능";
+		} else {
+			openable = "불가능";
+		}
+		
+		this.openable = openable;
+	}
 	public String getFuel() {
 		return fuel;
 	}
