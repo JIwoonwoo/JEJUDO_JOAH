@@ -1,5 +1,7 @@
 package accom;
 
+import java.sql.Timestamp;
+
 public class AccDto {
 	
 	public int Roomno;
@@ -19,6 +21,9 @@ public class AccDto {
     public String Checkout;
     public int People;
     public String HG;
+    
+    public Timestamp ReserveDate;
+    public int ReserveNo;
     
     public AccDto() {
     	
@@ -156,6 +161,22 @@ public class AccDto {
 
 	public void setHG(String hg) {
 		HG = hg;
+	}
+
+	public Timestamp getReserveDate() {
+		return ReserveDate;
+	}
+
+	public void setReserveDate(Timestamp reserveDate) {
+		ReserveDate = reserveDate;
+	}
+
+	public int getReserveNo() {
+		return ReserveNo;
+	}
+
+	public void setReserveNo(int reserveNo) {
+		ReserveNo = reserveNo;
 	}
 
 	

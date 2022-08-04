@@ -2,6 +2,9 @@ package accom;
 
 import java.util.List;
 
+import accom.AccDto;
+import accom.AccService;
+import accom.AccTestMenu;
 import util.InputUtil;
 
 /*
@@ -59,7 +62,7 @@ public class AccomController {
 		dto.setCheckin(checkin);
 		dto.setCheckout(checkout);
 		
-//		int result = new AccService().accSelect(dto);
+		AccDto result = new AccService().accSelect(dto);
 //		
 //		if(result == 1) {
 //			//예약 성공
@@ -70,6 +73,24 @@ public class AccomController {
 //		}
 
 		
+	}//accSelect
+	
+	public void accReservCheck() {
+		
+		AccDto dto = new AccDto();
+		
+		new AccService().accReservCheck(dto);
+		
 	}
 
+	public void accReCheckDetail() {
+		
+		System.out.println("확인하실 예약번호를 입력하세요.");
+		int reserveno = InputUtil.getInt();
+		
+		AccDto dto = new AccDto();
+		dto.setReserveNo(reserveno);
+		
+		new AccService().accReCheckDetail(dto);
+	}
 }
