@@ -3,6 +3,7 @@ package payment;
 import java.sql.Connection;
 import java.util.List;
 
+import VoBox.VoBox;
 import gui.GUI;
 import gui.dialog.YesOrNo;
 import member.MemberVo;
@@ -11,6 +12,53 @@ import util.JDBCTemplate;
 
 public class PayService {
 	
+	public PayVo getNo(int no) {
+		Connection conn = null;
+		PayVo vo = null;
+		
+		PayDao dao = new PayDao();
+		try {
+			conn = JDBCTemplate.getConnection();
+			
+			// 항공 예약정보 비행기 예약번호, 금액 출발
+			PayVo vogf = dao.gfPay(no, conn);
+			
+			if(vogf==null) {
+				System.out.println("항공 예약 정보가 없습니다.");
+				return vo;
+			}
+			
+			vo.setFlightNo(vogf.getFlightNo());
+			
+		
+			// 방 예약정보
+			PayVo vor = dao.rPay(no, conn);
+			
+			if(vor!=null) {
+				System.out.println("숙박 예약 정보가 없습니다.");
+				return vo;
+			}
+			
+			vo.setAccomNo(vor.getAccomNo());
+			
+			// 차 예약정보
+			PayVo voc = dao.cPay(no, conn);
+			
+			if (voc==null) {
+				vo.setCarNo(0);
+			}else {
+				vo.setCarNo(voc.getCarNo());
+			}
+			
+		}catch(Exception e){
+			
+		}finally {
+			JDBCTemplate.close(conn);
+		}
+		
+		return vo;
+	}
+
 	//포인트도가지고옴
 	public MemberVo userInfo(int no) {
 		// 회원 닉네임, 포인트 가져오기
@@ -30,6 +78,77 @@ public class PayService {
 		return mvo;
 
 	}
+	
+	public PayVo reservation(int no, VoBox voBox) {
+		PayDao dao = new PayDao();
+		Connection conn = null;
+		PayVo vo = null;
+		// 이전예약정보 확인 후 예약번호 조회
+
+		try {
+			conn = JDBCTemplate.getConnection();
+			// 항공 예약정보 비행기 예약번호, 금액 출발
+			PayVo vogf = voBox.getVogf();
+			
+			if(vogf==null) {
+				System.out.println("항공 예약 정보가 없습니다.");
+				return vo;
+			}
+			//항공 예약정보 비행기 예약번호, 금액 복귀
+			PayVo vocf = voBox.getVocf();
+			
+			if(vocf==null) {
+				System.out.println("항공 예약 정보가 없습니다.");
+				return vo;
+			}
+		
+			// 방 예약정보
+			PayVo vor = voBox.getVor();
+			
+			if(vor==null) {
+				System.out.println("숙박 예약 정보가 없습니다.");
+				return vo;
+			}
+			// 차 예약정보
+			
+			PayVo voc = voBox.getVoc();
+			
+			
+			if (voc==null) {
+//				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
+//				System.out.println("1. 진행, 0.다시 예약하기");
+				YesOrNo dialog = new YesOrNo(GUI.frame, "결제", "렌트카를 예약하지 않았습니다. 진행 하시겠습니까?");
+				
+				while(true) {
+//					int c = InputUtil.getInt();
+					int c = dialog.run();
+						if(c == -1) {
+							voc = new PayVo();
+							return vo;
+						}else if(c==1) {
+							break;
+						}else {
+							System.out.println("다시 입력해 주세요.");
+							continue;
+						}
+				}
+			}
+
+			// 총 금액 계산
+			int totalPay = totalPay(vogf, vocf, vor, voc);
+
+			// -> 여기서 넘버와 금액 포인트 뭉쳐서 리턴
+			vo = new PayVo(vogf.getFlightNo(), vor.getAccomNo(), voc.getCarNo(), totalPay, vogf.getFlightGoPay(),
+					vocf.getFlightComePay(), vor.getAccomPay(), voc.getCarPay());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
+		}
+
+		return vo;// 출발비행기예약번호, ㅅ숙소 예약넘버, 자동차 예약넘버, 총가격, 가는비행기 가격, 오는비행기가격, 숙소 가격, 자동차 가격
+	}
 
 	// 예약정보 조회
 	public PayVo reservation(int no) {
@@ -46,8 +165,6 @@ public class PayService {
 			if(vogf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
 				return vo;
-			}if(vogf.getFlightNo() == -1) {
-				System.out.println("이전 예약정보가 있습니다.");
 			}
 			//항공 예약정보 비행기 예약번호, 금액 복귀
 			PayVo vocf = dao.cfPay(no, conn);
@@ -277,11 +394,11 @@ public class PayService {
 	}
 
 	// 회원넘버, 가져야할 포인트(계산완료) 기존포인트 + 적립포인트 - 사용한포인트 , vo
-	// 출발비행기예약번호, 숙소 예약넘버, 자동차 예약넘버, 총가격, 가는비행기 가격, 오는비행기가격, 숙소 가격, 자동차 가격
-	//	vo.setPointUsed(pointUsed);
-	//	vo.setCutPrice(cutPrice);
-	//	vo.setMypoint(myPoint);
-	//	vo.setPayMethod(payMethod);
+	// 출발비행기예약번호, ㅅ숙소 예약넘버, 자동차 예약넘버, 총가격, 가는비행기 가격, 오는비행기가격, 숙소 가격, 자동차 가격
+//	vo.setPointUsed(pointUsed);
+//	vo.setCutPrice(cutPrice);
+//	vo.setMypoint(myPoint);
+//	vo.setPayMethod(payMethod);
 	// 결제 내역 저장
 	public boolean payEnd(int no, int leavePoint, PayVo vo) {
 		Connection conn = null;
@@ -344,6 +461,29 @@ public class PayService {
 		return list;
 	}
 
+	public void choicePayment(int no) {
+		System.out.println("\r---결제 내역 조회---");
+		System.out.println("1. 항공 결제 내역");
+		System.out.println("2. 숙박 결제 내역");
+		System.out.println("3. 렌트카 결제 내역");
+		System.out.println("4. 전체 결제 내역");
+		System.out.println("0. 뒤로가기");
+		
+		PayService ps = new PayService();
+		while(true) {
+			int c = InputUtil.getInt();
+			
+			switch(c) {
+			case 1 : ;break;
+			case 2 : ;break;
+			case 3 : ;break;
+			case 4 : checkPayment(no);break;
+			case 0 : return;
+			default : System.out.println("다시 입력해 주세요");continue;
+			}
+		}
+		
+	}
 	
 	// 전체 결제 내역 확인
 	public void checkPayment(int no) {
@@ -361,11 +501,5 @@ public class PayService {
 			JDBCTemplate.close(conn);
 		}
 	}
-	
-	public void replacePay() {
-		
-	}
-	
-	
 
 }

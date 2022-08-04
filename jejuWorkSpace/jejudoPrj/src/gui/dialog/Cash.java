@@ -23,8 +23,8 @@ public class Cash extends JDialog {
 	    Point loc = parent.getLocation();
 	    setLocation(loc.x+225,loc.y+450);
 	    
-		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/cash.jpg").getImage());
-//		JPanel panel = new ImgPanel(new ImageIcon("././image/page/cash.jpg").getImage());
+//		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/cash.jpg").getImage());
+		JPanel panel = new ImgPanel(new ImageIcon("././image/page/cash.jpg").getImage());
 //		JPanel panel = new ImgPanel("labelDialog");
 		getContentPane().add(panel);
 		panel.setLayout(null);

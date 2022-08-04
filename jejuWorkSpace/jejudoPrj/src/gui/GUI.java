@@ -3,11 +3,13 @@ package gui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import VoBox.VoBox;
 import accom.AccDto;
 import accom.AccService;
 import car.CarService;
@@ -19,9 +21,14 @@ import gui.dialog.Card;
 import gui.dialog.Cash;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
+import gui.panel.CarDetail;
 import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
+import gui.panel.InforActiv;
+import gui.panel.InforBorad;
+import gui.panel.InforRestar;
+import gui.panel.InforTrip;
 import gui.panel.JoinPanel;
 import gui.panel.ListQnaPanel;
 import gui.panel.LoginPanel;
@@ -49,12 +56,17 @@ import qna.QnaService;
 import qna.QnaVo;
 import survey.SurveyService;
 import survey.SurveyVo;
+import travel.TravelDao;
+import travel.TravelVo;
 
 public class GUI {
 
 	public static JFrame frame;
-	private String where = "";
+	public static String where = "";
 	public static ViewQna viewQna;
+	public static CarDetail carDetail;
+	public static InforBorad inforborad;
+	private VoBox voBox = new VoBox();
 
 	/**
 	 * Launch the application.
@@ -107,6 +119,11 @@ public class GUI {
 		ServicePanel servicePanel = new ServicePanel();
 		UpdateMemberPanel updateMemberPanel = new UpdateMemberPanel();
 		PointPanel pointPanel = new PointPanel();
+		carDetail = new CarDetail();
+		InforActiv inforActiv = new InforActiv();
+		InforTrip inforTrip = new InforTrip();
+		InforRestar inforRestar = new InforRestar();
+		inforborad = new InforBorad();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -114,6 +131,35 @@ public class GUI {
 		CarService cs = new CarService();
 		AccService as = new AccService();
 		PayService ps = new PayService();
+		
+		/** 회원정보수정 **/
+		frame.getContentPane().add(inforborad);
+		inforborad.setVisible(false);
+		
+		// 홈
+		inforborad.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforborad.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		inforborad.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforborad.setVisible(false);
+				switch(where) {
+				case "inforTrip" : inforTrip.setVisible(true); break;
+				case "inforRestar" : inforRestar.setVisible(true); break;
+				case "inforActiv" : inforActiv.setVisible(true); break;
+				case "SugTripPanel" : sugTripPanel.setVisible(true); break;
+				}
+			}
+		});
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -263,6 +309,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				myPagePanel.setVisible(false);
+				sugTripPanel.set();
 				sugTripPanel.setVisible(true);
 				sugTripPanel.getNextBtn().setVisible(false);
 				where = "myPage";
@@ -551,6 +598,29 @@ public class GUI {
 				// 결제 완료!
 			}
 		});
+		/** 자동차 디테일 **/
+		frame.getContentPane().add(carDetail);
+		carDetail.setVisible(false);
+		
+		//뒤로가기
+		carDetail.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				carDetail.setVisible(false);
+				reservInforPanel.setVisible(true);
+			}
+		});
+		
+		//홈
+		carDetail.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				carDetail.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
 
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
@@ -623,6 +693,7 @@ public class GUI {
 					Cash dialog = new Cash(frame, "계좌이체" ,"");
 					dialog.run();
 				}
+				
 				PayVo vo = payInforPanel.getVo();
 				
 				vo.setPointUsed(payInforPanel.getUsePoint());
@@ -630,16 +701,29 @@ public class GUI {
 				vo.setMypoint(payInforPanel.getSumPrice() / 20);
 				vo.setPayMethod(Integer.parseInt(payInforPanel.getCardorCash()));
 				
+				/*각 예약 인설트 후 */
+//				if(as.accReserve(voBox.getAvo())>0);//숙소 인설트
+//				if(cs.carReserve(voBox.getRvo())>0);//자동차 인설트
+				
+				PayVo pvo = ps.getNo(Main.loginNo);
+				if(pvo==null) {
+					//실패 return;
+				}
+				
+				vo.setAccomNo(pvo.getAccomNo());
+				vo.setCarNo(pvo.getCarNo());
+				vo.setFlightNo(pvo.getFlightNo());
+				
 				int point = ps.userInfo(Main.loginNo).getPoint() - payInforPanel.getUsePoint() + (payInforPanel.getSumPrice() / 20);
 				if(ps.payEnd(Main.loginNo, point, vo)) {
 					payInforPanel.setVisible(false);
 					
 					List<ReserveVo> list = cs.reserveInquiry(Main.loginNo);
 					
-					if(list!=null) {
-						reservInforPanel.setCarList(list);
-						
+					if(list==null) {
+						return;
 					}
+					reservInforPanel.setCarList(list);
 					
 					reservInforPanel.getBackBtn().setVisible(false);
 					reservInforPanel.getNextBtn().setVisible(true);
@@ -680,9 +764,11 @@ public class GUI {
 				ReserveVo vo = reservedCar2Panel.getVo();
 				vo.setInsurance(reservedCar2Panel.getInsurance());
 				
-				if(cs.carReserve(vo)>0) {
+				voBox.setC(vo);
+				
+//				if(cs.carReserve(vo)>0) {
 					
-					PayVo pvo = ps.reservation(Main.loginNo);
+					PayVo pvo = ps.reservation(Main.loginNo, voBox);
 					
 					if(pvo!=null) {
 						reservedCar2Panel.setVisible(false);
@@ -692,11 +778,10 @@ public class GUI {
 						payInforPanel.setCarPrice(pvo.getCarPay());
 						payInforPanel.setHavePoint(ps.userInfo(Main.loginNo).getPoint());
 //						payInforPanel.setSumPrice(pvo.getTotalPay());
-						System.out.println("자동차 커밋");
 						payInforPanel.setVo(pvo);
 						payInforPanel.reset();
 						payInforPanel.setVisible(true);
-					}
+//					}
 					
 				}else {
 					PopUpDialog dialog = new PopUpDialog(frame, "예약", "예약실패! 내용을 확인해 주세요");
@@ -739,6 +824,8 @@ public class GUI {
 				vo.setCarPerson(Integer.toString(reservedCarPanel.getContPerson()));
 				vo.setCarSize(reservedCarPanel.getCarSize());
 				
+//				voBox.setC(vo);
+				
 				List<CarVo> list = cs.carInquiry(vo);
 				if(list!=null) {
 					CarSearch dialog = new CarSearch(frame, "자동차 조회");
@@ -750,6 +837,8 @@ public class GUI {
 						rv.setRentalDate(vo.getRentalDate());
 						rv.setReturnDate(vo.getReturnDate());
 						rv.setMemberNo(Main.loginNo);
+						rv.setDayPrice(dialog.getPrice());
+						
 						reservedCarPanel.setVisible(false);
 						reservedCar2Panel.reset();
 						reservedCar2Panel.setVo(rv);
@@ -800,7 +889,7 @@ public class GUI {
 				dto.setCheckin(reservedAccomPanel.getGoDay());
 				dto.setCheckout(reservedAccomPanel.getBackDay());
 				dto.setPeople(reservedAccomPanel.getContPerson());
-				dto.setType(reservedAccomPanel.getHotel());
+				dto.setHG(reservedAccomPanel.getHotel());
 				
 				List<AccDto> list = as.accSearch(dto);
 				
@@ -808,17 +897,22 @@ public class GUI {
 					AccomSearch dialog = new AccomSearch(frame, "숙소조회");
 					dialog.set(list);
 					int no = dialog.run();
+					dto.setRoomno(no);
+					dto.setPrice(Integer.parseInt(dialog.getPrice()));
+					
+					voBox.setA(dto);
+					
 					if(no>0) {
 						//성공
 						reservedAccomPanel.setVisible(false);
 						reservedCarPanel.reset();
 						reservedCarPanel.setVisible(true);
-						
+						return;
 					}
-				}else {
-					PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
-					dialog.run();
 				}
+				
+				PopUpDialog dialog = new PopUpDialog(frame, "조회", "조회 실패! 내용을 확인해 주세요");
+				dialog.run();
 			}
 		});
 
@@ -863,7 +957,7 @@ public class GUI {
 			}
 		});
 
-		/** 예약페이지 1 **/
+//		/** 예약페이지 1 **/
 //		frame.getContentPane().add(reservedPanel);
 //		reservedPanel.setVisible(false);
 //
@@ -942,7 +1036,7 @@ public class GUI {
 				}else {vo.setAnimal_yn("N");}
 				if(faveratePanel.getQ3()!=null && faveratePanel.getQ3().equals("너무무겁다")) {
 					vo.setBudget("Y");
-				}else if(faveratePanel.getQ3().equals("모르겠다")){
+				}else if(faveratePanel.getQ3()!=null &&faveratePanel.getQ3().equals("모르겠다")){
 					vo.setBudget("S");
 				}else {vo.setBudget("N");}
 				
@@ -968,6 +1062,177 @@ public class GUI {
 
 			}
 		});
+		/** 엑티비티 여행정보 **/
+		frame.getContentPane().add(inforActiv);
+		inforActiv.setVisible(false);
+		
+		// 뒤로가기
+		inforActiv.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforActiv.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforActiv.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforActiv.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		inforActiv.getTripBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(1);
+				
+				if(list==null) {
+					return;
+				}
+				inforActiv.setVisible(false);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
+
+			}
+		});
+		inforActiv.getRestraBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = new ArrayList<TravelVo>();
+				list.addAll(td.attraction(2));
+				list.addAll(td.attraction(4));
+				
+				inforActiv.setVisible(false);
+				inforRestar.setList(list);
+				inforRestar.setVisible(true);
+
+			}
+		});
+		
+		/** 맛집/카페 여행정보 **/
+		frame.getContentPane().add(inforRestar);
+		inforRestar.setVisible(false);
+		
+		// 뒤로가기
+		inforRestar.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforRestar.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforRestar.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforRestar.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		inforRestar.getActivBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(3);
+				
+				if(list==null) {
+					return;
+				}
+				inforRestar.setVisible(false);
+				inforActiv.setList(list);
+				inforActiv.setVisible(true);
+
+			}
+		});
+		inforRestar.getTripBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(1);
+				
+				if(list==null) {
+					return;
+				}
+				inforRestar.setVisible(false);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
+
+			}
+		});
+		
+		/** 관광지 여행정보 **/
+		frame.getContentPane().add(inforTrip);
+		inforTrip.setVisible(false);
+		
+		// 뒤로가기
+		inforTrip.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforTrip.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforTrip.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforTrip.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		inforTrip.getActivBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(3);
+				
+				if(list==null) {
+					return;
+				}
+				inforTrip.setVisible(false);
+				inforActiv.setList(list);
+				inforActiv.setVisible(true);
+
+			}
+		});
+		inforTrip.getRestraBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = new ArrayList<TravelVo>();
+				list.addAll(td.attraction(2));
+				list.addAll(td.attraction(4));
+				
+				inforTrip.setVisible(false);
+				inforRestar.setList(list);
+				inforRestar.setVisible(true);
+
+			}
+		});
 
 		/** 메인페이지 **/
 		frame.getContentPane().add(mainPanel);
@@ -989,7 +1254,16 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(1);
+				
+				if(list==null) {
+					return;
+				}
 				mainPanel.setVisible(false);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
 
 			}
 		});

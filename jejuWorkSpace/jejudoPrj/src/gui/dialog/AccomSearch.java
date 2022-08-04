@@ -26,14 +26,15 @@ public class AccomSearch extends JDialog {
 	private JTable table;
 	
 	private int select = -1;
+	private String price;
 	
 	public AccomSearch(Frame parent, String name) {
 		super(parent,name,true);
 	    Point loc = parent.getLocation();
 	    setLocation(loc.x+225,loc.y+450);
 	    
-		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/accomDialog.jpg").getImage());
-//		JPanel panel = new ImgPanel(new ImageIcon("././image/page/accomDialog.jpg").getImage());
+//		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/accomDialog.jpg").getImage());
+		JPanel panel = new ImgPanel(new ImageIcon("././image/page/accomDialog.jpg").getImage());
 //		JPanel panel = new ImgPanel("labelDialog");
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -60,6 +61,7 @@ public class AccomSearch extends JDialog {
 				String result = null;
 				if(table.getSelectedRow() != -1) {
 					result = table.getValueAt(table.getSelectedRow(), 0).toString();
+					price = table.getValueAt(table.getSelectedRow(), 4).toString();
 				}
 				select = Integer.parseInt(result);
 				dispose();
@@ -134,4 +136,10 @@ public class AccomSearch extends JDialog {
 		});
 		
 	}
+
+	public String getPrice() {
+		return price;
+	}
+	
+	
 }

@@ -15,8 +15,8 @@ public class InvisiableRadio extends JRadioButton {
 		ImageIcon imgSelect = new ImageIcon(".\\.\\image\\button\\"+button+"Select.png"); //상대경로
 		
 		setSize(new Dimension(img.getIconWidth(),img.getIconHeight()));
-		setIcon(imgSelect);
-		setSelectedIcon(img);
+		setIcon(img);
+		setSelectedIcon(imgSelect);
 		
 		setBorder(null);
 		setContentAreaFilled(false);

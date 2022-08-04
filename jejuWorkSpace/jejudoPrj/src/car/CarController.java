@@ -51,8 +51,10 @@ public class CarController {
 			String size2 = resultVo.getCarSize();
 			String fuel = resultVo.getCarFuel();
 			String price = resultVo.getDayPrice();
+			String openable = resultVo.getOpen_yn();
 			
-			System.out.println("고유 번호 : "+no+" | "+name+" | "+size2+" | "+fuel+ " | "+price);
+
+			System.out.println("고유 번호 : "+no+" | "+name+" | "+size2+" | "+fuel+ " | "+price+" | "+openable);
 		}
 	}
 	
@@ -105,7 +107,12 @@ public class CarController {
 		ReserveVo rVo = new ReserveVo();
 		
 		//예약 자동차 조회
-		reserveInquiry();
+		int check = reserveInquiry();
+		if(check == 1) {
+			System.out.println("메인으로 돌아갑니다.");
+			return;
+		}
+		
 		System.out.println("--------------------");
 		int input = new CarMenu().showCarCancel();		
 		if(input == 1) {
@@ -134,22 +141,24 @@ public class CarController {
 		}
 		
 	}
-	public void reserveInquiry() {
+	public int reserveInquiry() {
 		System.out.println("회원 번호(test) : ");
 		int input = Parsing.getInt();
 		
 		List<ReserveVo> reserveVoList = null;
+		int check = 0;
 		
 		reserveVoList = new CarService().reserveInquiry(input);
 		
 		if(reserveVoList.isEmpty()) {
 			System.out.println("예약된 렌터카가 없습니다.");
-			return;
+			return check = 1;
 		}
-		
+
 		ReserveVo result = null;
+		
 		System.out.println("------ 내가 예약한 렌터카 목록 ------");
-//		System.out.println(reserveVoList.size());
+
 		
 		for(int i = 0; i < reserveVoList.size(); i++) {
 			
@@ -170,22 +179,33 @@ public class CarController {
 			String name = result.getName();
 			String uq = result.getCarUq();
 			String size =result.getSize();
-			System.out.println(name+" | "+size+" | "+uq+" | "+fuel+"\n");
+			String openable = result.getOpenable();
+			
+			System.out.println("이름 : "+name+" | "+size+" | "+uq+" | "+fuel+" | 오픈여부:"+openable+"\n");
 		}
-		
+		return check;
 	}
 
 
 	public void insuranceEdit() {
-		reserveInquiry();
 		ReserveVo rVo = new ReserveVo();
+		
+		int check = reserveInquiry();
+		if(check == 1) {
+			System.out.println("메인으로 돌아갑니다.");
+			return;
+		}
+		
+		
 		int input = new CarMenu().showReserveEdit();
+		
 		if(input == 1) {
 			System.out.println("------ 보험 변경 -------");
 		} else {
 			return;
 		}
-		System.out.print("회원 번호(test) : ");
+		
+		System.out.print("회원 번호(test)보험 : ");
 		int memberNo = Parsing.getInt();
 		System.out.print("변경하실 렌터카 예약 번호 : ");
 		int reserveNo = Parsing.getInt();

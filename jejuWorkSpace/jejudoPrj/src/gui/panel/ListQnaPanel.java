@@ -46,7 +46,7 @@ public class ListQnaPanel extends ImgPanel {
 		panel = new JPanel();
 		panel.setLayout(null);
 
-		scrollPane = new JScrollPane(panel);
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 106, 500, 653);
 		add(scrollPane);
 
@@ -76,6 +76,9 @@ public class ListQnaPanel extends ImgPanel {
 	 * @param list vo(no, title, answerYN, qContent, aContent)
 	 */
 	public void setList(List<QnaVo> list) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 		int i = 0;
 		for (QnaVo vo : list) {
 			String title = vo.getQuestionTitle();
@@ -113,6 +116,12 @@ public class ListQnaPanel extends ImgPanel {
 
 			i++;
 		}
+		
+		panel.setSize(0, 63*(i+1));
+		
+		panel.setPreferredSize(panel.getPreferredSize());
+		
+		scrollPane.setViewportView(panel);
 	}
 
 }

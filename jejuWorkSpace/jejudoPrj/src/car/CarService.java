@@ -75,7 +75,7 @@ public class CarService {
 		int insurance = Parsing.getInt(rVo.getInsurance());
 		
 		
-		if(rVo.getRentalNo() >= 48) {
+		if(rVo.getRentalNo() > 100) {
 			System.out.println("준비된 차량이 없습니다.");
 			return -1;
 		}
@@ -92,13 +92,15 @@ public class CarService {
 			
 			if(result == 1) {
 				JDBCTemplate.commit(conn);
+				System.out.println("자동차 인설트 성공");
 			} else {
 				JDBCTemplate.rollback(conn);
+				System.out.println("자동차 인설트 실패");
 			}
 			
 		} catch (Exception e) {
 			JDBCTemplate.rollback(conn);
-			
+			System.out.println("error 자동차 인설트 실패");
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(conn);

@@ -44,6 +44,7 @@ public class ViewQna extends ImgPanel {
 		add(qContent);
 		
 		aContent = new JTextArea();
+		aContent.setEditable(false);
 		aContent.setBounds(53, 605, 446, 181);
 		aContent.setFont(new Font("굴림", Font.PLAIN, 15));
 		aContent.setOpaque(false);

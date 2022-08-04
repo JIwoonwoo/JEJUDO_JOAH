@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import car.ReserveVo;
+import gui.GUI;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
 import gui.button.NextBtn;
@@ -21,9 +22,13 @@ public class ReservInforPanel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
+//	private JButton updateBtn;
+//	private JButton deleteBtn;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
+	private JScrollPane scrollPane_2;
+	
 
 	public ReservInforPanel() {
 		super("reservInfor");
@@ -36,6 +41,12 @@ public class ReservInforPanel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
+		
+//		updateBtn = new ImgButton("예약변경");
+//		add(updateBtn);
+//		
+//		deleteBtn = new ImgButton("예약취소");
+//		add(deleteBtn);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -69,14 +80,14 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane_1.setOpaque(false);
 		scrollPane_1.getViewport().setOpaque(false);
 
-		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2 = new JScrollPane();
 		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_2.setBounds(25, 642, 495, 140);
 		add(scrollPane_2);
 
 		panel_2 = new JPanel();
 		panel_2.setLayout(null);
-		scrollPane_2.setViewportView(panel_2);
+//		scrollPane_2.setViewportView(panel_2);
 
 		panel_2.setBorder(null);
 		panel_2.setBackground(new Color(250, 250, 250));
@@ -105,6 +116,9 @@ public class ReservInforPanel extends ImgPanel {
 	}
 
 	public void setCarList(List<ReserveVo> list) {
+		panel_2.removeAll();
+		panel_2.revalidate();
+		panel_2.repaint();
 		int i = 0;
 		System.out.println(list);
 		for (ReserveVo vo : list) {
@@ -127,13 +141,21 @@ public class ReservInforPanel extends ImgPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-//					setVisible(false);
+					setVisible(false);
+					GUI.carDetail.set(vo);
+					GUI.carDetail.setVisible(true);
 				}
 			});
 			panel_2.add(b);
 
 			i++;
 		}
+		
+		panel_2.setSize(0, 41*(i+1));
+		
+		panel_2.setPreferredSize(panel_2.getPreferredSize());
+		
+		scrollPane_2.setViewportView(panel_2);
 	}
 
 }

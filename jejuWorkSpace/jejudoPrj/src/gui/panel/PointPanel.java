@@ -32,6 +32,7 @@ public class PointPanel extends ImgPanel {
 	private BackBtn backBtn;
 	private JLabel point;
 	private JPanel panel;
+	private JScrollPane scrollPane;
 	
 	public PointPanel() {
 		super("point");
@@ -48,7 +49,7 @@ public class PointPanel extends ImgPanel {
 		point.setBounds(0, 264, 550, 113);
 		add(point);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(25, 553, 491, 321);
 		add(scrollPane);
@@ -96,6 +97,9 @@ public class PointPanel extends ImgPanel {
 	}
 	
 	public void setList(List<PayVo> list) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
 		int i = 0;
 		for(PayVo vo : list) {
 			Timestamp d = vo.getPayDate();
@@ -115,5 +119,11 @@ public class PointPanel extends ImgPanel {
 			
 			i++;
 		}
+		
+		panel.setSize(0, 41*(i+1));
+		
+		panel.setPreferredSize(panel.getPreferredSize());
+		
+		scrollPane.setViewportView(panel);
 	}
 }

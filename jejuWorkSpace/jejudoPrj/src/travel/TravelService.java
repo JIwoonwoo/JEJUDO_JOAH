@@ -3,47 +3,35 @@ package travel;
 import java.sql.Connection;
 import java.util.List;
 
+import survey.SurveyService;
 import survey.SurveyVo;
 import util.JDBCTemplate;
 
 public class TravelService {
 
-//	public List<TravelVo> recommTravel(){
-//		
-//		
-//		Connection conn = null;
-//		List<TravelVo> travelVoList = null;
-//		
-//		try {
-//			conn = JDBCTemplate.getConnection();
-//			
-//			travelVoList = new TravelDao().recommTravel(conn);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace(); 
-//		} finally {
-//			JDBCTemplate.close(conn);
-//		}
-//		
-//		return result;
-//		
-//		Connection conn = null;
-//		List<TravelVo> travelVoList = null;
-//		
-//		try {
-//			conn = JDBCTemplate.getConnection();
-//			
-//			new TravelDao().recommTravel(conn, vo);
-//			SurveyVo svo = new SurveyService().search()
-//			
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}finally{
-//				JDBCTemplate.close(conn);
-//			}
-//			
-//			return travelVoList;
-//		}
+	public List<TravelVo> recommTravel(SurveyVo svo){
+		
+		
+		Connection conn = null;
+		List<TravelVo> travelVoList = null;
+		
+		try {
+			conn = JDBCTemplate.getConnection();
+			
+			travelVoList = new TravelDao().recommTravel(conn, svo);
+			if(travelVoList==null) {
+				System.out.println("실패");
+			}
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+		
+		return travelVoList;
+		
+
+		}
 
 //	public TravelVo cateSelect() {
 
@@ -64,9 +52,11 @@ public class TravelService {
 //		
 //	}
 
-	public int like_sum(TravelVo vo) {
+	public int like_sum(String no) {
 
-
+		TravelVo vo = new TravelVo();
+		vo.setTravel_no(no);
+		
 		Connection conn = null;
 		int result = 0;
 		try {
@@ -112,7 +102,7 @@ public class TravelService {
 //		
 //		
 //		return vo;
-		
+//		
 	}
 	
 
