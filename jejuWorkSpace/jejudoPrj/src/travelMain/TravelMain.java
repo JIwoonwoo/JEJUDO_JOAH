@@ -16,18 +16,20 @@ public class TravelMain {
 		// TODO Auto-generated method stub
 		
 
-		new TravelController().like_sum();
+//		new TravelController().like_sum();
 
 	
 		
 		
 		SurveyVo svo = new SurveyVo();
-        svo.setPurpose("1");
-        svo.setPurpose2("2");
-        svo.setAnimal_yn("Y");
-        svo.setBudget("Y");
-        svo.setGroup("2");
+        svo.setPurpose("2");
+        svo.setPurpose2("5");
+        svo.setAnimal_yn("N");
+        svo.setBudget("N");
+        svo.setGroup("3");
         svo.setLocation("1");
+        svo.setCategory("2");
+        
 
         List<TravelVo> travelVoList = new TravelService().recommTravel(svo);
 

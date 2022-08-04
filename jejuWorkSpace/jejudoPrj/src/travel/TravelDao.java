@@ -499,10 +499,27 @@ public class TravelDao {
 		}else if(svo.getAnimal_yn().equals("N")){
 			animal_ynanswer = "N";
 		}
-
-		String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP , P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, TRAVEL_PRICE, ANIMAL_YN FROM TRAVEL T "
-				+ "JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO "
-				+ "WHERE (P.PURPOSE = ? ) OR (P.PURPOSE = ?) AND PERSON_GROUP = ? AND TRAVEL_ADDRESS LIKE ? AND ANIMAL_YN = ? "
+		
+		// 카테고리
+		String categoryanswer = null;
+		if (svo.getCategory().equals("1")) {
+			categoryanswer = "관광지";
+		} else if (svo.getCategory().equals("2")) {
+			categoryanswer = "맛집";
+		} else if (svo.getCategory().equals("3")) {
+			categoryanswer = "엑티비티";
+		} else if (svo.getCategory().equals("4")) {
+			categoryanswer = "카페";
+		} 
+		String sql = 
+				"SELECT TRAVEL_NO, G.PERSON_GROUP , P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, TRAVEL_PRICE, ANIMAL_YN \r\n"
+				+ "FROM TRAVEL T \r\n"
+				+ "JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO \r\n"
+				+ "WHERE ((P.PURPOSE = ? ) OR (P.PURPOSE = ?)) \r\n"
+				+ "AND TRAVEL_ADDRESS LIKE ? \r\n"
+				+ "AND PERSON_GROUP LIKE ? \r\n"
+				+ "AND ANIMAL_YN = ? \r\n"
+				+ "AND C.CATEGORY = ? \r\n"
 				+ budgetanswer;
 
 		PreparedStatement pstmt = null;
@@ -517,6 +534,8 @@ public class TravelDao {
 			pstmt.setString(3, locationanswer); // 위치
 			pstmt.setString(4, personGroupanswer); // 인원
 			pstmt.setString(5, animal_ynanswer ); // 반려동물
+			pstmt.setString(6, categoryanswer ); // 카테고리
+			
 
 			rs = pstmt.executeQuery();
 
