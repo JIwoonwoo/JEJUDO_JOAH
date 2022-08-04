@@ -2,6 +2,9 @@ package accom;
 
 import java.util.List;
 
+import accom.AccDto;
+import accom.AccService;
+import accom.AccTestMenu;
 import util.InputUtil;
 
 /*
@@ -72,6 +75,14 @@ public class AccomController {
 			System.out.println("숙소 예약에 실패하였습니다. 다시 시도해 주세요.");
 		}
 
+		
+	}//accSelect
+	
+	public void accReservCheck() {
+		
+		AccDto dto = new AccDto();
+		
+		new AccService().accReservCheck(dto);
 		
 	}
 

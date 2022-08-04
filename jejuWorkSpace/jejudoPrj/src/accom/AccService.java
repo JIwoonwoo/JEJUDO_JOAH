@@ -3,6 +3,7 @@ package accom;
 import java.sql.Connection;
 import java.util.List;
 
+import accom.AccDao;
 import main.Main;
 import survey.SurveyService;
 import survey.SurveyVo;
@@ -64,5 +65,23 @@ public class AccService {
 			return result;
 			
 		}//accSelect
+		
+		public void accReservCheck(accDto dto) {
+			
+			Connection conn = null;
+			int result = 0;
+			try {
+				conn = JDBCTemplate.getConnection();
+				
+				result = new AccDao().accReservCheck(dto, conn);
+
+			} catch (Exception e) {
+				e.printStackTrace(); 
+			} finally {
+				JDBCTemplate.close(conn);
+			}
+			
+			
+		}//accRC
 		
 }
