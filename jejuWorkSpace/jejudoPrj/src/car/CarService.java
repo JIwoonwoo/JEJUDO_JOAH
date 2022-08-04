@@ -75,7 +75,7 @@ public class CarService {
 		int insurance = Parsing.getInt(rVo.getInsurance());
 		
 		
-		if(rVo.getRentalNo() >= 48) {
+		if(rVo.getRentalNo() > 100) {
 			System.out.println("준비된 차량이 없습니다.");
 			return -1;
 		}

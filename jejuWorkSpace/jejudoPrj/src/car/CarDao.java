@@ -68,7 +68,7 @@ public class CarDao {
 				vo2.setCarSize(size);
 				vo2.setCarUq(uq);
 				vo2.setCarFuel(fuel);
-				vo2.setOpen_yn(sql);
+				vo2.setOpen_yn(openable);
 				vo2.setDayPrice(price);
 				
 				carVoList.add(vo2);
@@ -153,7 +153,7 @@ public class CarDao {
 				rVo.setDayPrice(dayPrice);
 				
 				reserveVoList.add(rVo);
-				System.out.println(rVo);
+				
 			}
 			
 		} finally {
@@ -187,7 +187,7 @@ public class CarDao {
 		ReserveVo vo = null;
 		
 		try {
-			String sql = "SELECT C.CAR_NAME,T.CAR_SIZE,F.FUEL,R.CAR_UQ FROM CAR C JOIN RENTAL_CAR R USING(CAR_NO) JOIN FUEL F ON C.FUEL = F.FUEL_NO JOIN TB_SIZE T ON C.CAR_SIZE = T.SIZE_NO WHERE R.RENTAL_NO = ?";
+			String sql = "SELECT C.CAR_NAME,T.CAR_SIZE,F.FUEL,R.CAR_UQ,R.OPENABLE FROM CAR C JOIN RENTAL_CAR R USING(CAR_NO) JOIN FUEL F ON C.FUEL = F.FUEL_NO JOIN TB_SIZE T ON C.CAR_SIZE = T.SIZE_NO WHERE R.RENTAL_NO = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, rentalNo);
 			
@@ -197,12 +197,14 @@ public class CarDao {
 				String uq = (rs.getString("CAR_UQ"));
 				String name = (rs.getString("CAR_NAME"));
 				String fuel = (rs.getString("FUEL"));
+				String openable = (rs.getString("OPENABLE"));
 				
 				vo = new ReserveVo();
 				vo.setCarUq(uq);
 				vo.setSize(size);
 				vo.setName(name);
 				vo.setFuel(fuel);
+				vo.setOpenable(openable);
 			}
 			
 		}finally {

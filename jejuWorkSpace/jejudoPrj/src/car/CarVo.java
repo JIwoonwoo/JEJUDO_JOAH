@@ -76,6 +76,11 @@ public class CarVo {
 		return open_yn;
 	}
 	public void setOpen_yn(String open_yn) {
+		if(open_yn.equals("Y")) {
+			open_yn = "가능";
+		} else {
+			open_yn = "불가능";
+		}
 		this.open_yn = open_yn;
 	}
 	public String getCarName() {
