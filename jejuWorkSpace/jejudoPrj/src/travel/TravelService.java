@@ -50,9 +50,11 @@ public class TravelService {
 //		
 //	}
 
-	public int like_sum(TravelVo vo) {
+	public int like_sum(String no) {
 
-
+		TravelVo vo = new TravelVo();
+		vo.setTravel_no(no);
+		
 		Connection conn = null;
 		int result = 0;
 		try {

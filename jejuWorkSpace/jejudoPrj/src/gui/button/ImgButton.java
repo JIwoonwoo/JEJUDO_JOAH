@@ -17,7 +17,7 @@ public class ImgButton extends InvisiableButton{
 		
 		setSize(new Dimension(img.getIconWidth(),img.getIconHeight()));
 		
-		setIcon(imgSelect);
+		setIcon(img);
 		
 		addMouseListener(new MouseAdapter() {
 			@Override

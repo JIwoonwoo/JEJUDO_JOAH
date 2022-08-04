@@ -582,9 +582,9 @@ public class TravelDao {
 
 	// 카운팅 후 좋아요 조회 메서드.
 
-	public TravelVo nowLike(String likeCount) throws Exception {
+	public TravelVo nowLike(String likeCount) {
 
-		Connection conn = JDBCTemplate.getConnection();
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		TravelVo vo = null;
@@ -593,6 +593,7 @@ public class TravelDao {
 				"SELECT LIKE_CNT FROM TRAVEL WHERE TRAVEL_NO = ? ";
 		
 		try {
+			conn = JDBCTemplate.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, likeCount);
 			
@@ -606,7 +607,7 @@ public class TravelDao {
 			
 			}
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {

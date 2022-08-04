@@ -14,8 +14,8 @@ public class CarDetail extends ImgPanel {
 	
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
-	private JButton updateBtn;
-	private JButton deleteBtn;
+//	private JButton updateBtn;
+//	private JButton deleteBtn;
 	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -27,6 +27,7 @@ public class CarDetail extends ImgPanel {
 	private JLabel lblNewLabel_1_6;
 	private JLabel lblNewLabel_1_7;
 	private JLabel lblNewLabel_1_9;
+	private JLabel lblNewLabel_1_3_1;
 	
 	public CarDetail(){
 		super("carDetail");
@@ -37,11 +38,11 @@ public class CarDetail extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 		
-		updateBtn = new ImgButton("예약변경");
-		add(updateBtn);
-		
-		deleteBtn = new ImgButton("예약취소");
-		add(deleteBtn);
+//		updateBtn = new ImgButton("예약변경");
+//		add(updateBtn);
+//		
+//		deleteBtn = new ImgButton("예약취소");
+//		add(deleteBtn);
 		
 		lblNewLabel = new JLabel();
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -93,6 +94,11 @@ public class CarDetail extends ImgPanel {
 		lblNewLabel_1_9.setFont(new Font("굴림", Font.PLAIN, 15));
 		lblNewLabel_1_9.setBounds(145, 530, 98, 32);
 		add(lblNewLabel_1_9);
+		
+		lblNewLabel_1_3_1 = new JLabel();
+		lblNewLabel_1_3_1.setFont(new Font("굴림", Font.PLAIN, 15));
+		lblNewLabel_1_3_1.setBounds(345, 226, 98, 32);
+		add(lblNewLabel_1_3_1);
 	}
 	
 	public void set(ReserveVo vo) {
@@ -106,6 +112,7 @@ public class CarDetail extends ImgPanel {
 		lblNewLabel_1_6.setText(vo.getReturnDate().substring(2,10));
 		lblNewLabel_1_7.setText(vo.getDayPrice());
 		lblNewLabel_1_9.setText(vo.getInsurance());
+//		lblNewLabel_1_3_1.setText(vo.get);
 	}
 
 	public HomeBtn getHomeBtn() {
@@ -116,15 +123,11 @@ public class CarDetail extends ImgPanel {
 		return backBtn;
 	}
 
-	public JButton getUpdateBtn() {
-		return updateBtn;
-	}
-
-	public JButton getDeleteBtn() {
-		return deleteBtn;
-	}
-	
-	
-	
-	
+//	public JButton getUpdateBtn() {
+//		return updateBtn;
+//	}
+//
+//	public JButton getDeleteBtn() {
+//		return deleteBtn;
+//	}
 }

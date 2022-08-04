@@ -7,7 +7,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -17,20 +16,21 @@ import gui.button.HomeBtn;
 import gui.button.InvisiableButton;
 import travel.TravelDao;
 import travel.TravelVo;
+import javax.swing.JButton;
 
-public class InforActiv extends ImgPanel {
+public class InforTrip extends ImgPanel {
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 	private JPanel panel_2;
 	private JScrollPane scrollPane_2;
+	private JButton activBtn;
 	private JButton restraBtn;
-	private JButton tripBtn;
 	
 	private TravelDao td = new TravelDao();
 	
-	public InforActiv() {
-		super("inforActiv");
+	public InforTrip() {
+		super("inforTrip");
 
 		homeBtn = new HomeBtn();
 		add(homeBtn);
@@ -53,16 +53,14 @@ public class InforActiv extends ImgPanel {
 		scrollPane_2.setBorder(null);
 		scrollPane_2.setBackground(null);
 		scrollPane_2.setOpaque(false);
-		scrollPane_2.getViewport().setOpaque(false);
+		
+		activBtn = new InvisiableButton();
+		activBtn.setBounds(196, 121, 159, 44);
+		add(activBtn);
 		
 		restraBtn = new InvisiableButton();
 		restraBtn.setBounds(370, 121, 159, 44);
 		add(restraBtn);
-		
-		tripBtn = new InvisiableButton();
-		tripBtn.setBounds(21, 121, 159, 44);
-		add(tripBtn);
-		scrollPane_2.getViewport().setOpaque(false);
 		
 				
 	}
@@ -100,8 +98,8 @@ public class InforActiv extends ImgPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
-					GUI.where = "inforActiv";
 					GUI.inforborad.set(tvo);
+					GUI.where = "inforTrip";
 					GUI.inforborad.setVisible(true);
 				}
 			});
@@ -118,14 +116,13 @@ public class InforActiv extends ImgPanel {
 		
 	}
 
+	public JButton getActivBtn() {
+		return activBtn;
+	}
+
 	public JButton getRestraBtn() {
 		return restraBtn;
 	}
 
-	public JButton getTripBtn() {
-		return tripBtn;
-	}
-	
-	
 	
 }

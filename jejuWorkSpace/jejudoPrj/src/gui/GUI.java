@@ -3,6 +3,7 @@ package gui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -25,6 +26,9 @@ import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
 import gui.panel.FindPwdPanel;
 import gui.panel.InforActiv;
+import gui.panel.InforBorad;
+import gui.panel.InforRestar;
+import gui.panel.InforTrip;
 import gui.panel.JoinPanel;
 import gui.panel.ListQnaPanel;
 import gui.panel.LoginPanel;
@@ -58,9 +62,10 @@ import travel.TravelVo;
 public class GUI {
 
 	public static JFrame frame;
-	private String where = "";
+	public static String where = "";
 	public static ViewQna viewQna;
 	public static CarDetail carDetail;
+	public static InforBorad inforborad;
 	private VoBox voBox = new VoBox();
 
 	/**
@@ -116,6 +121,9 @@ public class GUI {
 		PointPanel pointPanel = new PointPanel();
 		carDetail = new CarDetail();
 		InforActiv inforActiv = new InforActiv();
+		InforTrip inforTrip = new InforTrip();
+		InforRestar inforRestar = new InforRestar();
+		inforborad = new InforBorad();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -123,6 +131,34 @@ public class GUI {
 		CarService cs = new CarService();
 		AccService as = new AccService();
 		PayService ps = new PayService();
+		
+		/** 회원정보수정 **/
+		frame.getContentPane().add(inforborad);
+		inforborad.setVisible(false);
+		
+		// 홈
+		inforborad.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforborad.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		inforborad.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforborad.setVisible(false);
+				switch(where) {
+				case "inforTrip" : inforTrip.setVisible(true); break;
+				case "inforRestar" : inforRestar.setVisible(true); break;
+				case "inforActiv" : inforActiv.setVisible(true); break;
+				}
+			}
+		});
 
 		/** 회원정보수정 **/
 		frame.getContentPane().add(updateMemberPanel);
@@ -584,21 +620,6 @@ public class GUI {
 			}
 		});
 
-		carDetail.getUpdateBtn().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-		carDetail.getDeleteBtn().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
 		reservInforPanel.setVisible(false);
@@ -1039,7 +1060,7 @@ public class GUI {
 
 			}
 		});
-		/** 문의내역확인 **/
+		/** 엑티비티 여행정보 **/
 		frame.getContentPane().add(inforActiv);
 		inforActiv.setVisible(false);
 		
@@ -1060,6 +1081,154 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				inforActiv.setVisible(false);
 				mainPanel.setVisible(true);
+			}
+		});
+		inforActiv.getTripBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(1);
+				
+				if(list==null) {
+					return;
+				}
+				inforActiv.setVisible(false);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
+
+			}
+		});
+		inforActiv.getRestraBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = new ArrayList<TravelVo>();
+				list.addAll(td.attraction(2));
+				list.addAll(td.attraction(4));
+				
+				inforActiv.setVisible(false);
+				inforRestar.setList(list);
+				inforRestar.setVisible(true);
+
+			}
+		});
+		
+		/** 맛집/카페 여행정보 **/
+		frame.getContentPane().add(inforRestar);
+		inforRestar.setVisible(false);
+		
+		// 뒤로가기
+		inforRestar.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforRestar.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforRestar.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforRestar.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		inforRestar.getActivBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(3);
+				
+				if(list==null) {
+					return;
+				}
+				inforRestar.setVisible(false);
+				inforActiv.setList(list);
+				inforActiv.setVisible(true);
+
+			}
+		});
+		inforRestar.getTripBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(1);
+				
+				if(list==null) {
+					return;
+				}
+				inforRestar.setVisible(false);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
+
+			}
+		});
+		
+		/** 관광지 여행정보 **/
+		frame.getContentPane().add(inforTrip);
+		inforTrip.setVisible(false);
+		
+		// 뒤로가기
+		inforTrip.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforTrip.setVisible(false);
+				mainPanel.setVisible(true);
+
+			}
+		});
+		// 홈으로
+		inforTrip.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inforTrip.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+		inforTrip.getActivBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = td.attraction(3);
+				
+				if(list==null) {
+					return;
+				}
+				inforTrip.setVisible(false);
+				inforActiv.setList(list);
+				inforActiv.setVisible(true);
+
+			}
+		});
+		inforTrip.getRestraBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				TravelDao td = new TravelDao();
+				List<TravelVo> list = new ArrayList<TravelVo>();
+				list.addAll(td.attraction(2));
+				list.addAll(td.attraction(4));
+				
+				inforTrip.setVisible(false);
+				inforRestar.setList(list);
+				inforRestar.setVisible(true);
+
 			}
 		});
 
@@ -1085,14 +1254,14 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				TravelDao td = new TravelDao();
-				List<TravelVo> list = td.attraction(3);
+				List<TravelVo> list = td.attraction(1);
 				
 				if(list==null) {
 					return;
 				}
 				mainPanel.setVisible(false);
-				inforActiv.setList(list);
-				inforActiv.setVisible(true);
+				inforTrip.setList(list);
+				inforTrip.setVisible(true);
 
 			}
 		});

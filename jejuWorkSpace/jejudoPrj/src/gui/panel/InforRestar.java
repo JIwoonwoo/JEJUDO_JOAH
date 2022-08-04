@@ -18,19 +18,19 @@ import gui.button.InvisiableButton;
 import travel.TravelDao;
 import travel.TravelVo;
 
-public class InforActiv extends ImgPanel {
+public class InforRestar extends ImgPanel {
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 	private JPanel panel_2;
 	private JScrollPane scrollPane_2;
-	private JButton restraBtn;
+	private JButton activBtn;
 	private JButton tripBtn;
 	
 	private TravelDao td = new TravelDao();
 	
-	public InforActiv() {
-		super("inforActiv");
+	public InforRestar() {
+		super("inforRestar");
 
 		homeBtn = new HomeBtn();
 		add(homeBtn);
@@ -55,9 +55,9 @@ public class InforActiv extends ImgPanel {
 		scrollPane_2.setOpaque(false);
 		scrollPane_2.getViewport().setOpaque(false);
 		
-		restraBtn = new InvisiableButton();
-		restraBtn.setBounds(370, 121, 159, 44);
-		add(restraBtn);
+		activBtn = new InvisiableButton();
+		activBtn.setBounds(196, 121, 159, 44);
+		add(activBtn);
 		
 		tripBtn = new InvisiableButton();
 		tripBtn.setBounds(21, 121, 159, 44);
@@ -100,7 +100,7 @@ public class InforActiv extends ImgPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
-					GUI.where = "inforActiv";
+					GUI.where = "inforRestar";
 					GUI.inforborad.set(tvo);
 					GUI.inforborad.setVisible(true);
 				}
@@ -118,8 +118,8 @@ public class InforActiv extends ImgPanel {
 		
 	}
 
-	public JButton getRestraBtn() {
-		return restraBtn;
+	public JButton getActivBtn() {
+		return activBtn;
 	}
 
 	public JButton getTripBtn() {

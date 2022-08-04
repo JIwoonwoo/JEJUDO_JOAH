@@ -96,23 +96,23 @@ public class TravelController {
 		TravelVo vo = new TravelVo();
 		vo.setTravel_no(likeCount);
 		
-		int result = new TravelService().like_sum(vo);
+//		int result = new TravelService().like_sum(vo);
 		
-			// 글 작성 성공
-			try {
-				if (result == 1) {
-					System.out.println("좋아요 카운팅 성공 !!" );
-					TravelVo vo2 = new TravelDao().nowLike(likeCount);
-					System.out.println("현재 좋아요 수 : "+ vo2.getLike_cnt());
-	
-			}else {
-				// 글 작성 실패
-				System.out.println("좋아요 카운팅 실패 ..");
-			}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			// 글 작성 성공
+//			try {
+//				if (result == 1) {
+//					System.out.println("좋아요 카운팅 성공 !!" );
+//					TravelVo vo2 = new TravelDao().nowLike(likeCount);
+//					System.out.println("현재 좋아요 수 : "+ vo2.getLike_cnt());
+//	
+//			}else {
+//				// 글 작성 실패
+//				System.out.println("좋아요 카운팅 실패 ..");
+//			}
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
 		
 			
