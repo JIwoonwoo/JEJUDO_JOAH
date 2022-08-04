@@ -112,7 +112,7 @@ public class CarDetail extends ImgPanel {
 		lblNewLabel_1_6.setText(vo.getReturnDate().substring(2,10));
 		lblNewLabel_1_7.setText(vo.getDayPrice());
 		lblNewLabel_1_9.setText(vo.getInsurance());
-//		lblNewLabel_1_3_1.setText(vo.get);
+		lblNewLabel_1_3_1.setText(vo.getOpenable());
 	}
 
 	public HomeBtn getHomeBtn() {

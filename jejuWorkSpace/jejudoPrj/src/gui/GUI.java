@@ -156,6 +156,7 @@ public class GUI {
 				case "inforTrip" : inforTrip.setVisible(true); break;
 				case "inforRestar" : inforRestar.setVisible(true); break;
 				case "inforActiv" : inforActiv.setVisible(true); break;
+				case "SugTripPanel" : sugTripPanel.setVisible(true); break;
 				}
 			}
 		});
@@ -308,6 +309,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				myPagePanel.setVisible(false);
+				sugTripPanel.set();
 				sugTripPanel.setVisible(true);
 				sugTripPanel.getNextBtn().setVisible(false);
 				where = "myPage";

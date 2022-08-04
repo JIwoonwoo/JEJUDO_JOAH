@@ -19,7 +19,9 @@ public class TravelService {
 			conn = JDBCTemplate.getConnection();
 			
 			travelVoList = new TravelDao().recommTravel(conn, svo);
-
+			if(travelVoList==null) {
+				System.out.println("실패");
+			}
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		} finally {
