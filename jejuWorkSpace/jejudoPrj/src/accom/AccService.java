@@ -98,7 +98,7 @@ public class AccService {
 
 	}// accSelect
 
-	public List<AccDto> accReservCheck(AccDto dto) {
+	public List<AccDto> accReservCheck() {
 
 		Connection conn = null;
 		List<AccDto> list=null;

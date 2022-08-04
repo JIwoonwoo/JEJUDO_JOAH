@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import car.ReserveVo;
+import accom.AccDto;
 import gui.button.InvisiableButton;
 
 public class AccListTemplate extends JPanel {
@@ -20,15 +20,15 @@ public class AccListTemplate extends JPanel {
 	private JSeparator separator;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
 	private JSeparator separator_1;
-	private JSeparator separator_1_1;
 
 	/**
 	 * Create the panel.
 	 */
-	public AccListTemplate(ReserveVo rVo) {
+	public AccListTemplate(AccDto rVo) {
+		
+		no = rVo.getReserveNo();
+		
 		setSize(464, 41);
 		setOpaque(false);
 		setLayout(null);
@@ -47,37 +47,20 @@ public class AccListTemplate extends JPanel {
 		separator.setBounds(0, 39, 463, 2);
 		add(separator);
 
-		lblNewLabel_1 = new JLabel(rVo.getReserveDate().substring(2,10));
+		lblNewLabel_1 = new JLabel(rVo.getReserveDate().toString().substring(2,10));
 		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 12));
 		lblNewLabel_1.setBounds(55, 11, 117, 18);
 		add(lblNewLabel_1);
 
-		lblNewLabel_2 = new JLabel(rVo.getRentalDate().substring(2,10));
+		lblNewLabel_2 = new JLabel(rVo.getAccomname());
 		lblNewLabel_2.setFont(new Font("굴림", Font.PLAIN, 12));
 		lblNewLabel_2.setBounds(180, 11, 165, 18);
 		add(lblNewLabel_2);
-
-		lblNewLabel_3 = new JLabel(rVo.getReturnDate().substring(2,10));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_3.setFont(new Font("굴림", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(165, 11, 165, 18);
-		add(lblNewLabel_3);
-
-		lblNewLabel_4 = new JLabel(rVo.getInsurance());
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setFont(new Font("굴림", Font.PLAIN, 12));
-		lblNewLabel_4.setBounds(372, 11, 80, 18);
-		add(lblNewLabel_4);
 
 		separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setBounds(150, 11, 1, 18);
 		add(separator_1);
-
-		separator_1_1 = new JSeparator();
-		separator_1_1.setOrientation(SwingConstants.VERTICAL);
-		separator_1_1.setBounds(359, 11, 1, 18);
-		add(separator_1_1);
 
 	}
 
@@ -95,11 +78,8 @@ public class AccListTemplate extends JPanel {
 		lblNewLabel.setForeground(Color.white);
 		lblNewLabel_1.setForeground(Color.white);
 		lblNewLabel_2.setForeground(Color.white);
-		lblNewLabel_3.setForeground(Color.white);
-		lblNewLabel_4.setForeground(Color.white);
 		separator.setForeground(Color.white);
 		separator_1.setForeground(Color.white);
-		separator_1_1.setForeground(Color.white);
 	}
 
 	public void resetColor() {
@@ -108,11 +88,8 @@ public class AccListTemplate extends JPanel {
 		lblNewLabel.setForeground(Color.black);
 		lblNewLabel_1.setForeground(Color.black);
 		lblNewLabel_2.setForeground(Color.black);
-		lblNewLabel_3.setForeground(Color.black);
-		lblNewLabel_4.setForeground(Color.black);
 		separator.setForeground(Color.LIGHT_GRAY);
 		separator_1.setForeground(new Color(160, 160, 160));
-		separator_1_1.setForeground(new Color(160, 160, 160));
 	}
 
 	public JButton getButton() {

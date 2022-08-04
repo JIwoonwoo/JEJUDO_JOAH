@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import accom.AccDto;
+import accom.AccService;
 import car.ReserveVo;
 import gui.GUI;
 import gui.button.BackBtn;
@@ -28,6 +30,8 @@ public class ReservInforPanel extends ImgPanel {
 	private JPanel panel_1;
 	private JPanel panel_2;
 	private JScrollPane scrollPane_2;
+	private JScrollPane scrollPane_1;
+	private JScrollPane scrollPane;
 	
 
 	public ReservInforPanel() {
@@ -48,7 +52,7 @@ public class ReservInforPanel extends ImgPanel {
 //		deleteBtn = new ImgButton("예약취소");
 //		add(deleteBtn);
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(25, 155, 496, 149);
 		add(scrollPane);
@@ -64,7 +68,7 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane_1.setBounds(25, 398, 496, 149);
 		add(scrollPane_1);
@@ -156,6 +160,48 @@ public class ReservInforPanel extends ImgPanel {
 		panel_2.setPreferredSize(panel_2.getPreferredSize());
 		
 		scrollPane_2.setViewportView(panel_2);
+	}
+	
+	public void setAccList(List<AccDto> list) {
+		panel_1.removeAll();
+		panel_1.revalidate();
+		panel_1.repaint();
+		int i = 0;
+		System.out.println(list);
+		for (AccDto vo : list) {
+
+			AccListTemplate b = new AccListTemplate(vo);
+			b.setBounds(15, 0 + (41 * i), 464, 41);
+			b.getButton().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					b.setSelect();
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					b.resetColor();
+				}
+			});
+			b.getButton().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					GUI.accDetail.set(new AccService().accReCheckDetail(vo));
+					GUI.accDetail.setVisible(true);
+				}
+			});
+			panel_1.add(b);
+
+			i++;
+		}
+		
+		panel_1.setSize(0, 41*(i+1));
+		
+		panel_1.setPreferredSize(panel_1.getPreferredSize());
+		
+		scrollPane_1.setViewportView(panel_1);
 	}
 
 }

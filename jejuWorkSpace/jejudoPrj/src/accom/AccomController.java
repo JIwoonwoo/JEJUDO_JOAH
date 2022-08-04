@@ -79,7 +79,7 @@ public class AccomController {
 		
 		AccDto dto = new AccDto();
 		
-		new AccService().accReservCheck(dto);
+		new AccService().accReservCheck();
 		
 	}
 

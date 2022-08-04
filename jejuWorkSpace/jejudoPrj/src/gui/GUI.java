@@ -21,6 +21,7 @@ import gui.dialog.Card;
 import gui.dialog.Cash;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
+import gui.panel.AccDetail;
 import gui.panel.CarDetail;
 import gui.panel.FaveratePanel;
 import gui.panel.FindIdPanel;
@@ -65,6 +66,7 @@ public class GUI {
 	public static String where = "";
 	public static ViewQna viewQna;
 	public static CarDetail carDetail;
+	public static AccDetail accDetail;
 	public static InforBorad inforborad;
 	private VoBox voBox = new VoBox();
 
@@ -124,6 +126,7 @@ public class GUI {
 		InforTrip inforTrip = new InforTrip();
 		InforRestar inforRestar = new InforRestar();
 		inforborad = new InforBorad();
+		accDetail = new AccDetail();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -132,7 +135,31 @@ public class GUI {
 		AccService as = new AccService();
 		PayService ps = new PayService();
 		
-		/** 회원정보수정 **/
+		/** 숙소정보 **/
+		frame.getContentPane().add(accDetail);
+		accDetail.setVisible(false);
+		
+		// 홈
+		accDetail.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				accDetail.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		accDetail.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				accDetail.setVisible(false);
+				reservInforPanel.setVisible(true);
+			}
+		});
+		
+		/** 여행게시판 **/
 		frame.getContentPane().add(inforborad);
 		inforborad.setVisible(false);
 		
@@ -351,9 +378,11 @@ public class GUI {
 				myPagePanel.setVisible(false);
 				
 				List<ReserveVo> list = cs.reserveInquiry(Main.loginNo);
+				List<AccDto> list2 = as.accReservCheck();
 				
-				if(list!=null) {
+				if(list!=null && list2!=null) {
 					reservInforPanel.setCarList(list);
+					reservInforPanel.setAccList(list2);
 					
 				}
 				
