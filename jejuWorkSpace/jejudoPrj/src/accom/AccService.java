@@ -3,7 +3,11 @@ package accom;
 import java.sql.Connection;
 import java.util.List;
 
+<<<<<<< HEAD
 import car.Parsing;
+=======
+import accom.AccDao;
+>>>>>>> park22
 import main.Main;
 import survey.SurveyService;
 import survey.SurveyVo;
@@ -81,14 +85,19 @@ public class AccService {
 			
 		}//accSelect
 		
+<<<<<<< HEAD
 		//정한
 		public int accReserve(AccDto dto) {
+=======
+		public void accReservCheck(accDto dto) {
+>>>>>>> park22
 			
 			Connection conn = null;
 			int result = 0;
 			try {
 				conn = JDBCTemplate.getConnection();
 				
+<<<<<<< HEAD
 				result = new AccDao().accReserve(dto, conn);
 				if(result==1) {
 					System.out.println("숙소예약 입력 성공");
@@ -103,12 +112,23 @@ public class AccService {
 				e.printStackTrace(); 
 				System.out.println("error 숙소예약 입력 실패");
 				JDBCTemplate.rollback(conn);
+=======
+				result = new AccDao().accReservCheck(dto, conn);
+
+			} catch (Exception e) {
+				e.printStackTrace(); 
+>>>>>>> park22
 			} finally {
 				JDBCTemplate.close(conn);
 			}
 			
+<<<<<<< HEAD
 			return result;
 			
 		}//accSelect
+=======
+			
+		}//accRC
+>>>>>>> park22
 		
 }

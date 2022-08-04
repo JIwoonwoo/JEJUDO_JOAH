@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import car.Parsing;
+=======
+import accom.AccDto;
+>>>>>>> park22
 import main.Main;
 import member.MemberVo;
 import survey.SurveyVo;
@@ -185,6 +189,43 @@ public class AccDao {
 		 
 
 		return result;
+<<<<<<< HEAD
 	}// accReserve
+=======
+	}// accSelect
+	
+	
+	public void accReservCheck(AccDto dto, Connection conn) {
+		
+		PreparedStatement pstmt = null; // sql을 담아주는 객체
+		ResultSet rs = null;
+		
+		//sql준비 - 쿼리문, ? 채우는 setString문, pstmt
+		
+		String sql = "";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getRoomno());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+
+//			dto.setRoomno(rs.getInt("ROOM_NO"));
+				dto.setAccomname(rs.getString("ACCOM_NAME"));
+				dto.setAddress(rs.getString("ACCOM_ADDRESS"));
+				dto.setRoomname(rs.getString("ROOM_NAME"));
+				dto.setPrice(rs.getInt("ROOM_PRICE"));
+				dto.setCapacity(rs.getInt("CAPACITY"));
+
+				System.out.println(dto.getAccomname() + "|" + dto.getAddress() + "|" + dto.getRoomname() + "|" + dto.getPrice() + "|" + dto.getCapacity());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[ERROR]선택하신 숙소 조회 오류");
+		
+	}
+>>>>>>> park22
 
 }
