@@ -3,6 +3,7 @@ package accom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,52 +184,57 @@ public class AccDao {
 
 	}// accReserve
 
-	public void accReservCheck(AccDto dto, Connection conn) {
+	public List<AccDto> accReservCheck(Connection conn) throws Exception {
 
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
+		List<AccDto> list = null;
 
 		// sql준비 - 쿼리문, ? 채우는 setString문, pstmt
 
 		String sql = "SELECT AR.ACCOM_NO, A.ACCOM_NAME, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE MEMBER_NO = ?";
 
 		try {
+			list = new ArrayList<AccDto>();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, Main.loginNo);//회원번호
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-
+				AccDto dto = new AccDto();
 				dto.setReserveNo(rs.getInt("ACCOM_NO"));
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
 
-				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+//				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+				list.add(dto);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("[ERROR]선택하신 숙소 조회 오류");
-
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
 		}
+		
+		return list;
 
 	}//AccRC
 	
-	public void accReCheckDetail(AccDto dto, Connection conn) {
+	public AccDto accReCheckDetail(AccDto inputDto, Connection conn) {
 		
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
+		AccDto dto = null;
 		
 		String sql = "SELECT AR.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY , R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE R.ROOM_NO = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getReserveNo());//예약번호여야함
+			pstmt.setInt(1, inputDto.getReserveNo());//예약번호여야함
 
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-
+				dto = new AccDto();
 				dto.setReserveNo(rs.getInt("ACCOM_NO"));
 				dto.setRoomno(rs.getInt("ROOM_NO"));
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
@@ -252,5 +258,6 @@ public class AccDao {
 			System.out.println("[ERROR]선택하신 숙소 조회 오류");
 
 		}
+		return dto;
 	}
 }
