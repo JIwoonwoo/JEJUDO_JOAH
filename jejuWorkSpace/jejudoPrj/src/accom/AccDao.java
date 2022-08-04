@@ -3,15 +3,13 @@ package accom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import car.Parsing;
+import accom.AccDto;
 import main.Main;
 import member.MemberVo;
 import survey.SurveyVo;
-import util.InputUtil;
 import util.JDBCTemplate;
 
 public class AccDao {
@@ -130,8 +128,6 @@ public class AccDao {
 
 			if (rs.next()) {
 
-//			dto.setRoomno(rs.getInt("ROOM_NO"));
-
 				dto = new AccDto();
 
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
@@ -156,35 +152,105 @@ public class AccDao {
 
 	}// accSelect
 
-	//정한
+	// 정한
 	public int accReserve(AccDto dto, Connection conn) throws Exception {
 
 //		System.out.println("선택하신 방을 예약하시겠습니까?  (Y/N 으로 대답)");
 //		String answer = InputUtil.sc.nextLine();
-		
+
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		int result = 0;
 
-			try {
-				// 예약을 위한 sql 작성
-				String sql3 = "INSERT INTO ACCOM_RESERVATION(ACCOM_NO, ROOM_NO, MEMBER_NO, CHECK_IN, CHECK_OUT) VALUES(SEQ_ACCOM_RESERVATION.NEXTVAL, ?, ?, ? , ?)";
+		try {
+			// 예약을 위한 sql 작성
+			String sql3 = "INSERT INTO ACCOM_RESERVATION(ACCOM_NO, ROOM_NO, MEMBER_NO, CHECK_IN, CHECK_OUT) VALUES(SEQ_ACCOM_RESERVATION.NEXTVAL, ?, ?, ? , ?)";
 
-				// sql날리기
-				pstmt = conn.prepareStatement(sql3);
-				MemberVo vo = new MemberVo();
-				pstmt.setInt(1, dto.getRoomno());
-				pstmt.setInt(2, Main.loginNo); // 여기에는 회원번호
-				pstmt.setString(3, dto.getCheckin());
-				pstmt.setString(4, dto.getCheckout());
+			// sql날리기
+			pstmt = conn.prepareStatement(sql3);
+			MemberVo vo = new MemberVo();
+			pstmt.setInt(1, dto.getRoomno());
+			pstmt.setInt(2, Main.loginNo); // 여기에는 회원번호
+			pstmt.setString(3, dto.getCheckin());
+			pstmt.setString(4, dto.getCheckout());
 
-				result = pstmt.executeUpdate();
+			result = pstmt.executeUpdate();
 
-			}  finally {
-				JDBCTemplate.close(pstmt);
-			}
-		 
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
 
 		return result;
+
 	}// accReserve
 
+	public void accReservCheck(AccDto dto, Connection conn) {
+
+		PreparedStatement pstmt = null; // sql을 담아주는 객체
+		ResultSet rs = null;
+
+		// sql준비 - 쿼리문, ? 채우는 setString문, pstmt
+
+		String sql = "SELECT AR.ACCOM_NO, A.ACCOM_NAME, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE MEMBER_NO = ?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Main.loginNo);//회원번호
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+
+				dto.setReserveNo(rs.getInt("ACCOM_NO"));
+				dto.setAccomname(rs.getString("ACCOM_NAME"));
+				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
+
+				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[ERROR]선택하신 숙소 조회 오류");
+
+		}
+
+	}//AccRC
+	
+	public void accReCheckDetail(AccDto dto, Connection conn) {
+		
+		PreparedStatement pstmt = null; // sql을 담아주는 객체
+		ResultSet rs = null;
+		
+		String sql = "SELECT AR.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY , R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE R.ROOM_NO = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getReserveNo());//예약번호여야함
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+
+				dto.setReserveNo(rs.getInt("ACCOM_NO"));
+				dto.setRoomno(rs.getInt("ROOM_NO"));
+				dto.setAccomname(rs.getString("ACCOM_NAME"));
+				dto.setAddress(rs.getString("ACCOM_ADDRESS"));
+				dto.setPoolYN(rs.getString("POOL_YN"));
+				dto.setRoomname(rs.getString("ROOM_NAME"));
+				dto.setPrice(rs.getInt("ROOM_PRICE"));
+				dto.setCapacity(rs.getInt("CAPACITY"));
+				dto.setAnimalYN(rs.getString("ANIMAL_YN"));
+				dto.setPoolableYN(rs.getString("POOL_ABLE_YN"));
+				dto.setAround(rs.getString("ACCOM_AR"));
+				dto.setRoomview(rs.getString("ROOM_VIEW_INFO"));
+				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
+
+				System.out.print("예약번호 : " + dto.getReserveNo());
+				System.out.print(dto);
+				System.out.print("예약일자 : " + dto.getReserveDate());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[ERROR]선택하신 숙소 조회 오류");
+
+		}
+	}
 }
