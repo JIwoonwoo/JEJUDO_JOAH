@@ -14,13 +14,14 @@ public class SurveyVo {
 	private String animal_yn ;
 	private Timestamp survey_date ;
 	private String delete_yn ;
+	private String category;
 	
 	public SurveyVo() {
 		
 	}
 	
 	public SurveyVo(String survey_no, String member_no, String purpose, String purpose2, String location, String group,
-			String budget, String animal_yn, Timestamp survey_date, String delete_yn) {
+			String budget, String animal_yn, Timestamp survey_date, String delete_yn, String category) {
 		super();
 		this.survey_no = survey_no;
 		this.member_no = member_no;
@@ -32,6 +33,8 @@ public class SurveyVo {
 		this.animal_yn = animal_yn;
 		this.survey_date = survey_date;
 		this.delete_yn = delete_yn;
+		this.category = category;
+		
 	}
 
 	public String getSurvey_no() {
@@ -113,13 +116,26 @@ public class SurveyVo {
 	public void setDelete_yn(String delete_yn) {
 		this.delete_yn = delete_yn;
 	}
+	
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	@Override
 	public String toString() {
 		return "SurveyVo [survey_no=" + survey_no + ", member_no=" + member_no + ", purpose=" + purpose + ", purpose2="
 				+ purpose2 + ", location=" + location + ", group=" + group + ", budget=" + budget + ", animal_yn="
-				+ animal_yn + ", survey_date=" + survey_date + ", delete_yn=" + delete_yn + "]";
+				+ animal_yn + ", survey_date=" + survey_date + ", delete_yn=" + delete_yn + ", category=" + category
+				+ "]";
 	}
+
+
+	
 
 	
 	

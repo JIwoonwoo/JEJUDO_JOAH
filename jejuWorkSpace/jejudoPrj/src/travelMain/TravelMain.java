@@ -17,38 +17,40 @@ public class TravelMain {
 		
 
 //		new TravelController().like_sum();
-//
-//	
-//		
-//		
-//		SurveyVo svo = new SurveyVo();
-//        svo.setPurpose("1");
-//        svo.setPurpose2("2");
-//        svo.setAnimal_yn("Y");
-//        svo.setBudget("Y");
-//        svo.setGroup("2");
-//        svo.setLocation("1");
-//
-//        List<TravelVo> travelVoList = new TravelService().recommTravel(svo);
-//
-//        for (int i = 0; i < travelVoList.size(); ++i) {
-//
-//			// ArrayList 이용
-//			// 꺼내오고
-//			TravelVo temp = travelVoList.get(i);
-//			// 담아주고
-//			String no = temp.getTravel_no();
-//			String recommendType = temp.getRecommend_type();
-//			String purpose = temp.getPurpose();
-//			String category = temp.getCategory();
-//			String travelName = temp.getTravel_name();
-//			String travelAddress = temp.getTravel_address();
-//			String animalYn = temp.getAnimal_yn();
-//			
-//			// 출력문
-//			System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
-//					+ " | [주소] " + travelAddress + " | [인원] " + recommendType + " | [반려동물 동반 여부] " + animalYn);
-//		}
+
+	
+		
+		
+		SurveyVo svo = new SurveyVo();
+        svo.setPurpose("2");
+        svo.setPurpose2("5");
+        svo.setAnimal_yn("N");
+        svo.setBudget("N");
+        svo.setGroup("3");
+        svo.setLocation("1");
+        svo.setCategory("2");
+        
+
+        List<TravelVo> travelVoList = new TravelService().recommTravel(svo);
+
+        for (int i = 0; i < travelVoList.size(); ++i) {
+
+			// ArrayList 이용
+			// 꺼내오고
+			TravelVo temp = travelVoList.get(i);
+			// 담아주고
+			String no = temp.getTravel_no();
+			String recommendType = temp.getRecommend_type();
+			String purpose = temp.getPurpose();
+			String category = temp.getCategory();
+			String travelName = temp.getTravel_name();
+			String travelAddress = temp.getTravel_address();
+			String animalYn = temp.getAnimal_yn();
+			
+			// 출력문
+			System.out.println("[여행지_No." + no + "]  " + travelName + " | [카테고리] " + category + " | [테마] " + purpose
+					+ " | [주소] " + travelAddress + " | [인원] " + recommendType + " | [반려동물 동반 여부] " + animalYn);
+		}
 		
 
 		try {
