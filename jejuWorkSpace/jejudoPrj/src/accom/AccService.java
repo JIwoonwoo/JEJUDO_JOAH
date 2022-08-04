@@ -3,10 +3,7 @@ package accom;
 import java.sql.Connection;
 import java.util.List;
 
-<<<<<<<HEAD
-import car.Parsing;=======
-import accom.AccDao;
-import accom.AccDto;
+import car.Parsing;
 import main.Main;
 import survey.SurveyService;
 import survey.SurveyVo;
@@ -101,12 +98,18 @@ public class AccService {
 
 	}// accSelect
 
-	public void accReservCheck(AccDto dto) {
-		
+	public List<AccDto> accReservCheck(AccDto dto) {
+
 		Connection conn = null;
+		List<AccDto> list=null;
 		try {
 			conn = JDBCTemplate.getConnection();
-			new AccDao().accReservCheck(dto, conn);
+			list = new AccDao().accReservCheck(conn);
+			
+			if(list==null) {
+				System.out.println("조회 실패");
+			}
+			
 		} catch (
 
 		Exception e) {
@@ -114,23 +117,31 @@ public class AccService {
 		} finally {
 			JDBCTemplate.close(conn);
 		}
-		
+		return list;
+
 	}// accRC
-	
-	
-public void accReCheckDetail(AccDto dto) {
+
+	public AccDto accReCheckDetail(AccDto inputDto) {
 		
+		AccDto dto = null;
+
 		Connection conn = null;
 		try {
 			conn = JDBCTemplate.getConnection();
-			new AccDao().accReCheckDetail(dto, conn);
-		} catch (
-		Exception e) {
+			dto = new AccDao().accReCheckDetail(inputDto, conn);
+			
+			if(dto==null) {
+				System.out.println("조회 실패");
+			}
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(conn);
 		}
 		
+		return dto;
+
 	}// accRC
 
 }

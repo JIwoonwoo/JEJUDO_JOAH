@@ -541,6 +541,13 @@ public class TravelDao {
 				vo.setPurpose(purpose);
 				vo.setCategory(category);
 				vo.setTravel_name(travelName);
+				
+				if (travelAddress.contains("서귀포시")) {
+					travelAddress = "서귀포시";
+				} else {
+					travelAddress = "제주시";
+				}
+				
 				vo.setTravel_address(travelAddress);
 				vo.setAnimal_yn(animalYn);
 
