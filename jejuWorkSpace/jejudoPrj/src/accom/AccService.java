@@ -87,11 +87,18 @@ public class AccService {
 			conn = JDBCTemplate.getConnection();
 
 			result = new AccDao().accReserve(dto, conn);
+			
+			if(result==1) {
+				System.out.println("성공");
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("error 숙소예약 입력 실패");
 			JDBCTemplate.rollback(conn);
+			System.out.println("error 숙소예약 입력 실패");
 		}
 
 		return result;
@@ -122,6 +129,7 @@ public class AccService {
 	}// accRC
 
 	public AccDto accReCheckDetail(AccDto inputDto) {
+		
 		
 		AccDto dto = null;
 

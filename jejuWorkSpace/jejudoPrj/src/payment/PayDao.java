@@ -50,11 +50,14 @@ public class PayDao {
 
 	// 가는 항공금액
 	public PayVo gfPay(int no, Connection conn) throws Exception {
-		String sql = "SELECT FR.FLIGHT_NO, F.FLIGHT_PRICE\r\n"
+		String sql = "SELECT *\r\n"
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
-//				+ "JOIN FLIGHT F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_NO\r\n"
-				+ "WHERE M.MEMBER_NO = ? AND FR.CANCEL_YN = 'N' AND FR.PAID_YN = 'N'";
+				+ "JOIN FLIGHT_TIME F ON FR.DEPARTURE_FLIGHT = F.FLIGHT_TIME_NO\r\n"
+				+ "WHERE M.MEMBER_NO = ? \r\n"
+				+ "AND FR.CANCEL_YN = 'N' \r\n"
+				+ "AND FR.PAID_YN = 'N' \r\n"
+				+ "ORDER BY RESERVE_DATE DESC\r\n";
 
 		PayVo vo = null;
 
@@ -69,18 +72,19 @@ public class PayDao {
 			rs = pstmt.executeQuery();
 			
 				
-			for(int i = 0;rs.next();i++) {
+//			for(int i = 0;rs.next();i++) {
+			if(rs.next()) {
 				
 				int fNo = rs.getInt("FLIGHT_NO");
-				int fp = rs.getInt("FLIGHT_PRICE");
+//				int fp = rs.getInt("FLIGHT_PRICE");
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
-				vo.setFlightGoPay(fp);
-				
-				if(i>0) {
-					vo.setFlightNo(-1);
-					return vo;					
-				}
+//				vo.setFlightGoPay(fp);
+				System.out.println(fNo);
+//				if(i>0) {
+//					vo.setFlightNo(-1);
+//					return vo;					
+//				}
 				
 			}
 			
@@ -102,7 +106,7 @@ public class PayDao {
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN FLIGHT_RESERVATION FR ON M.MEMBER_NO = FR.MEMBER_NO\r\n"
 				+ "JOIN FLIGHT F ON FR.RETURN_FLIGHT = F.FLIGHT_NO\r\n"
-				+ "WHERE M.MEMBER_NO = ? AND FR.CANCEL_YN = 'N' AND FR.PAID_YN = 'N'";
+				+ "WHERE M.MEMBER_NO = ? AND FR.CANCEL_YN = 'N' AND FR.PAID_YN = 'N' ORDER BY RESERVE_DATE DESC";
 
 		PayVo vo = null;
 
@@ -122,6 +126,7 @@ public class PayDao {
 				vo = new PayVo();
 				vo.setFlightNo(fNo);
 				vo.setFlightComePay(fp);
+				System.out.println(fNo);
 			}
 
 		} finally {
@@ -141,8 +146,8 @@ public class PayDao {
 		String sql = "SELECT A.ACCOM_NO, R.ROOM_PRICE , TO_DATE(TO_CHAR(A.CHECK_OUT,'YYMMDD')) - TO_DATE(TO_CHAR(A.CHECK_IN,'YYMMDD')) AS DAYS \r\n"
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN ACCOM_RESERVATION A ON M.MEMBER_NO = A.MEMBER_NO\r\n"
-				+ "JOIN ROOM R ON A.ROOM_NO = R.ROOM_NO\r\n"
-				+ "WHERE M.MEMBER_NO = ? AND A.PAID_YN = 'N'";
+				+ "JOIN ROOM R ON R.ROOM_NO = A.ROOM_NO\r\n"
+				+ "WHERE M.MEMBER_NO = ? AND A.PAID_YN = 'N' ORDER BY RESERVE_DATE DESC";
 		
 		PayVo vo = null;
 		PreparedStatement pstmt = null;
@@ -187,7 +192,7 @@ public class PayDao {
 				+ "FROM MEMBER M\r\n"
 				+ "JOIN CAR_RESERVATION C ON M.MEMBER_NO = C.MEMBER_NO\r\n"
 				+ "JOIN RENTAL_CAR R ON C.RENTAL_NO = R.RENTAL_NO\r\n"
-				+ "WHERE M.MEMBER_NO = ? AND C.CANCEL_YN = 'N' AND C.PAID_YN = 'N'";
+				+ "WHERE M.MEMBER_NO = ? AND C.CANCEL_YN = 'N' AND C.PAID_YN = 'N' ORDER BY RESERVE_DATE DESC";
 		PayVo vo = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -241,7 +246,7 @@ public class PayDao {
 		PreparedStatement pstmt = null;
 
 		try {
-
+			System.out.println(vo);
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getFlightNo());
 			pstmt.setInt(2, vo.getAccomNo());

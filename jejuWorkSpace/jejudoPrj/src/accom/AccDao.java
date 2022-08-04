@@ -92,9 +92,6 @@ public class AccDao {
 				dto.setAround(rs.getString("ACCOM_AR"));
 				dto.setRoomview(rs.getString("ROOM_VIEW_INFO"));
 
-				System.out.println("1");
-				System.out.println(dto);
-
 				list.add(dto);
 
 			}
@@ -201,13 +198,13 @@ public class AccDao {
 
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				AccDto dto = new AccDto();
-				dto.setReserveNo(rs.getInt("ACCOM_NO"));
+				dto.setReserveNo(Integer.parseInt(rs.getString("ACCOM_NO")));
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
-
-//				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+				System.out.println(dto);
+				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
 				list.add(dto);
 			}
 		} finally {
@@ -221,11 +218,12 @@ public class AccDao {
 	
 	public AccDto accReCheckDetail(AccDto inputDto, Connection conn) {
 		
+		
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
 		AccDto dto = null;
 		
-		String sql = "SELECT CHECK_IN, CHECK_OUT, AR.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY , R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE R.ROOM_NO = ?";
+		String sql = "SELECT CHECK_IN, CHECK_OUT, AR.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY , R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE AR.ACCOM_NO = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -251,9 +249,8 @@ public class AccDao {
 				dto.setRoomview(rs.getString("ROOM_VIEW_INFO"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
 
-				System.out.print("예약번호 : " + dto.getReserveNo());
-				System.out.print(dto);
-				System.out.print("예약일자 : " + dto.getReserveDate());
+//				System.out.print("예약번호 : " + dto.getReserveNo());
+//				System.out.print("예약일자 : " + dto.getReserveDate());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

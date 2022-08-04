@@ -15,28 +15,28 @@ public class PayService {
 	public PayVo getNo(int no) {
 		Connection conn = null;
 		PayVo vo = null;
-		
 		PayDao dao = new PayDao();
+		
 		try {
 			conn = JDBCTemplate.getConnection();
-			
+			vo = new PayVo();
 			// 항공 예약정보 비행기 예약번호, 금액 출발
 			PayVo vogf = dao.gfPay(no, conn);
 			
 			if(vogf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
-				return vo;
+				return null;
 			}
 			
 			vo.setFlightNo(vogf.getFlightNo());
-			
+			System.out.println(vo);
 		
 			// 방 예약정보
 			PayVo vor = dao.rPay(no, conn);
 			
-			if(vor!=null) {
+			if(vor==null) {
 				System.out.println("숙박 예약 정보가 없습니다.");
-				return vo;
+				return null;
 			}
 			
 			vo.setAccomNo(vor.getAccomNo());
@@ -51,7 +51,7 @@ public class PayService {
 			}
 			
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(conn);
 		}

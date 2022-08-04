@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import main.Main;
 import util.JDBCTemplate;
 
 import static util.JDBCTemplate.*;
@@ -20,7 +20,7 @@ public class Flight_Dao {
 	public List<Flight_Vo> reservation(Flight_Vo vo, Connection conn, int fno) throws SQLException {
 		//DB 가서 사용자가 입력한 기준에 맞는 비행기 목록 조회
 		
-		int result = 0;
+//		int result = 0;
 		PreparedStatement pstmt = null;
 		List<Flight_Vo> list = null;
 		
@@ -39,14 +39,14 @@ public class Flight_Dao {
 					+ "WHERE TO_CHAR(FT.DEPARTURE_DATE) = TO_DATE(?) "
 					+ "AND SEAT >= ? "
 					+ "AND DEP_AIRPORT = ? "
-					+ "AND FLIGHT_PRICE <= ? "
-					+ "UNION ALL SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, "
-					+ "F.ARRIVAL_TIME, SEAT , AIRLINE, DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE "
-					+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO "
-					+ "WHERE TO_CHAR(FT.DEPARTURE_DATE) = TO_DATE(?) "
-					+ "AND SEAT >= ? "
-					+ "AND DEP_AIRPORT = ? "
 					+ "AND FLIGHT_PRICE <= ? " + when
+//					+ "UNION ALL SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, "
+//					+ "F.ARRIVAL_TIME, SEAT , AIRLINE, DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE "
+//					+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO "
+//					+ "WHERE TO_CHAR(FT.DEPARTURE_DATE) = TO_DATE(?) "
+//					+ "AND SEAT >= ? "
+//					+ "AND DEP_AIRPORT = ? "
+//					+ "AND FLIGHT_PRICE <= ? " + when
 					+ "ORDER BY DEPARTURE_DATE, DEPARTURE_TIME";
 			
 			//SQL 객체에 담기
@@ -56,10 +56,10 @@ public class Flight_Dao {
 			pstmt.setString(2, vo.getFlightPerson());
 			pstmt.setString(3, vo.getDepAirport());
 			pstmt.setString(4, vo.getFlightPrice());
-			pstmt.setString(5, vo.getReturnDate());
-			pstmt.setString(6, vo.getFlightPerson());
-			pstmt.setString(7, vo.getArrAirport());
-			pstmt.setString(8, vo.getFlightPrice());
+//			pstmt.setString(5, vo.getReturnDate());
+//			pstmt.setString(6, vo.getFlightPerson());
+//			pstmt.setString(7, vo.getArrAirport());
+//			pstmt.setString(8, vo.getFlightPrice());
 	
 			ResultSet rs = pstmt.executeQuery();
 	//		System.out.println("");
@@ -80,7 +80,7 @@ public class Flight_Dao {
 				String flightName = rs.getString("FLIGHT_NAME");
 				
 				Flight_Vo fvo = new Flight_Vo();
-				fvo.setFlightNo(Integer.parseInt(flightNo));
+				fvo.setFlightNo(flightNo);
 				fvo.setDepartureDate(departureDate.toString());
 				fvo.setAirline(airline);
 				fvo.setFlightPerson(flightPerson);
@@ -94,57 +94,76 @@ public class Flight_Dao {
 	//			System.out.println(flightNo + " | " + flightName + " | " + airline + " | " +departureDate + " | " + departureTime+ " | " + " "+ flightPerson + " " + " | " + " "+ depAirport + " "+ " | " + " "+arrAirport+ " "+ " | " + flightPrice+"원" );
 			}
 		}finally {
-			
+			JDBCTemplate.close(pstmt);
 		}
 		
 		return list;
 
 	}
 	// 사용자 입력 비행기 조회
-	public void myReservation(Connection conn, Flight_Vo_MyFlight vo ) throws Exception {
+	public List<Flight_Vo> myReservation(Connection conn, Flight_Vo_MyFlight vo ) throws Exception {
 		
-		int result = 0;
+//		int result = 0;
 		PreparedStatement pstmt = null;
+		List<Flight_Vo> list = null;
 		
 
-		String sql = "SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, AIRLINE, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, F.ARRIVAL_TIME\r\n"
-				+ ",DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE\r\n"
-				+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO\r\n"
-				+ "WHERE FT.FLIGHT_TIME_NO = ? \r\n"
-				+ "\r\n"
-				+ "UNION ALL\r\n"
-				+ "\r\n"
-				+ "SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, AIRLINE, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, F.ARRIVAL_TIME\r\n"
-				+ ",DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE\r\n"
-				+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO\r\n"
-				+ "WHERE FT.FLIGHT_TIME_NO = ? "
-				;
-		
-		
-		//SQL 객체에 담기
-		pstmt = conn.prepareStatement(sql);		
-		pstmt.setString(1, vo.getMyDepartureFlightNo());
-		pstmt.setString(2, vo.getMyReturnFlightNo());
-
-
-		ResultSet rs = pstmt.executeQuery();
-		System.out.println("");
-		System.out.println("_______________________________________________________________________________");
-		System.out.println("");
-		System.out.println("항공No|   항공편명    | 항공사 |  탑승 날짜    |출발 시간|도착 시간| 출발 공항 | 도착 공항 |  가격  |");
-		System.out.println("_______________________________________________________________________________");
-		while(rs.next()) {
-			String myDepartureFlightNo = rs.getString("FLIGHT_TIME_NO");
-			Date departureDate = rs.getDate("DEPARTURE_DATE");
-			String departureTime = rs.getString("DEPARTURE_TIME");
-			String arrivalTime = rs.getString("ARRIVAL_TIME");
-			String depAirport = rs.getString("DEP_AIRPORT");
-			String arrAirport = rs.getString("ARR_AIRPORT");
-			String flightPrice = rs.getString("FLIGHT_PRICE");
-			String flightName = rs.getString("FLIGHT_NAME");
-			String airline = rs.getString("AIRLINE");
-			System.out.println(myDepartureFlightNo + " | " + flightName + " | " +  airline + " | " +departureDate + " | " + departureTime + " | " + arrivalTime + " | " + depAirport + " | " + arrAirport + ""+ " | " + flightPrice+ "원");
+		try {
+			String sql = "SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, AIRLINE, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, F.ARRIVAL_TIME\r\n"
+					+ ",DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE\r\n"
+					+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO\r\n"
+					+ "WHERE FT.FLIGHT_TIME_NO = ? \r\n"
+					+ "\r\n"
+					+ "UNION ALL\r\n"
+					+ "\r\n"
+					+ "SELECT FT.FLIGHT_TIME_NO, F.FLIGHT_NAME, AIRLINE, FT.DEPARTURE_DATE, F.DEPARTURE_TIME, F.ARRIVAL_TIME\r\n"
+					+ ",DEP_AIRPORT, ARR_AIRPORT, FLIGHT_PRICE\r\n"
+					+ "FROM FLIGHT F JOIN FLIGHT_TIME FT ON F.FLIGHT_NO = FT.FLIGHT_NO\r\n"
+					+ "WHERE FT.FLIGHT_TIME_NO = ? "
+					;
+			
+			list = new ArrayList<>();
+			//SQL 객체에 담기
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, vo.getMyDepartureFlightNo());
+			pstmt.setString(2, vo.getMyReturnFlightNo());
+	
+	
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("");
+			System.out.println("_______________________________________________________________________________");
+			System.out.println("");
+			System.out.println("항공No|   항공편명    | 항공사 |  탑승 날짜    |출발 시간|도착 시간| 출발 공항 | 도착 공항 |  가격  |");
+			System.out.println("_______________________________________________________________________________");
+			while(rs.next()) {
+				String myDepartureFlightNo = rs.getString("FLIGHT_TIME_NO");
+				Date departureDate = rs.getDate("DEPARTURE_DATE");
+				String departureTime = rs.getString("DEPARTURE_TIME");
+				String arrivalTime = rs.getString("ARRIVAL_TIME");
+				String depAirport = rs.getString("DEP_AIRPORT");
+				String arrAirport = rs.getString("ARR_AIRPORT");
+				String flightPrice = rs.getString("FLIGHT_PRICE");
+				String flightName = rs.getString("FLIGHT_NAME");
+				String airline = rs.getString("AIRLINE");
+				
+				Flight_Vo fvo = new Flight_Vo();
+				fvo.setFlightNo(myDepartureFlightNo);
+				fvo.setDepartureDate(departureDate.toString());
+				fvo.setDepartureTime(departureTime);
+				fvo.setArrivalTime(arrivalTime);
+				fvo.setDepAirport(depAirport);
+				fvo.setArrAirport(arrAirport);
+				fvo.setFlightPrice(flightPrice);
+				fvo.setFlightName(flightName);
+				fvo.setAirline(airline);
+				
+				list.add(fvo);
+				System.out.println(myDepartureFlightNo + " | " + flightName + " | " +  airline + " | " +departureDate + " | " + departureTime + " | " + arrivalTime + " | " + depAirport + " | " + arrAirport + ""+ " | " + flightPrice+ "원");
+			}
+		}finally {
+			JDBCTemplate.close(pstmt);
 		}
+		return list;
 
 		
 	}
@@ -162,7 +181,7 @@ public class Flight_Dao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMyDepartureFlightNo());
 			pstmt.setString(2, vo.getMyReturnFlightNo());
-			pstmt.setString(3, "1");
+			pstmt.setInt(3, Main.loginNo);
 			
 			//SQL 실행 및 결과 저장
 			result = pstmt.executeUpdate();

@@ -75,7 +75,7 @@ public class ReservInforPanel extends ImgPanel {
 
 		panel_1 = new JPanel();
 		panel_1.setLayout(null);
-		scrollPane_1.setViewportView(panel_1);
+//		scrollPane_1.setViewportView(panel_1);
 
 		panel_1.setBorder(null);
 		panel_1.setBackground(new Color(250, 250, 250));
@@ -167,7 +167,6 @@ public class ReservInforPanel extends ImgPanel {
 		panel_1.revalidate();
 		panel_1.repaint();
 		int i = 0;
-		System.out.println(list);
 		for (AccDto vo : list) {
 
 			AccListTemplate b = new AccListTemplate(vo);

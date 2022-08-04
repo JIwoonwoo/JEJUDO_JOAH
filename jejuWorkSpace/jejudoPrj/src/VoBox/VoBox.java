@@ -3,10 +3,12 @@ package VoBox;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import accom.AccDto;
 import car.ReserveVo;
 import flight3.Flight_Vo;
+import flight3.Flight_Vo_MyFlight;
 import payment.PayVo;
 
 public class VoBox {
@@ -18,11 +20,16 @@ public class VoBox {
 	
 	private ReserveVo rvo;
 	private AccDto avo;
+	private Flight_Vo_MyFlight fvo;
 
-	public void setF(Flight_Vo vo) {
+	public void setF(List<Flight_Vo> list) {
 		
-		vogf.setFlightGoPay(vo.get가는비행기가격);
-		vocf.setFlightComePay(vo.get가는비행기가격);
+		fvo = new Flight_Vo_MyFlight();
+		fvo.setMyDepartureFlightNo(list.get(0).getFlightNo());
+		fvo.setMyReturnFlightNo(list.get(1).getFlightNo());
+		
+		vogf.setFlightGoPay(Integer.parseInt(list.get(0).getFlightPrice()));
+		vocf.setFlightComePay(Integer.parseInt(list.get(1).getFlightPrice()));
 		
 	}
 	
@@ -135,9 +142,29 @@ public class VoBox {
 		return rvo;
 	}
 
+	public void setRvo(ReserveVo rvo) {
+		this.rvo = rvo;
+	}
+
 	public AccDto getAvo() {
 		return avo;
 	}
+
+	public void setAvo(AccDto avo) {
+		this.avo = avo;
+	}
+
+	public Flight_Vo_MyFlight getFvo() {
+		return fvo;
+	}
+
+	public void setFvo(Flight_Vo_MyFlight fvo) {
+		this.fvo = fvo;
+	}
+
+
+
+
 
 	
 }

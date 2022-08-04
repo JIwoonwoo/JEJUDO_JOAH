@@ -1,6 +1,8 @@
 package gui.panel;
 
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import gui.button.ButtonGroupController;
 import gui.button.HomeBtn;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
+import gui.document.LengthRestrictedDocument;
 import gui.field.InvisiableTextField;
 import payment.PayVo;
 
@@ -82,32 +85,63 @@ public class PayInforPanel extends ImgPanel {
 		usePoint = new InvisiableTextField(null);
 		usePoint.setHorizontalAlignment(SwingConstants.RIGHT);
 		usePoint.setBounds(224, 467, 214, 35);
+		usePoint.setDocument(new LengthRestrictedDocument(8));
 		usePoint.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
-				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
-					usePoint.setText("0");
-					return;
+				int point = 0;
+				if(usePoint.getText().equals("")) {
+					
+				}else {
+					point = Integer.parseInt(usePoint.getText());
 				}
-				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
+				String sum = Integer.toString((total - point));
 				sumPrice.setText(sum);
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
-					usePoint.setText("0");
-					return;
+				int point = 0;
+				if(usePoint.getText().equals("")) {
+					
+				}else {
+					point = Integer.parseInt(usePoint.getText());
 				}
-				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
+				String sum = Integer.toString((total - point));
 				sumPrice.setText(sum);
 			}
 
 			public void insertUpdate(DocumentEvent e) {
+				int point = 0;
+				if(usePoint.getText().equals("")) {
+					
+				}else {
+					point = Integer.parseInt(usePoint.getText());
+				}
+				String sum = Integer.toString((total - point));
+				sumPrice.setText(sum);
+			}
+		});
+		usePoint.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
 				if(Integer.parseInt(usePoint.getText())>Integer.parseInt(havePoint.getText())) {
 					usePoint.setText("0");
-					return;
+					int point = 0;
+					if(usePoint.getText().equals("")) {
+						
+					}else {
+						point = Integer.parseInt(usePoint.getText());
+					}
+					String sum = Integer.toString((total - point));
+					sumPrice.setText(sum);
 				}
-				String sum = Integer.toString((total - Integer.parseInt(usePoint.getText())));
-				sumPrice.setText(sum);
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 
@@ -127,6 +161,10 @@ public class PayInforPanel extends ImgPanel {
 		g.add(cash);
 		add(cash);
 
+	}
+	
+	private void setUsePoint() {
+		usePoint.setText("0");
 	}
 
 	public void reset() {
@@ -156,6 +194,9 @@ public class PayInforPanel extends ImgPanel {
 	}
 
 	public int getUsePoint() {
+		if(usePoint.getText().equals("")) {
+			return 0;
+		}
 		return Integer.parseInt(usePoint.getText());
 	}
 

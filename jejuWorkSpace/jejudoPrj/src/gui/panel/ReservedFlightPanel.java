@@ -49,17 +49,17 @@ public class ReservedFlightPanel extends ImgPanel {
 		contPerson.setBorder(null);
 		add(contPerson);
 
-		goDay = new InvisiableTextField("YYYY-MM-DD");
+		goDay = new InvisiableTextField("YYMMDD");
 		goDay.setBounds(171, 192, 312, 41);
 		add(goDay);
 
-		backDay = new InvisiableTextField("YYYY-MM-DD");
+		backDay = new InvisiableTextField("YYMMDD");
 		backDay.setBounds(171, 286, 312, 41);
 		add(backDay);
 
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(new Font("굴림", Font.PLAIN, 15));
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "인천공항", "김포공항" }));
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "김해공항", "김포공항", "청주공항" }));
 		comboBox.setBounds(159, 517, 324, 41);
 		comboBox.setOpaque(false);
 		comboBox.setRenderer(new DefaultListCellRenderer() {
@@ -96,8 +96,8 @@ public class ReservedFlightPanel extends ImgPanel {
 
 	public void reset() {
 		contPerson.setValue(Integer.valueOf(0));
-		goDay.setText("YYYY-MM-DD");
-		backDay.setText("YYYY-MM-DD");
+		goDay.setText("YYMMDD");
+		backDay.setText("YYMMDD");
 		minMoney.setText("0");
 		maxMoney.setText("0");
 		comboBox.setSelectedItem("인천공항");

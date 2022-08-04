@@ -51,31 +51,31 @@ public class ReservedAccomPanel extends ImgPanel {
 		contPerson.setBorder(null);
 		add(contPerson);
 
-		goDay = new InvisiableTextField("YYYY-MM-DD");
+		goDay = new InvisiableTextField("YYMMDD");
 		goDay.setBounds(171, 199, 312, 41);
 		add(goDay);
 
-		backDay = new InvisiableTextField("YYYY-MM-DD");
+		backDay = new InvisiableTextField("YYMMDD");
 		backDay.setBounds(171, 291, 312, 41);
 		add(backDay);
 
-		minMoney = new InvisiableTextField("0");
-		minMoney.setBounds(152, 707, 136, 41);
-		minMoney.setHorizontalAlignment(JTextField.RIGHT);
-
-		PlainDocument doc = (PlainDocument) minMoney.getDocument();
-		doc.setDocumentFilter(new MyIntFilter());
-
-		add(minMoney);
-
-		maxMoney = new InvisiableTextField("0");
-		maxMoney.setBounds(336, 707, 128, 41);
-		maxMoney.setHorizontalAlignment(JTextField.RIGHT);
-
-		PlainDocument doc2 = (PlainDocument) maxMoney.getDocument();
-		doc2.setDocumentFilter(new MyIntFilter());
-
-		add(maxMoney);
+//		minMoney = new InvisiableTextField("0");
+//		minMoney.setBounds(152, 707, 136, 41);
+//		minMoney.setHorizontalAlignment(JTextField.RIGHT);
+//
+//		PlainDocument doc = (PlainDocument) minMoney.getDocument();
+//		doc.setDocumentFilter(new MyIntFilter());
+//
+//		add(minMoney);
+//
+//		maxMoney = new InvisiableTextField("0");
+//		maxMoney.setBounds(336, 707, 128, 41);
+//		maxMoney.setHorizontalAlignment(JTextField.RIGHT);
+//
+//		PlainDocument doc2 = (PlainDocument) maxMoney.getDocument();
+//		doc2.setDocumentFilter(new MyIntFilter());
+//
+//		add(maxMoney);
 
 		g = new ButtonGroup();
 
@@ -95,10 +95,10 @@ public class ReservedAccomPanel extends ImgPanel {
 
 	public void reset() {
 		contPerson.setValue(Integer.valueOf(0));
-		goDay.setText("YYYY-MM-DD");
-		backDay.setText("YYYY-MM-DD");
-		minMoney.setText("0");
-		maxMoney.setText("0");
+		goDay.setText("YYMMDD");
+		backDay.setText("YYMMDD");
+//		minMoney.setText("0");
+//		maxMoney.setText("0");
 		if(g!=null)g.clearSelection();
 	}
 

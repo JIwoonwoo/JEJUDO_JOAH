@@ -16,8 +16,8 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import car.CarVo;
 import flight3.Flight_Vo;
+import flight3.Flight_Vo_MyFlight;
 import gui.button.ImgButton;
 import gui.panel.ImgPanel;
 
@@ -25,7 +25,7 @@ public class FlightSearch extends JDialog {
 	
 	private JTable table;
 	private String price;
-	private int select;
+	private Flight_Vo_MyFlight select = new Flight_Vo_MyFlight();
 	private JTable table2;
 
 	public FlightSearch(Frame parent, String name, String msg) {
@@ -72,13 +72,20 @@ public class FlightSearch extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				String result = null;
-//				if(table.getSelectedRow() != -1) {
-//					result = table.getValueAt(table.getSelectedRow(), 0).toString();
-//					price = table.getValueAt(table.getSelectedRow(), 3).toString();
-//				}
-//				select = Integer.parseInt(result);
-//				dispose();
+				String result = null;
+				String result2 = null;
+				
+				if(table.getSelectedRow() != -1) {
+					result = table.getValueAt(table.getSelectedRow(), 0).toString();
+				}
+				if(table2.getSelectedRow() != -1) {
+					result2 = table2.getValueAt(table2.getSelectedRow(), 0).toString();
+				}
+				System.out.println(result);
+				System.out.println(result2);
+				select.setMyDepartureFlightNo(result);
+				select.setMyReturnFlightNo(result2);
+				dispose();
 			}
 		});
 		panel.add(btnNewButton);
@@ -89,7 +96,6 @@ public class FlightSearch extends JDialog {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				select = -1;
 				dispose();
 			}
 		});
@@ -102,23 +108,14 @@ public class FlightSearch extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
-	public void set(List<Flight_Vo> list) {
+	public void set(List<Flight_Vo> list, JTable t) {
 		
 		Object[][] data = new Object[list.size()][9];
 		String[] cols = {"No" , "항공편명" , "항공사" , "날짜" , "출발시간" ,"좌석", "출발공항","도착공항","가격"};
 		
 		int i = 0;
 		for(Flight_Vo vo : list) {
-//			fvo.setFlightNo(Integer.parseInt(flightNo));
-//			fvo.setDepartureDate(departureDate.toString());
-//			fvo.setAirline(airline);
-//			fvo.setFlightPerson(flightPerson);
-//			fvo.setDepAirport(depAirport);
-//			fvo.setFlightPrice(flightPrice);
-//			fvo.setArrAirport(arrAirport);
-//			fvo.setDepartureTime(departureTime);
-//			fvo.setFlightName(flightName);
-//		System.out.println("항공No| 항공편명 |   항공사  |   날짜     |출발 시간|남은 좌석|  출발 공항  |  도착 공항  |  가격  |");
+
 				data[i][0] = vo.getFlightNo();
 				data[i][1] = vo.getFlightName();
 				data[i][2] = vo.getAirline();
@@ -131,7 +128,7 @@ public class FlightSearch extends JDialog {
 				i++;
 		}
 		
-		table.setModel(new DefaultTableModel(data, cols) {
+		t.setModel(new DefaultTableModel(data, cols) {
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -143,7 +140,22 @@ public class FlightSearch extends JDialog {
 		
 	}
 	
-	public void run() {
+	public Flight_Vo_MyFlight run() {
 		this.setVisible(true);
+		return select;
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public JTable getTable2() {
+		return table2;
+	}
+	
+	
 }

@@ -11,17 +11,17 @@ public class Flight_Service {
 	public List<Flight_Vo> reservation(Flight_Vo vo, int fno) {
 		
 		//비즈니스 로직 (출발 날짜, 복귀 날짜, 출발 공항 잘 입력하는지 확인하기)
-		if(vo.getDepartureDate().equals(null)) {
+		if(vo.getDepartureDate()==null) {
 			System.out.println("출발 날짜 입력은 필수입니다.");
 			return null;
 		}
 		
-		if(vo.getReturnDate().equals(null)) {
-			System.out.println(" 복귀 날짜 입력은 필수입니다.");
-			return null;
-		}
+//		if(vo.getReturnDate()==null) {
+//			System.out.println(" 복귀 날짜 입력은 필수입니다.");
+//			return null;
+//		}
 		
-		if(vo.getDepAirport().equals(null)) {
+		if(vo.getDepAirport()==null) {
 			System.out.println("출발 공항 입력은 필수입니다.");
 			return null;
 		}
@@ -48,28 +48,28 @@ public class Flight_Service {
 		return list;
 	}
 
-	public int myReservation(Flight_Vo_MyFlight vo) {
+	public List<Flight_Vo> myReservation(Flight_Vo_MyFlight vo) {
 		
 		//비즈니스 로직 (출발 비행기No, 복귀 비행기NO 잘 입력하는지 확인)
 		if(vo.getMyDepartureFlightNo().equals(null)) {
 			System.out.println("출발 날짜 입력은 필수입니다.");
-			return -1;
+			return null;
 		}
 		
 		if(vo.getMyReturnFlightNo().equals(null)) {
 			System.out.println(" 복귀 날짜 입력은 필수입니다.");
-			return -2;
+			return null;
 		}
 
 		
 		//위 조건들 모두 통과하면 ? -> insert 진행
 		Connection conn = null;
-		int result = 0;
+		List<Flight_Vo> result = null;
 		
 		try {
 			conn = JDBCTemplate.getConnection();
-			new Flight_Dao().myReservation(conn,vo);
-			if(result == 0) {
+			result = new Flight_Dao().myReservation(conn,vo);
+			if(result != null) {
 //				System.out.println("예약 잘됨~");
 				JDBCTemplate.commit(conn);
 			}else {
@@ -98,12 +98,13 @@ public class Flight_Service {
 	}
 	
 	//realReservation
-	public void realReservation(Flight_Vo_MyFlight vo) {
+	public int realReservation(Flight_Vo_MyFlight vo) {
 		
 		Connection conn = null;
+		int result = -1;
 		try {
 			conn = JDBCTemplate.getConnection();
-			int result = new Flight_Dao().myRealReservation(vo,conn);
+			result = new Flight_Dao().myRealReservation(vo,conn);
 			
 			if(result == 1) {
 //				System.out.println("비행기 예약 완료 !!!");
@@ -118,6 +119,8 @@ public class Flight_Service {
 		}finally {
 			JDBCTemplate.close(conn);
 		}
+		
+		return result;
 		
 	}
 

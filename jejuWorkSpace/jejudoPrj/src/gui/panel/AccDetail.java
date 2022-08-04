@@ -1,11 +1,15 @@
 package gui.panel;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import accom.AccDto;
 import gui.button.BackBtn;
@@ -40,17 +44,39 @@ public class AccDetail extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
-		
+
 		pool = new InvisiableCheck("pool");
 		pool.setLocation(61, 481);
-		pool.setEnabled(false);
+		pool.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (pool.isSelected()) {
+					pool.setSelected(false);
+					return;
+				} else {
+					pool.setSelected(true);
+				}
+			}
+		});
 		add(pool);
-		
+
 		animal = new InvisiableCheck("animal");
 		animal.setLocation(265, 481);
-		animal.setEnabled(false);
+		animal.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (animal.isSelected()) {
+					animal.setSelected(false);
+					return;
+				} else {
+					animal.setSelected(true);
+				}
+			}
+		});
 		add(animal);
-		
+
 //		updateBtn = new ImgButton("예약변경");
 //		add(updateBtn);
 //		
@@ -112,15 +138,19 @@ public class AccDetail extends ImgPanel {
 		lblNewLabel_1_1_1_1.setText(vo.getRoomview());
 		lblNewLabel_1_1_1_1_1.setText(vo.getAround());
 		lblNewLabel_1_1_1_1_1_1.setText(Integer.toString(vo.getPrice()));
-		lblNewLabel_1_1_1_1_1_1_1.setText(vo.getCheckin().substring(0,10));
-		lblNewLabel_1_1_1_1_1_1_1_1.setText(vo.getCheckout().substring(0,10));
-		
-		if(vo.getAnimalYN().equals("Y")) {
+		lblNewLabel_1_1_1_1_1_1_1.setText(vo.getCheckin().substring(0, 10));
+		lblNewLabel_1_1_1_1_1_1_1_1.setText(vo.getCheckout().substring(0, 10));
+
+		System.out.println(vo.getAnimalYN());
+
+		if (vo.getAnimalYN().equals("Y")) {
 			animal.setSelected(true);
+
 		}
-		
-		if(vo.getPoolYN().equals("Y")) {
+
+		if (vo.getPoolableYN().equals("Y")) {
 			pool.setSelected(true);
+
 		}
 	}
 

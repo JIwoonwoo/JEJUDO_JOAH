@@ -14,8 +14,8 @@ public class Flight_Vo {
 
 
 	private Number memberNo;
-	private Number flightNo;
-	private Number departureFlight;
+	private String flightNo;
+	private String departureFlight;
 	private String returnFlight;
 	private Date reserveDate;
 	private Timestamp cancleDate;
@@ -38,16 +38,16 @@ public class Flight_Vo {
 	public void setMemberNo(Number memberNo) {
 		this.memberNo = memberNo;
 	}
-	public Number getFlightNo() {
+	public String getFlightNo() {
 		return flightNo;
 	}
-	public void setFlightNo(Number flightNo) {
+	public void setFlightNo(String flightNo) {
 		this.flightNo = flightNo;
 	}
-	public Number getDepartureFlight() {
+	public String getDepartureFlight() {
 		return departureFlight;
 	}
-	public void setDepartureFlight(Number departureFlight) {
+	public void setDepartureFlight(String departureFlight) {
 		this.departureFlight = departureFlight;
 	}
 	public String getReturnFlight() {
