@@ -100,7 +100,7 @@ public class InforActiv extends ImgPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
-					GUI.where = "inforActiv";
+					GUI.where2 = "inforActiv";
 					GUI.inforborad.set(tvo);
 					GUI.inforborad.setVisible(true);
 				}

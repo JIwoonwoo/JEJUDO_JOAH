@@ -25,6 +25,7 @@ import gui.dialog.Cash;
 import gui.dialog.FlightSearch;
 import gui.dialog.PopUpDialog;
 import gui.dialog.TextFieldDialog;
+import gui.dialog.YesOrNo;
 import gui.panel.AccDetail;
 import gui.panel.CarDetail;
 import gui.panel.FaveratePanel;
@@ -67,7 +68,8 @@ import travel.TravelVo;
 public class GUI {
 
 	public static JFrame frame;
-	public static String where = "";
+	private String where = "";
+	public static String where2 = "";
 	public static ViewQna viewQna;
 	public static CarDetail carDetail;
 	public static AccDetail accDetail;
@@ -184,7 +186,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				inforborad.setVisible(false);
-				switch (where) {
+				switch (where2) {
 				case "inforTrip":
 					inforTrip.setVisible(true);
 					break;
@@ -331,14 +333,20 @@ public class GUI {
 
 				MemberVo vo = ms.search();
 				if (vo != null) {
-					myPagePanel.setVisible(false);
-					updateMemberPanel.setId(vo.getId());
-					updateMemberPanel.setPwd(vo.getPwd());
-					updateMemberPanel.setName(vo.getMemberName());
-					updateMemberPanel.setNick(vo.getMemberNick());
-					updateMemberPanel.setPhone(vo.getPhone());
-					updateMemberPanel.setEmail(vo.getEmail());
-					updateMemberPanel.setVisible(true);
+					TextFieldDialog d2 = new TextFieldDialog(frame, "회원정보수정", "비밀번호를 입력해 주십시오");
+					if(ms.pwdCheck(d2.run())) {
+						myPagePanel.setVisible(false);
+						updateMemberPanel.setId(vo.getId());
+						updateMemberPanel.setPwd(vo.getPwd());
+						updateMemberPanel.setName(vo.getMemberName());
+						updateMemberPanel.setNick(vo.getMemberNick());
+						updateMemberPanel.setPhone(vo.getPhone());
+						updateMemberPanel.setEmail(vo.getEmail());
+						updateMemberPanel.setVisible(true);
+					}else {
+						PopUpDialog dialog = new PopUpDialog(frame, "회원정보수정", "비밀번호가 잘못되었습니다");
+						dialog.run();
+					}
 				}
 
 			}
@@ -349,10 +357,13 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				myPagePanel.setVisible(false);
-				sugTripPanel.set();
-				sugTripPanel.setVisible(true);
-				sugTripPanel.getNextBtn().setVisible(false);
-				where = "myPage";
+				if(sugTripPanel.set()) {
+					sugTripPanel.setVisible(true);
+					sugTripPanel.getNextBtn().setVisible(false);
+					where = "myPage";
+				}
+				PopUpDialog dialog = new PopUpDialog(frame, "추천여행지", "설문조사를 실시해 주세요 -> 예약하기");
+				dialog.run();
 			}
 		});
 
@@ -410,10 +421,19 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myPagePanel.setVisible(false);
-				ms.quit();
-				Main.loginNo = 0;
-				loginPanel.setVisible(true);
+				YesOrNo d = new YesOrNo(frame, "회원탈퇴", "정말로 탈퇴하시겠습니까?ㅜㅠ");
+				if(d.run()==1) {
+					TextFieldDialog d2 = new TextFieldDialog(frame, "회원탈퇴", "비밀번호를 입력해 주십시오");
+					if(ms.pwdCheck(d2.run())) {
+						myPagePanel.setVisible(false);
+						ms.quit();
+						Main.loginNo = 0;
+						loginPanel.setVisible(true);
+					}else {
+						PopUpDialog dialog = new PopUpDialog(frame, "회원탈퇴", "비밀번호가 잘못되었습니다");
+						dialog.run();
+					}
+				}
 			}
 		});
 

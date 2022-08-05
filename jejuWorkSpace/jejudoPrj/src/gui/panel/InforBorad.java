@@ -161,6 +161,8 @@ public class InforBorad extends ImgPanel {
 
 	public void set(TravelVo vo) {
 		
+		likeBtn.setSelected(false);
+		
 		no = vo.getTravel_no();
 		
 		txtAsdfasdfads.setText(vo.getTravel_name());

@@ -50,10 +50,6 @@ public class SugTripPanel extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(441, 100, 80, 23);
-		add(comboBox);
-
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(30, 155, 491, 159);
@@ -101,8 +97,11 @@ public class SugTripPanel extends ImgPanel {
 
 	}
 	
-	public void set() {
+	public boolean set() {
 		SurveyVo svo = new SurveyService().search(Main.loginNo);
+		if(svo==null) {
+			return false;
+		}
 		svo.setCategory("1");	
 		ts.recommTravel(svo);
 		set(ts.recommTravel(svo), panel, scrollPane);
@@ -114,6 +113,8 @@ public class SugTripPanel extends ImgPanel {
 		svo.setCategory("4");	
 		list.addAll(ts.recommTravel(svo));
 		set(list, panel_2, scrollPane_2);
+
+		return true;
 	}
 
 	public HomeBtn getHomeBtn() {
@@ -156,7 +157,7 @@ public class SugTripPanel extends ImgPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
-					GUI.where = "SugTripPanel";
+					GUI.where2 = "SugTripPanel";
 					GUI.inforborad.set(tvo);
 					GUI.inforborad.setVisible(true);
 				}

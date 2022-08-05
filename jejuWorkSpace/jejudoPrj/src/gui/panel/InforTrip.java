@@ -99,7 +99,7 @@ public class InforTrip extends ImgPanel {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
 					GUI.inforborad.set(tvo);
-					GUI.where = "inforTrip";
+					GUI.where2 = "inforTrip";
 					GUI.inforborad.setVisible(true);
 				}
 			});

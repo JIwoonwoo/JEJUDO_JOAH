@@ -43,15 +43,14 @@ public class AccDao {
 		}
 
 		// 호텔_게하 구분
-		String HG;
-		if (inputDto.getHG().equals("H")) {
+		String HG = "";
+		if(inputDto.getHG()==null) {
+			
+		}else if (inputDto.getHG().equals("H")) {
 			HG = "AND A.TYPE = 'H'";
-		} else if (inputDto.getHG().equals("G")) {
+		}else if (inputDto.getHG().equals("G")) {
 			HG = "AND A.TYPE = 'G'";
-		} else {
-			HG = "";
-		}
-
+		} 
 		// SQL 준비
 		String sql = "SELECT A.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ?"
 				+ budgetanswer

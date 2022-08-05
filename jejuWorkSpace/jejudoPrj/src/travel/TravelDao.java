@@ -507,7 +507,7 @@ public class TravelDao {
 			categoryanswer = "카페";
 		}
 
-		String sql = "SELECT TRAVEL_NO, G.PERSON_GROUP , P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, TRAVEL_PRICE, ANIMAL_YN FROM TRAVEL T JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO WHERE ((P.PURPOSE = ? ) OR (P.PURPOSE = ?)) AND TRAVEL_ADDRESS LIKE ? AND PERSON_GROUP LIKE ? AND ANIMAL_YN = ? AND C.CATEGORY = ?";
+		String sql = "SELECT LIKE_CNT, TRAVEL_NO, G.PERSON_GROUP , P.PURPOSE, C.CATEGORY, TRAVEL_NAME, TRAVEL_ADDRESS, TRAVEL_PRICE, ANIMAL_YN FROM TRAVEL T JOIN CATEGORY C ON T.CATEGORY = C.NO JOIN PURPOSE P ON T.THEME = P.NO JOIN PERSON_GROUP G ON T.RECOMMEND_TYPE = G.NO WHERE ((P.PURPOSE = ? ) OR (P.PURPOSE = ?)) AND TRAVEL_ADDRESS LIKE ? AND PERSON_GROUP LIKE ? AND ANIMAL_YN = ? AND C.CATEGORY = ?";
 //				+ budgetanswer;
 
 		PreparedStatement pstmt = null;
@@ -541,6 +541,7 @@ public class TravelDao {
 				vo.setPurpose(purpose);
 				vo.setCategory(category);
 				vo.setTravel_name(travelName);
+				vo.setLike_cnt(rs.getInt("LIKE_CNT"));
 				
 				if (travelAddress.contains("서귀포시")) {
 					travelAddress = "서귀포시";

@@ -1,6 +1,8 @@
 package member;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.regex.Pattern;
 
 import main.Main;
@@ -81,6 +83,51 @@ public class MemberService {
 			System.out.println("[ERROR] 로그인 실패");
 			e.printStackTrace();
 		} finally {
+			JDBCTemplate.close(conn);
+		}
+
+		return result;
+	}
+	
+	public boolean pwdCheck(String pwd) {
+
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		if(pwd==null) {
+			return false;
+		}
+		if(pwd.equals("")) {
+			return false;
+		}
+
+		try {
+			conn = JDBCTemplate.getConnection();
+
+				String sql = "SELECT PWD FROM MEMBER WHERE MEMBER_NO = ? AND QUIT_YN = 'N'";
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, Main.loginNo);
+
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					if(pwd.equals(rs.getString("PWD"))) {
+						result = true;
+						System.out.println("[SUCCESS] 비밀번호 성공");
+					}else {
+						System.out.println("[FAILURE] 비밀번호 틀림");
+					}
+				}
+
+		} catch (Exception e) {
+			System.out.println("[ERROR] 비밀번호 실패");
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
 			JDBCTemplate.close(conn);
 		}
 

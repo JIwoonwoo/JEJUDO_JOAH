@@ -100,7 +100,7 @@ public class InforRestar extends ImgPanel {
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
 					TravelVo tvo = td.infoSelect(Integer.parseInt(vo.getTravel_no()));
-					GUI.where = "inforRestar";
+					GUI.where2 = "inforRestar";
 					GUI.inforborad.set(tvo);
 					GUI.inforborad.setVisible(true);
 				}
