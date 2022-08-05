@@ -53,9 +53,8 @@ public class SurveyDao {
 			
 			rs = pstmt.executeQuery();
 			
-			vo = new SurveyVo();
-			
 			if(rs.next()) {
+				vo = new SurveyVo();
 				vo.setPurpose(rs.getString("PURPOSE"));
 				vo.setPurpose2(rs.getString("PURPOSE2"));
 				vo.setLocation(rs.getString("LOCATION"));

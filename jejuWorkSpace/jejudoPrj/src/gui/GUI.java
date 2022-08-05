@@ -513,8 +513,9 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myPagePanel.setVisible(false);
+				
 				if(sugTripPanel.set()) {
+					myPagePanel.setVisible(false);
 					sugTripPanel.setVisible(true);
 					sugTripPanel.getNextBtn().setVisible(false);
 					where = "myPage";
