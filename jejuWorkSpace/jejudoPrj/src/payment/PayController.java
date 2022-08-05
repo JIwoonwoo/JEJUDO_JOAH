@@ -112,5 +112,30 @@ public class PayController {
 		
 	}
 	
+	public void cancelPaid() {
+		PayVo voi = new PayVo();
+		PayVo vou = new PayVo();
+		int flightNo = 0;
+		int accomNo = 0;
+		int carNo = 0;
+		voi.setCarNo(carNo);
+		voi.setFlightNo(flightNo);
+		voi.setAccomNo(accomNo);
+		
+		// 취소할 NO insert
+		vou = new PayService().cancelCall(voi);
+		
+		// 취소할 NO update
+		boolean isFinish = true;
+		isFinish = new PayService().cancelUp(vou);
+		
+		if(isFinish) {
+			System.out.println("예약 취소 완료");
+		}
+		
+		
+		
+	}
+	
 }
 
