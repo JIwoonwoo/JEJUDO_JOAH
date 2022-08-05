@@ -1,6 +1,7 @@
 -- 제주도 전체 스크립트
 --220804 ver2 추가 테이블 데이터, 관광지, 숙박, 자동차 최종 입력완료
 --220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력, 비행기 뷰 추가
+--220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력, 비행기 뷰 추가, 추가 맛집 좋아요 수정
 
 DROP TABLE "ROOM" CASCADE CONSTRAINTS;
 DROP TABLE "FLIGHT" CASCADE CONSTRAINTS;
@@ -6672,26 +6673,26 @@ INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,4,'그루브','제주 제주시 한림읍 
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,4,'제주기와','제주 제주시 애월읍 광령남4길 45-1','N',8500,'Y','제주도 애월 야경이 멋진 한옥 피크닉 카페','070-8899-7515','09:16','18:16','목요일',50,'N',NULL);
 
 -- 맛집, 카페 추가데이터
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'제주보쌈', '제주 제주시 요정로 421 3호','N',40000,'Y','보쌈이 맛있는 제주시 맛집','064-5353-5399','11:00','24:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'샤브샤브제주쌈', '제주 서귀포시 인어꼬리로 73','N',60000,'N','샤브샤브와 보쌈이 맛있는 맛집','064-5388-8253','10:00','21:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'흑돼지샤브', '제주 서귀포시 한입거리 33','N',40000,'N','흑돼지로 먹는 샤브샤브','064-258-3432','13:00','23:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,4,2,'감귤샌드', '제주 제주시 두입거리 59','Y',9000,'N','신선한 감귤로 직접 만들어먹는 과일 샌드위치','064-3243-3422','11:00','20:00', '월요일',6 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,1,2,'제주웨이', '제주 제주시 웨이웨이로 229 2층','N',8000,'N','제주손맛 샌드위치 맛집','064-1132-4522','9:00','22:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,1,2,'감귤맥주창고', '제주 서귀포시 남중서로 87 2층','N',15000,'Y','시그니처메뉴 감귤생맥주가 유명한 맥주집','064-2384-3913','16:00','3:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'위드파스타앤피자', '제주 서귀포시 세인트포로 231','N',30000,'N','별점4.8점인 양식맛집','064-8372-8772','10:30','22:30',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,2,2,'미니스테이크라이스', '제주 서귀포시 인어공주로 76 3층 3호','N',40000,'N','부드러운 육즙과 식감을 느낄 수 있는 고기맛집','064-3477-3222','11:00','21:00',null,4 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'혼저먹라멘', '제주 제주시 한입거리 288 2층','N',12000,'N','바다를 보며 느낄 수 있는 라멘의 맛','064-3422-8665','10:30','22:30',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'제주냉면', '제주 제주시 배이배로 134','N',8000,'N','제주만의 특이한 제조법이 반영된 냉면맛집','064-234-5544','10:00','21:00', '화요일',3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,4,4,'다도관', '제주 서귀포시 다도함해보새로 82','Y',30000,'Y','다도 체험과 함께 즐기는 차의 맛','064-8282-2828','11:00','20:00', '월요일',3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,2,2,'하르방이 타주는 칵테일', '제주 제주시 하르방로 1011','N',20000,'N','하르방 컵에 따라주기로 유명한 칵테일집','064-7944-7999','17:00','2:00',null,7 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,2,'칵테일언더더씨', '제주 서귀포시 목이칵막혔로 34 4층 2호','Y',19000,'Y','해변에서 즐기는 칵테일. 커스텀 칵테일이 유명','064-7263-9643','15:00','3:00',null,3 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'제주막걸리', '제주 제주시 막걸리 90 1호','N',27000,'N','제주 대표 막걸리 맛집','064-345-5564','14:00','4:00',null,8 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,2,2,'등갈비먹으러올레', '제주 제주시 올레길로 544','N',32000,'N','등이 가려울때 먹는 등갈비 맛집','064-123-1234','11:30','23:00',null,0 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'하르방덮밥', '제주 제주시 쉬쉭로 655 2층','N',13000,'Y','하르방 얼굴 모양으로 올려주는 계란덮밥이 유명한 맛집','064-5463-4242','11:00','22:00',null,9 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,2,'흑돼지와춤을', '제주 서귀포시 우도로 8282','Y',31000,'N','흑돼지 직접 잡아서 먹는 체험의 고기집','064-573-8376','11:30','22:30',null,9 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'바다보며마라탕', '제주 서귀포시 남북동로 211','N',9000,'N','마라탕의 짠맛으로 바다의 짠맛을 체험할 수 있는 마라탕 맛집','064-326-5432','11:00','22:00',null,1 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'사람많으면짜장나', '제주 서귀포시 짜장으로 112','N',8000,'Y','사람 많기로 유명한 전통 짜장면 맛집','064-865-8621','10:30','21:30',null,8 ,default,default);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,2,'칼칼이칼국수', '제주 제주시 남중서로 222','N',7500,'N','해장으로 유명한 칼국수집','064-472-5826','10:00','22:00',null,3 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'제주보쌈', '제주 제주시 요정로 421 3호','N',40000,'Y','보쌈이 맛있는 제주시 맛집','064-5353-5399','11:00','24:00',null,45 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'샤브샤브제주쌈', '제주 서귀포시 인어꼬리로 73','N',60000,'N','샤브샤브와 보쌈이 맛있는 맛집','064-5388-8253','10:00','21:00',null,21 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'흑돼지샤브', '제주 서귀포시 한입거리 33','N',40000,'N','흑돼지로 먹는 샤브샤브','064-258-3432','13:00','23:00',null,23 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,4,2,'감귤샌드', '제주 제주시 두입거리 59','Y',9000,'N','신선한 감귤로 직접 만들어먹는 과일 샌드위치','064-3243-3422','11:00','20:00', '월요일',76 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,1,2,'제주웨이', '제주 제주시 웨이웨이로 229 2층','N',8000,'N','제주손맛 샌드위치 맛집','064-1132-4522','9:00','22:00',null,42 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,1,2,'감귤맥주창고', '제주 서귀포시 남중서로 87 2층','N',15000,'Y','시그니처메뉴 감귤생맥주가 유명한 맥주집','064-2384-3913','16:00','3:00',null,15 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'위드파스타앤피자', '제주 서귀포시 세인트포로 231','N',30000,'N','별점4.8점인 양식맛집','064-8372-8772','10:30','22:30',null,43 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,2,2,'미니스테이크라이스', '제주 서귀포시 인어공주로 76 3층 3호','N',40000,'N','부드러운 육즙과 식감을 느낄 수 있는 고기맛집','064-3477-3222','11:00','21:00',null,29 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'혼저먹라멘', '제주 제주시 한입거리 288 2층','N',12000,'N','바다를 보며 느낄 수 있는 라멘의 맛','064-3422-8665','10:30','22:30',null,30 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'제주냉면', '제주 제주시 배이배로 134','N',8000,'N','제주만의 특이한 제조법이 반영된 냉면맛집','064-234-5544','10:00','21:00', '화요일',46 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,4,4,'다도관', '제주 서귀포시 다도함해보새로 82','Y',30000,'Y','다도 체험과 함께 즐기는 차의 맛','064-8282-2828','11:00','20:00', '월요일',29 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,2,2,'하르방이 타주는 칵테일', '제주 제주시 하르방로 1011','N',20000,'N','하르방 컵에 따라주기로 유명한 칵테일집','064-7944-7999','17:00','2:00',null,28 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,2,'칵테일언더더씨', '제주 서귀포시 목이칵막혔로 34 4층 2호','Y',19000,'Y','해변에서 즐기는 칵테일. 커스텀 칵테일이 유명','064-7263-9643','15:00','3:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,2,2,'제주막걸리', '제주 제주시 막걸리 90 1호','N',27000,'N','제주 대표 막걸리 맛집','064-345-5564','14:00','4:00',null,28 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,2,2,'등갈비먹으러올레', '제주 제주시 올레길로 544','N',32000,'N','등이 가려울때 먹는 등갈비 맛집','064-123-1234','11:30','23:00',null,25 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'하르방덮밥', '제주 제주시 쉬쉭로 655 2층','N',13000,'Y','하르방 얼굴 모양으로 올려주는 계란덮밥이 유명한 맛집','064-5463-4242','11:00','22:00',null,25 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,2,'흑돼지와춤을', '제주 서귀포시 우도로 8282','Y',31000,'N','흑돼지 직접 잡아서 먹는 체험의 고기집','064-573-8376','11:30','22:30',null,16 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'바다보며마라탕', '제주 서귀포시 남북동로 211','N',9000,'N','마라탕의 짠맛으로 바다의 짠맛을 체험할 수 있는 마라탕 맛집','064-326-5432','11:00','22:00',null,47 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'사람많으면짜장나', '제주 서귀포시 짜장으로 112','N',8000,'Y','사람 많기로 유명한 전통 짜장면 맛집','064-865-8621','10:30','21:30',null,28 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,2,'칼칼이칼국수', '제주 제주시 남중서로 222','N',7500,'N','해장으로 유명한 칼국수집','064-472-5826','10:00','22:00',null,39 ,default,default);
 
 -- 테스트 뷰 추가
 
