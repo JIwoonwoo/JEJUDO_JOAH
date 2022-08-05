@@ -1,6 +1,11 @@
 package accom;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import car.Parsing;
@@ -23,8 +28,34 @@ public class AccService {
 		int checkindate = Parsing.getInt(dto.getCheckin());
 		int checkoutdate = Parsing.getInt(dto.getCheckout());
 
-		if ((checkoutdate - checkindate) <= 0) {
+		if (checkoutdate <= checkindate) {
 			return null;
+		}
+
+		// 과거여행금지
+		// 날짜형식지정
+		SimpleDateFormat f = new SimpleDateFormat("yyMMdd");
+
+		// 오늘날짜 yyyy-MM-dd로 생성
+		String todayfm = f.format(new Date(System.currentTimeMillis()));
+
+		// 비교할 date와 today를데이터 포맷으로 변경
+		Date date;
+		Date today;
+		int timeresult;
+		try {
+			date = new Date(f.parse(dto.getCheckin()).getTime());
+			today = new Date(f.parse(todayfm).getTime());
+			// compareTo메서드를 통한 날짜비교
+			timeresult = today.compareTo(date);
+
+			if (timeresult > 0) {// 예약불가
+
+				return null;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println("[error] 에러낫음!");
 		}
 
 		Connection conn = null;
@@ -87,11 +118,11 @@ public class AccService {
 			conn = JDBCTemplate.getConnection();
 
 			result = new AccDao().accReserve(dto, conn);
-			
-			if(result==1) {
+
+			if (result == 1) {
 				System.out.println("성공");
 				JDBCTemplate.commit(conn);
-			}else {
+			} else {
 				JDBCTemplate.rollback(conn);
 			}
 
@@ -108,15 +139,15 @@ public class AccService {
 	public List<AccDto> accReservCheck() {
 
 		Connection conn = null;
-		List<AccDto> list=null;
+		List<AccDto> list = null;
 		try {
 			conn = JDBCTemplate.getConnection();
 			list = new AccDao().accReservCheck(conn);
-			
-			if(list==null) {
+
+			if (list == null) {
 				System.out.println("조회 실패");
 			}
-			
+
 		} catch (
 
 		Exception e) {
@@ -129,25 +160,24 @@ public class AccService {
 	}// accRC
 
 	public AccDto accReCheckDetail(AccDto inputDto) {
-		
-		
+
 		AccDto dto = null;
 
 		Connection conn = null;
 		try {
 			conn = JDBCTemplate.getConnection();
 			dto = new AccDao().accReCheckDetail(inputDto, conn);
-			
-			if(dto==null) {
+
+			if (dto == null) {
 				System.out.println("조회 실패");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(conn);
 		}
-		
+
 		return dto;
 
 	}// accRC
