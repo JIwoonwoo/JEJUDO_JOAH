@@ -62,7 +62,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT)";
+			String sql = "INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, 5000)";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
