@@ -1,13 +1,18 @@
+-- 제주도 전체 스크립트
+--220804 ver2 추가 테이블 데이터, 관광지, 숙박, 렌트카 입력완료
+
 DROP TABLE "ROOM" CASCADE CONSTRAINTS;
 DROP TABLE "FLIGHT" CASCADE CONSTRAINTS;
 DROP TABLE "MEMBER" CASCADE CONSTRAINTS;
 DROP TABLE "QNA" CASCADE CONSTRAINTS;
+DROP TABLE "QnA" CASCADE CONSTRAINTS;
 DROP TABLE "PAYMENT" CASCADE CONSTRAINTS;
 DROP TABLE "FLIGHT_RESERVATION" CASCADE CONSTRAINTS;
 DROP TABLE "RENTAL_CAR" CASCADE CONSTRAINTS;
 DROP TABLE "SURVEY" CASCADE CONSTRAINTS;
 DROP TABLE "CAR_RESERVATION" CASCADE CONSTRAINTS;
 DROP TABLE "ACCOM_RESERVATION" CASCADE CONSTRAINTS;
+DROP TABLE "CAR" CASCADE CONSTRAINTS;
 DROP TABLE "ACCOM" CASCADE CONSTRAINTS;
 DROP TABLE "PERSON_GROUP" CASCADE CONSTRAINTS;
 DROP TABLE "FUEL" CASCADE CONSTRAINTS;
@@ -65,9 +70,9 @@ COMMENT ON COLUMN flight.flight_no IS
 COMMENT ON COLUMN flight.flight_name IS
     'CHAR(6)? VARCHAR2?';
 
-DROP TABLE member;
+DROP TABLE MEMBER;
 
-CREATE TABLE member (
+CREATE TABLE MEMBER (
     member_no   NUMBER NOT NULL,
     id          VARCHAR2(20) UNIQUE NOT NULL,
     pwd         VARCHAR2(20) NOT NULL,
@@ -108,8 +113,6 @@ CREATE TABLE travel (
     delete_date    TIMESTAMP NULL
 );
 
---ALTER TABLE TRAVEL MODIFY travel_name VARCHAR2(40);
---ALTER TABLE TRAVEL MODIFY travel_phone VARCHAR2(20);
 
 COMMENT ON COLUMN travel.travel_no IS
     '시퀀스로 관리';
@@ -127,9 +130,10 @@ COMMENT ON COLUMN travel.travel_phone IS
 COMMENT ON COLUMN travel.like_cnt IS
     '좋아요는 시퀀스 말고 셀렉해서 +1 하는 걸로 (시퀀스로 하면 내려가는 기능을 쓸 수 없기 때문에 좋아요 눌렀다가 취소 못함)';
 
-DROP TABLE qna;
 
-CREATE TABLE qna (
+DROP TABLE QNA;
+
+CREATE TABLE QNA (
     question_no    NUMBER NOT NULL,
     member_no      NUMBER NOT NULL,
     question_title VARCHAR(20) NOT NULL,
@@ -378,7 +382,7 @@ ALTER TABLE car ADD CONSTRAINT pk_car PRIMARY KEY ( car_no );
 
 ALTER TABLE accom ADD CONSTRAINT pk_accom PRIMARY KEY ( accom_no );
 
-ALTER TABLE person_group ADD CONSTRAINT pk_group PRIMARY KEY ( no );
+ALTER TABLE person_group ADD CONSTRAINT pk_person_group PRIMARY KEY ( no );
 
 ALTER TABLE fuel ADD CONSTRAINT pk_fuel PRIMARY KEY ( fuel_no );
 
@@ -401,12 +405,12 @@ ALTER TABLE room
         REFERENCES room_view_info ( room_view_no );
 
 ALTER TABLE travel
-    ADD CONSTRAINT fk_group_to_travel_1 FOREIGN KEY ( recommend_type )
+    ADD CONSTRAINT fk_group_to_travel_1 FOREIGN KEY ( RECOMMEND_TYPE )
         REFERENCES person_group ( no );
 
-ALTER TABLE travel
-    ADD CONSTRAINT fk_purpose_to_travel_1 FOREIGN KEY ( theme )
-        REFERENCES purpose ( no );
+ALTER TABLE TRAVEL
+    ADD CONSTRAINT fk_purpose_to_travel_1 FOREIGN KEY ( THEME )
+        REFERENCES PURPOSE ( NO );
 
 ALTER TABLE travel
     ADD CONSTRAINT fk_category_to_travel_1 FOREIGN KEY ( category )
@@ -488,6 +492,7 @@ ALTER TABLE accom
     ADD CONSTRAINT fk_accom_ar_info_to_accom_1 FOREIGN KEY ( accom_around )
         REFERENCES accom_ar_info ( accom_ar_no );
 
+--시퀸스들
 DROP SEQUENCE SEQ_ROOM;
 CREATE SEQUENCE SEQ_ROOM NOCACHE NOCYCLE;
 
@@ -526,6 +531,7 @@ CREATE SEQUENCE SEQ_CAR NOCACHE NOCYCLE;
 
 DROP SEQUENCE SEQ_ACCOM;
 CREATE SEQUENCE SEQ_ACCOM NOCACHE NOCYCLE;
+
 
 --고정값 시퀀스 굳이...?
 --DROP SEQUENCE SEQ_FUEL;
@@ -580,6 +586,7 @@ INSERT INTO ROOM_VIEW_INFO VALUES(2, '오션뷰');
 INSERT INTO ROOM_VIEW_INFO VALUES(3, '마운틴뷰');
 INSERT INTO ROOM_VIEW_INFO VALUES(4, '파크뷰');
 
+-- 숙소 (기존 데이터)
 INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '마리나제주', '제주특별자치도 제주시 특별자치도, 금능남로 127', 'Y', 'H');
 INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '엠버서터 호텔', '제주 서귀포시 중문관광로72번길 75', 'Y', 'H');
 INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 4, '더퍼스트 제주', '제주 제주시 도령로 83', 'Y', 'H');
@@ -672,66 +679,330 @@ INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 14, 2, '6인실', 30000, 6, 'Y', 'N');
 INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 15, 1, '6인실', 30000, 6, 'N', 'N');
 INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 16, 1, '4인실', 40000, 4, 'Y', 'N');
 
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '성산일출봉', '제주 서귀포시 성산읍 성산리 1', 'N', 5000, 'N', '유네스코 세계 자연 유산에 등재된, 제주 최고의 일출 명소',  '064-783-0959', '07:00', '20:00', '매월 첫번째 월', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1, '동문재래시장', '제주 제주시 관덕로14길 20', 'N', NULL, 'Y', '먹거리와 생활용품을 판매하는, 제주에서 가장 큰 시장',  '064-752-3001', '08:00', '00:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 2, 1, '카멜리아 힐', '제주 서귀포시 안덕면 병악로 166', 'N', 9000, 'Y', '세계 80개국의 동백나무를 볼 수 있는 동백 수목원',  '0507-1340-0175', '09:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '함덕 해수욕장', '제주 제주시 조천읍 조함해안로 525', 'Y', NULL, 'Y', '에메랄드빛 바다와 백사장을 갖춘 한국의 몰디브',  '064-728-3989', NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '아르떼 뮤지엄', '제주 제주시 애월읍 어림비로 478', 'N', 17000, 'N', '시각적 강렬함을 선사하는 국내 최대 규모의 미디어 아트 전시관',  '1899-5008', '10:00', '20:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '새별 오름', '제주 제주시 애월읍 봉성리 산59-8', 'Y', NULL, 'Y', '황금빛 억새가 휘날리는 아름다운 풍경을 마주할 수 있는 오름',  NULL, NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '오설록 티 뮤지엄', '제주 서귀포시 안덕면 신화역사로 15 오설록', 'N', NULL, 'N', '우리나라의 전통차 문화를 소개하는 녹차 박물관',  '064-794-5312', '09:00', '18:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '사려니 숲길', '제주 제주시 조천읍 교래리 산137-1', 'N', NULL, 'N', '시원한 나무 그늘 아래, 맑은 공기를 마시며 걷기 좋은 숲길',  '064-900-8800', '09:00', '17:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '아쿠아 플라넷 제주', '제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주', 'N', 40000, 'N', '아시아 최대 규모를 자랑하는 해양 테마 파크',  '1833-7001', '10:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '금능 해수욕장', '제주 제주시 한림읍 금능리', 'Y', NULL, 'Y', '투명한 바다에서 물놀이와 스노쿨링을 즐길 수 있는 해수욕장',  '064-728-3983', NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '중문 대포 주상절리대', '제주 서귀포시 이어도로 36-24', 'N', 2000, 'N', '대한민국 천연기념물 제 443호로 지정된 대규모 주상절리대',  '064-738-1521', '09:00', '18:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 2, 1, '안돌 오름 편백나무 숲', '제주 제주시 구좌읍 송당리 산66-2', 'N', 3000, 'N', '상쾌한 피톤치드 향기를 맡으며 힐링하기 좋은 숲',  NULL, '09:00', '18:30', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 2, 1, '보롬왓', '제주 서귀포시 표선면 번영로 2350-104', 'N', 5000, 'Y', '예쁜 꽃밭을 구경하며 자연 속에서 힐링할 수 있는 공간',  '010-7362-2345', '09:00', '18:00', '동절기', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '동백 포레스트', '제주 서귀포시 남원읍 생기악로 53-38', 'N', 4000, 'Y', '매년 겨울 따듯한 커피와 함께 동백꽃을 감상할 수 있는 곳',  '0507-1331-2102', '09:00', '18:00', '월요일', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '쇠소깍', '제주 서귀포시 쇠소깍로 104', 'Y', NULL, 'Y', '맑은 물과 기암괴석이 만들어낸 풍경을 볼 수 있는 하구',  '064-732-9998', '09:00', '18:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1, '서귀포 매일 올레시장', '제주 서귀포시 서귀동 340', 'N', NULL, 'Y', '다양한 농수산물,잡화,먹거리를 판매하는 재래 시장',  '0507-1353-1949', '07:00', '21:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '도두동 무지개 해안도로', '제주특별자치도 제주시 도두일동  1734', 'N', NULL, 'Y', '무지개색으로 칠해진 방호벽이 자리한 해안도로',  NULL, NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 1, 4, 1, '스누피 가든', '제주 제주시 구좌읍 금백조로 930', 'N', 18000, 'N', '귀여운 캐릭터 스누피로 가득 찬 아기자기한 테마 가든',  '064-903-1111', '09:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '송악산 둘레길', '제주특별자치도 서귀포시 대정읍 상모리 245', 'N', NULL, 'Y', '독특한 화산 지형과 아름다운 경치를 감상할 수 있는 곳',  NULL, NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '천지연 폭포', '제주 서귀포시 천지동 667-7', 'N', 2000, 'N', '웅장한 자연에 둘러싸여 거센 물줄기를 내뿜는 폭포',  '064-733-1528', '09:00', '22:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '산굼부리', '제주 제주시 조천읍 비자림로 768', 'N', 6000, 'N', '여러 희귀 식물이 서식하는, 천연기념물로 지정된 분화구',  '064-783-9900', '09:00', '18:40', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '월정리 해변', '제주 제주시 구좌읍 월정리 33-3', 'Y', NULL, 'Y', '달이 머무는 곳 월정리에 자리한 해변',  NULL, NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '정방폭포', '제주 서귀포시 칠십리로214번길 37', 'N', 2000, 'N', '시원한 물줄기를 자랑하는 동양 유일의 해안 폭포',  '064-733-1530', '09:00', '18:20', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '빛의 벙커', '제주 서귀포시 성산읍 고성리 2039-22', 'N', 18000, 'N', '몰입형 미디어 전시가 열리는, 지하 벙커를 개조한 전시관',  '1522-2653', '10:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '한라산 국립 공원', '제주 서귀포시 토평동 산15-1', 'N', NULL, 'N', '유네스코 세계 자연 유산에 등재된, 대한민국에서 가장 높은 산',  '064-713-9950', NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '협재 해수욕장', '제주 제주시 한림읍 협재리 2497-1', 'Y', NULL, 'Y', '올레 14코스에 속하는,일몰이 아름다운 해수욕장',  '064-728-3981', NULL, NULL, NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '월정투명카약', '제주시 구좌읍 월정리 1400-33', 'Y', 15000, 'Y', '애완견도 함께 탈수있는 투명카약',  '010-8638-6491', '10:00', '17:00', '화', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '제주서핑스쿨', '서귀포시 색달동 2272', 'Y', 60000, 'N', '초보자도 쉽게 즐길 수 있는 서핑',  '010-4267-2567', '08:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '로로패들보드', '제주시 구좌읍 월정리 33', 'Y', 40000, 'Y', '잔잔한 바다에서 즐기는 패들보트',  '010-2893-2938', '08:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '차귀도 선상낚시', '제주시 한경면 노을해안로 1160', 'Y', 12000, 'N', '차귀도에서 즐기는 낚시체험',  '010-9727-3782', '09:00', '17:00', '월', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '새별레져 ATV', '제주시 한림읍 금악리 산30-4', 'Y', 40000, 'N', '오프로드를 따라 달리는 ATV',  '010-3829-4567', '10:00', '18:00', '수', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '세화꽃길만걷차 전기자전거', '제주시 구좌읍 해맞이해안로 1382', 'Y', 15000, 'N', '해안가를 따라 자전거 여행',  '010-7683-7766', '10:00', '20:00', '화', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 4, 3, '한라하이킹 스쿠터', '제주시 용두암길 50-1', 'Y', 40000, 'N', '해안가따라 스쿠터 여행',  '010-0393-0099', '08:00', '20:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '오쉐어 한라산등반', '제주시 용문로 4 1층 오쉐어', 'Y', 18000, 'N', '영실코스 장비 대여',  '010-0288-4445', '06:00', '16:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '제주 레일바이크', '제주시 구좌읍 용눈이오름로 641', 'Y', 20000, 'N', '용눈이 오름이 보이는 레일바이크 코스',  '010-3678-9298', '09:00', '18:00', '수', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '윈드1947 카트', '서귀포시 토평공단로 78-27', 'Y', 25000, 'N', '코스를 따라 도는 카트',  '010-4783-8889', '10:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '981파크 레이싱', '제주시 애월읍 천덕로 880-24', 'Y', 30000, 'N', '경사를 따라 내려가는 카트',  '010-7329-4789', '09:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '바다하늘 패러글라이딩', '제주시 한림읍 한창로 1295', 'Y', 89000, 'N', '금오름이 보이는 패러글라이딩',  '010-3728-9292', '10:00', '18:00', '화', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 4, 3, '법환해녀체험센터', '서귀포시 최영로 10', 'Y', 40000, 'N', '각종 해산물을 채취할 수 있는 기회',  '010-2898-0377', '09:00', '15:00', '수', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 4, 3, '조르다 요가', '제주시 조천읍 조함해안로 586', 'Y', 40000, 'Y', '노을과 해변이 보이는 곳에서의 요가',  '010-9090-4376', '17:00', '21:00', '일', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '더퍼플 스쿠버다이빙', '서귀포시 이어도로 1028-14', 'Y', 50000, 'N', '아름다운 바닷속 탐험',  '010-2442-9949', '08:00', '20:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '하례감귤체험농장', '서귀포시 남원읍 중산간동로 6596-3', 'Y', 9900, 'N', '감귤농장에서 직접따먹는 신선한 귤',  '010-2902-1112', '09:30', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '우도 모터보트', '제주시 우도면 연평리 2562', 'Y', 15000, 'N', '모터보트타고 신비한 동굴탐험',  '010-5289-9992', '10:00', '16:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '쇠와꽃 승마장', '서귀포시 성산읍 섭지코지로25번길 88-17', 'Y', 18000, 'N', '말타고 따그닥따그닥',  '010-3268-3439', '09:00', '17:30', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '왕복짚라인 제주', '제주시 해안마을북길 14-5', 'Y', 28000, 'N', '멋진 경치와 시원한 바람의 짚라인',  '010-2589-2366', '09:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '메이즈랜드 미로공원', '제주시 구좌읍 비자림로 2134-47 메이즈랜드', 'Y', 11000, 'N', '돌,바람,여자로 구성된 미로공원',  '010-4720-1577', '09:00', '18:00', '무휴', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '새빌', '제주 제주시 애월읍 평화로 1529', 'N', 5500, 'Y', '네이버 선정 대한민국 6대 이색 카페에 선정된 새별 오름의 아름다운 자연 경관을 볼 수 있는 카페',  '064-794-0073', '09:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '몽상 드 애월', '제주 제주시 애월읍 애월북서길 56-1', 'N', 8000, 'Y', '지드래곤 카페로 유명한 통유리창을 통해 오션 뷰를 바라볼 수 있는 전망 좋은 카페',  '064-799-8900', '09:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '카페 델문도', '제주 제주시 조천읍 조함해안로 519-10', 'N', 7000, 'N', '함덕 해수욕장 근처 카페로 오션 뷰를 바라볼 수 있는 분위기 좋은 카페',  '064-702-0007', '07:00', '00:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '베케', '제주 서귀포시 효돈로 54', 'N', 5500, 'N', '숲속에 온 듯한 느낌을 자아내는 혼자만 알고 싶은 가든 뷰 카페',  '064-732-3828', '10:00', '18:00', '화요일', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 4, '귤꽃다락', '제주 서귀포시 이어도로1072번길 34', 'N', 5500, 'Y', '70년대 창고를 개조한 복고 감성의 예쁜 카페',  '064-739-2323', '11:30', '18:30', '수요일', 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 4, '랜디스 도넛', '제주 제주시 애월읍 애월로 27-1', 'N', 4800, 'N', '제주 유명한 도넛 전문점',  '064-799-0610', '10:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '원 앤 온리', '제주 서귀포시 안덕면 산방로 141', 'N', 7000, 'N', '배틀트립에서 다녀간 산방산의 뷰를 감상할 수 있는 이국적인 느낌의 카페',  '010-9910-2527', '09:00', '20:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 5, 4, '우무 본점', '제주 제주시 한림읍 한림로 542-1', 'N', 6300, 'N', '우뭇가사리로 만든 수제 푸딩이 유명한 제주 유명 디저트 카페',  '010-4471-0064', '10:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '오드랑 베이커리', '제주 제주시 조천읍 조함해안로 552-3', 'N', 3500, 'N', '각양각색의 다양한 빵을 판매하는 베이커리',  '064-784-5404', '07:00', '22:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '오설록 티 하우스', '제주 서귀포시 안덕면 신화역사로 15', 'N', 6000, 'N', '제주산 유기농 녹차로 만든 다양한 디저트와 음료를 맛볼 수 있는 카페',  '064-794-5312', '09:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '봄날', '제주 제주시 애월읍 애월로1길 25', 'N', 5500, 'N', '드라마 맨도롱 또똣의 촬영지로 유명한 바다가 보이는 전망 좋은 카페',  '064-799-4999', '09:00', '21:30', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '마노르 블랑', '제주 서귀포시 안덕면 일주서로2100번길 46', 'N', 7000, 'N', '꽃으로 가득한 정원 속의 예쁜 카페',  '064-794-0999', '10:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '명월 국민학교', '제주 제주시 한림읍 명월로 48', 'N', 5000, 'Y', '폐교를 개조한 이색 카페',  '070-8803-1955', '11:00', '19:00', NULL, 0, 'N', NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 5, 4, 'KH카페', '제주 제주시 요정로', 'N', NULL, 'Y', '공부가 잘 되는 카페', '064-111-2222', '09:00', '15:20', NULL, 0, 'N', NULL);
+-- 숙소 추가 데이터
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1 ,'페어리하우스','제주 제주시 요정로1995','Y','G');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2 ,'파미유리조트','제주 서귀포시 이어도로 826-6','Y','H');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2 ,'통나무파크','제주 제주시 애월읍 도치돌길 293','N','G');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1 ,'제이앤클로이','제주 서귀포시 대정읍 무릉중앙로 203','N','G');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1 ,'더비비스제주','제주 서귀포시 이어도로 760','N','G');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2 ,'해뜨는집','제주 서귀포시 성산읍 한도로 137','Y','G');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3 ,'더제이드호텔앤카페','제주 제주시 관덕로15길 7-1','N','H');
+INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1 ,'제주 신라호텔','제주 서귀포시 중문관광로72번길 75','Y','H');
+
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,31,2,'요정왕의침실',100000,1,'N','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,31,2,'엘프의낮잠',50000,4,'N','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,31,2,'아기자기',30000,6,'N','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,3,'싱글룸(오션뷰)',150000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,4,'싱글룸(파크뷰)',100000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,3,'더블룸(오션뷰)',210000,3,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,4,'더블룸(파크뷰)',180000,3,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,3,'스위트룸(오션뷰)',350000,4,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,4,'스위트룸(파크뷰)',300000,4,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,3,'패밀리룸(오션뷰)',500000,8,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,32,4,'패밀리룸(파크뷰)',410000,8,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,33,3,'자연과함께',60000,2,'N','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,34,2,'제이',70000,2,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,34,2,'클로이',50000,4,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,35,2,'모던룸',200000,2,'N','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,35,2,'온돌룸',170000,2,'N','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,36,3,'해뜰때수영',350000,4,'N','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,36,3,'해뜰때묵념',250000,4,'N','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,37,1,'비즈니스싱글',40000,1,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,37,1,'스탠다드 더블',65000,2,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,37,1,'럭셔리 커플',90000,2,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,37,3,'로얄스위트 더블',180000,4,'Y','N');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,1,'퍼시픽 디럭스 스위트',1000000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,2,'퍼시픽 오션 스위트',1200000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,4,'퍼시픽 가든 스위트',1300000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,3,'스탠다드 트윈',400000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,2,'스탄다드 트윈 오션',450000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,4,'스탠다드 트윈 가든',440000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,3,'프리미엄 더블',460000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,2,'디럭스 더블 오션',500000,2,'Y','Y');
+INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL,38,4,'프리미엄 온돌 가든',510000,2,'Y','Y');
+
+-- 여행지 목록 (기존)
+-- 관광지
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '성산일출봉', '제주 서귀포시 성산읍 성산리 1', 'N', 5000, 'N', '유네스코 세계 자연 유산에 등재된, 제주 최고의 일출 명소',  '064-783-0959', '07:00', '20:00', '매월 첫번째 월', 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1, '동문재래시장', '제주 제주시 관덕로14길 20', 'N', NULL, 'Y', '먹거리와 생활용품을 판매하는, 제주에서 가장 큰 시장',  '064-752-3001', '08:00', '00:00', NULL, 22, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 2, 1, '카멜리아 힐', '제주 서귀포시 안덕면 병악로 166', 'N', 9000, 'Y', '세계 80개국의 동백나무를 볼 수 있는 동백 수목원',  '0507-1340-0175', '09:00', '19:00', NULL, 13, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '함덕 해수욕장', '제주 제주시 조천읍 조함해안로 525', 'Y', NULL, 'Y', '에메랄드빛 바다와 백사장을 갖춘 한국의 몰디브',  '064-728-3989', NULL, NULL, NULL, 37, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '아르떼 뮤지엄', '제주 제주시 애월읍 어림비로 478', 'N', 17000, 'N', '시각적 강렬함을 선사하는 국내 최대 규모의 미디어 아트 전시관',  '1899-5008', '10:00', '20:00', NULL, 45, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '새별 오름', '제주 제주시 애월읍 봉성리 산59-8', 'Y', NULL, 'Y', '황금빛 억새가 휘날리는 아름다운 풍경을 마주할 수 있는 오름',  NULL, NULL, NULL, NULL, 77, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '오설록 티 뮤지엄', '제주 서귀포시 안덕면 신화역사로 15 오설록', 'N', NULL, 'N', '우리나라의 전통차 문화를 소개하는 녹차 박물관',  '064-794-5312', '09:00', '18:00', NULL, 56, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '사려니 숲길', '제주 제주시 조천읍 교래리 산137-1', 'N', NULL, 'N', '시원한 나무 그늘 아래, 맑은 공기를 마시며 걷기 좋은 숲길',  '064-900-8800', '09:00', '17:00', NULL, 86, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '아쿠아 플라넷 제주', '제주 서귀포시 성산읍 섭지코지로 95 아쿠아플라넷 제주', 'N', 40000, 'N', '아시아 최대 규모를 자랑하는 해양 테마 파크',  '1833-7001', '10:00', '19:00', NULL, 27, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '금능 해수욕장', '제주 제주시 한림읍 금능리', 'Y', NULL, 'Y', '투명한 바다에서 물놀이와 스노쿨링을 즐길 수 있는 해수욕장',  '064-728-3983', NULL, NULL, NULL, 66, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '중문 대포 주상절리대', '제주 서귀포시 이어도로 36-24', 'N', 2000, 'N', '대한민국 천연기념물 제 443호로 지정된 대규모 주상절리대',  '064-738-1521', '09:00', '18:00', NULL, 43, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 2, 1, '안돌 오름 편백나무 숲', '제주 제주시 구좌읍 송당리 산66-2', 'N', 3000, 'N', '상쾌한 피톤치드 향기를 맡으며 힐링하기 좋은 숲',  NULL, '09:00', '18:30', NULL, 58, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 2, 1, '보롬왓', '제주 서귀포시 표선면 번영로 2350-104', 'N', 5000, 'Y', '예쁜 꽃밭을 구경하며 자연 속에서 힐링할 수 있는 공간',  '010-7362-2345', '09:00', '18:00', '동절기', 45, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '동백 포레스트', '제주 서귀포시 남원읍 생기악로 53-38', 'N', 4000, 'Y', '매년 겨울 따듯한 커피와 함께 동백꽃을 감상할 수 있는 곳',  '0507-1331-2102', '09:00', '18:00', '월요일', 32, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '쇠소깍', '제주 서귀포시 쇠소깍로 104', 'Y', NULL, 'Y', '맑은 물과 기암괴석이 만들어낸 풍경을 볼 수 있는 하구',  '064-732-9998', '09:00', '18:00', NULL, 37, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1, '서귀포 매일 올레시장', '제주 서귀포시 서귀동 340', 'N', NULL, 'Y', '다양한 농수산물,잡화,먹거리를 판매하는 재래 시장',  '0507-1353-1949', '07:00', '21:00', NULL, 44, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '도두동 무지개 해안도로', '제주특별자치도 제주시 도두일동  1734', 'N', NULL, 'Y', '무지개색으로 칠해진 방호벽이 자리한 해안도로',  NULL, NULL, NULL, NULL, 67, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 1, 4, 1, '스누피 가든', '제주 제주시 구좌읍 금백조로 930', 'N', 18000, 'N', '귀여운 캐릭터 스누피로 가득 찬 아기자기한 테마 가든',  '064-903-1111', '09:00', '19:00', NULL, 86, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '송악산 둘레길', '제주특별자치도 서귀포시 대정읍 상모리 245', 'N', NULL, 'Y', '독특한 화산 지형과 아름다운 경치를 감상할 수 있는 곳',  NULL, NULL, NULL, NULL, 41, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '천지연 폭포', '제주 서귀포시 천지동 667-7', 'N', 2000, 'N', '웅장한 자연에 둘러싸여 거센 물줄기를 내뿜는 폭포',  '064-733-1528', '09:00', '22:00', NULL, 21, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '산굼부리', '제주 제주시 조천읍 비자림로 768', 'N', 6000, 'N', '여러 희귀 식물이 서식하는, 천연기념물로 지정된 분화구',  '064-783-9900', '09:00', '18:40', NULL, 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '월정리 해변', '제주 제주시 구좌읍 월정리 33-3', 'Y', NULL, 'Y', '달이 머무는 곳 월정리에 자리한 해변',  NULL, NULL, NULL, NULL, 73, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '정방폭포', '제주 서귀포시 칠십리로214번길 37', 'N', 2000, 'N', '시원한 물줄기를 자랑하는 동양 유일의 해안 폭포',  '064-733-1530', '09:00', '18:20', NULL, 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 1, '빛의 벙커', '제주 서귀포시 성산읍 고성리 2039-22', 'N', 18000, 'N', '몰입형 미디어 전시가 열리는, 지하 벙커를 개조한 전시관',  '1522-2653', '10:00', '19:00', NULL, 77, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 1, '한라산 국립 공원', '제주 서귀포시 토평동 산15-1', 'N', NULL, 'N', '유네스코 세계 자연 유산에 등재된, 대한민국에서 가장 높은 산',  '064-713-9950', NULL, NULL, NULL, 66, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 1, '협재 해수욕장', '제주 제주시 한림읍 협재리 2497-1', 'Y', NULL, 'Y', '올레 14코스에 속하는,일몰이 아름다운 해수욕장',  '064-728-3981', NULL, NULL, NULL, 33, 'N', NULL);
+
+--액티비티
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '월정투명카약', '제주시 구좌읍 월정리 1400-33', 'Y', 15000, 'Y', '애완견도 함께 탈수있는 투명카약',  '010-8638-6491', '10:00', '17:00', '화', 55, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '제주서핑스쿨', '서귀포시 색달동 2272', 'Y', 60000, 'N', '초보자도 쉽게 즐길 수 있는 서핑',  '010-4267-2567', '08:00', '18:00', NULL, 22, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '로로패들보드', '제주시 구좌읍 월정리 33', 'Y', 40000, 'Y', '잔잔한 바다에서 즐기는 패들보트',  '010-2893-2938', '08:00', '18:00', NULL, 35, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '차귀도 선상낚시', '제주시 한경면 노을해안로 1160', 'Y', 12000, 'N', '차귀도에서 즐기는 낚시체험',  '010-9727-3782', '09:00', '17:00', '월', 21, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '새별레져 ATV', '제주시 한림읍 금악리 산30-4', 'Y', 40000, 'N', '오프로드를 따라 달리는 ATV',  '010-3829-4567', '10:00', '18:00', '수', 56, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 3, '세화꽃길만걷차 전기자전거', '제주시 구좌읍 해맞이해안로 1382', 'Y', 15000, 'N', '해안가를 따라 자전거 여행',  '010-7683-7766', '10:00', '20:00', '화', 77, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 4, 3, '한라하이킹 스쿠터', '제주시 용두암길 50-1', 'Y', 40000, 'N', '해안가따라 스쿠터 여행',  '010-0393-0099', '08:00', '20:00', NULL, 58, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '오쉐어 한라산등반', '제주시 용문로 4 1층 오쉐어', 'Y', 18000, 'N', '영실코스 장비 대여',  '010-0288-4445', '06:00', '16:00', NULL, 55, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '제주 레일바이크', '제주시 구좌읍 용눈이오름로 641', 'Y', 20000, 'N', '용눈이 오름이 보이는 레일바이크 코스',  '010-3678-9298', '09:00', '18:00', '수', 24, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '윈드1947 카트', '서귀포시 토평공단로 78-27', 'Y', 25000, 'N', '코스를 따라 도는 카트',  '010-4783-8889', '10:00', '18:00', NULL, 78, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '981파크 레이싱', '제주시 애월읍 천덕로 880-24', 'Y', 30000, 'N', '경사를 따라 내려가는 카트',  '010-7329-4789', '09:00', '18:00', NULL, 45, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 4, 3, '바다하늘 패러글라이딩', '제주시 한림읍 한창로 1295', 'Y', 89000, 'N', '금오름이 보이는 패러글라이딩',  '010-3728-9292', '10:00', '18:00', '화', 33, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 4, 3, '법환해녀체험센터', '서귀포시 최영로 10', 'Y', 40000, 'N', '각종 해산물을 채취할 수 있는 기회',  '010-2898-0377', '09:00', '15:00', '수', 43, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 4, 3, '조르다 요가', '제주시 조천읍 조함해안로 586', 'Y', 40000, 'Y', '노을과 해변이 보이는 곳에서의 요가',  '010-9090-4376', '17:00', '21:00', '일', 32, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '더퍼플 스쿠버다이빙', '서귀포시 이어도로 1028-14', 'Y', 50000, 'N', '아름다운 바닷속 탐험',  '010-2442-9949', '08:00', '20:00', NULL, 26, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '하례감귤체험농장', '서귀포시 남원읍 중산간동로 6596-3', 'Y', 9900, 'N', '감귤농장에서 직접따먹는 신선한 귤',  '010-2902-1112', '09:30', '18:00', NULL, 39, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '우도 모터보트', '제주시 우도면 연평리 2562', 'Y', 15000, 'N', '모터보트타고 신비한 동굴탐험',  '010-5289-9992', '10:00', '16:00', NULL, 76, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '쇠와꽃 승마장', '서귀포시 성산읍 섭지코지로25번길 88-17', 'Y', 18000, 'N', '말타고 따그닥따그닥',  '010-3268-3439', '09:00', '17:30', NULL, 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '왕복짚라인 제주', '제주시 해안마을북길 14-5', 'Y', 28000, 'N', '멋진 경치와 시원한 바람의 짚라인',  '010-2589-2366', '09:00', '18:00', NULL, 54, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 3, '메이즈랜드 미로공원', '제주시 구좌읍 비자림로 2134-47', 'Y', 11000, 'N', '돌,바람,여자로 구성된 미로공원',  '010-4720-1577', '09:00', '18:00', NULL, 23, 'N', NULL);
+
+--카페(기존)
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '새빌', '제주 제주시 애월읍 평화로 1529', 'N', 5500, 'Y', '네이버 선정 대한민국 6대 이색 카페에 선정된 새별 오름의 아름다운 자연 경관을 볼 수 있는 카페',  '064-794-0073', '09:00', '19:00', NULL, 45, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '몽상 드 애월', '제주 제주시 애월읍 애월북서길 56-1', 'N', 8000, 'Y', '지드래곤 카페로 유명한 통유리창을 통해 오션 뷰를 바라볼 수 있는 전망 좋은 카페',  '064-799-8900', '09:00', '19:00', NULL, 22, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '카페 델문도', '제주 제주시 조천읍 조함해안로 519-10', 'N', 7000, 'N', '함덕 해수욕장 근처 카페로 오션 뷰를 바라볼 수 있는 분위기 좋은 카페',  '064-702-0007', '07:00', '00:00', NULL, 45, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '베케', '제주 서귀포시 효돈로 54', 'N', 5500, 'N', '숲속에 온 듯한 느낌을 자아내는 혼자만 알고 싶은 가든 뷰 카페',  '064-732-3828', '10:00', '18:00', '화요일', 76, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 4, '귤꽃다락', '제주 서귀포시 이어도로1072번길 34', 'N', 5500, 'Y', '70년대 창고를 개조한 복고 감성의 예쁜 카페',  '064-739-2323', '11:30', '18:30', '수요일', 35, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 4, '랜디스 도넛', '제주 제주시 애월읍 애월로 27-1', 'N', 4800, 'N', '제주 유명한 도넛 전문점',  '064-799-0610', '10:00', '19:00', NULL, 66, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '원 앤 온리', '제주 서귀포시 안덕면 산방로 141', 'N', 7000, 'N', '배틀트립에서 다녀간 산방산의 뷰를 감상할 수 있는 이국적인 느낌의 카페',  '010-9910-2527', '09:00', '20:00', NULL, 24, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 5, 4, '우무 본점', '제주 제주시 한림읍 한림로 542-1', 'N', 6300, 'N', '우뭇가사리로 만든 수제 푸딩이 유명한 제주 유명 디저트 카페',  '010-4471-0064', '10:00', '19:00', NULL, 56, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '오드랑 베이커리', '제주 제주시 조천읍 조함해안로 552-3', 'N', 3500, 'N', '각양각색의 다양한 빵을 판매하는 베이커리',  '064-784-5404', '07:00', '22:00', NULL, 78, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '오설록 티 하우스', '제주 서귀포시 안덕면 신화역사로 15', 'N', 6000, 'N', '제주산 유기농 녹차로 만든 다양한 디저트와 음료를 맛볼 수 있는 카페',  '064-794-5312', '09:00', '19:00', NULL, 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '봄날', '제주 제주시 애월읍 애월로1길 25', 'N', 5500, 'N', '드라마 맨도롱 또똣의 촬영지로 유명한 바다가 보이는 전망 좋은 카페',  '064-799-4999', '09:00', '21:30', NULL, 62, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 4, '마노르 블랑', '제주 서귀포시 안덕면 일주서로2100번길 46', 'N', 7000, 'N', '꽃으로 가득한 정원 속의 예쁜 카페',  '064-794-0999', '10:00', '19:00', NULL, 34, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 4, '명월 국민학교', '제주 제주시 한림읍 명월로 48', 'N', 5000, 'Y', '폐교를 개조한 이색 카페',  '070-8803-1955', '11:00', '19:00', NULL, 55, 'N', NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 4, 5, 4, 'KH카페', '제주 제주시 요정로', 'N', NULL, 'Y', '공부가 잘 되는 코딩 맛집 카페', '064-111-2222', '09:00', '15:20', NULL, 99, 'N', NULL);
+
+-- 카페 추가
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 1, 4, '무로이', '제주 서귀포시 안덕면 동광본동로 21','N',7000,'Y','미술관에 온듯한 느낌의 카페','010-1412-0008','09:00','20:00',NULL,47,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 4, '인스밀', '제주 서귀포시 대정읍 일과대수로27번길 22','N',6000,'Y','제주에서 외국느낌 물씬나는 이국적인 카페','010-1352-5661','11:30','18:30',NULL,74,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 4, '오르다', '제주 서귀포시 성산읍 한도로 269-37','N',6500,'Y','천국의계단이 있는 뷰 맛집 카페','064-783-8368','09:00','23:30',NULL,56,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 4, '오른', '제주 서귀포시 성산읍 해맞이해안로 2714','N',7000,'Y','노출콘크리트 건물의 인스타 감성 카페','010-1401-1559','10:30','20:00','2,4주 수요일',32,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 4, '카페한라산', '제주 제주시 구좌읍 면수1길','N',6500,'N','세화해변 오션뷰 카페','064-783-1522','09:30','21:00',NULL,25,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 4, '라라라', '제주 제주시 구좌읍 해맞이해안로 1430','N',6500,'Y','엽서에 세화해변 그리며 라라라','010-1328-0464','10:00','21:00',NULL,78,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 3, 4, '서귀피안 베이커리', '제주 서귀포시 성산읍 신양로122번길 17','N',6500,'N','파노라마 오션뷰 대형카페','010-1338-8378','08:00','21:00',NULL,53,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 4, '랜딩커피', '제주 서귀포시 성산읍 신양로122번길 45-1','N',7500,'N','아무런 방해물 없이 오로지 바다를 감상','010-1387-0998','11:00','19:00',NULL,73,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 1, 4, '머문', '제주 제주시 구좌읍 해맞이해안로 460','N',8000,'N','월정리 최고의 탁트인 바다뷰와 넓은공간 맛있는 커피','070-7585-3519','10:00','20:30',NULL,26,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 4, '우드스탁', '제주 제주시 구좌읍 월정7길 52','N',4500,'N','바다를 바라보며 멍때리기 좋은 카페','064-782-6948','09:00','24:00',NULL,72,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 4, '클랭블루', '제주 제주시 한경면 한경해안로 552-22','N',8000,'N','커피와 문화를 제공하다','0507-1335-5338','11:00','20:00',NULL,39,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 4, 4, '유람위드북스', '제주 제주시 한경면 조수동2길 54-36','N',6000,'N','고양이와 책이 있는 북카페','070-4227-6640','11:00','22:00',NULL,38,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 1, 2, '모카다방', '제주 서귀포시 남원읍 태신해안로 125','N',7000,'N','독특한 방식의 옛날 모카라떼','0507-1492-8915','10:00','19:00','변동',58,'N',NULL);
+
+-- 맛집
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 5, 2, '오는 정 김밥', '제주서귀포시 동문동로 2','N',4000,'N','맛있는 녀석들에 소개된 자꾸 생각나는 제주도 김밥 맛집','064-762-8927','10:00','20:00','일요일',84,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '우진 해장국', '제주 제주시 서사로 11','N',10000,'N','수요미식회에 소개된, 제주 여행 시 뜨끈한 국물이 먹고 싶다면 꼭 들려야 하는 맛집','064-757-3393','6:00','22:00',NULL,92,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '올래 국수 본점', '제주 제주시 귀아랑길 24','N',9000,'N','수요미식회에 소개된, 고기 국수 하나로 승부하는 맛집','064-742-7355','8:30','15:00',NULL,74,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 2, '연돈', '제주 서귀포시 일주서로 968-10','N',90000,'N','백종원의 골목식당 에서 극찬 받은 흑돼지 돈가스 맛집','064-738-7060','12:00','21:00',NULL,97,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '표선갈치어장', '제주 서귀포시 표선면 표선당포로 27','N',100000,'N','푸짐한 갈치 요리를 맛보고 싶다면 꼭 와야하는 갈치 요리 전문점','064-787-7118','10:00','22:00',NULL,34,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '흑돈가', '제주 제주시 한라대학로 11','N',18000,'N','숯불 향을 가득 입힌 흑돼지고기를 맛볼 수 있는 흑돼지 전문 맛집','064-747-0088','11:00','24:00',NULL,57,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '흑본오겹', '제주 제주시 서해안로 382','N',22000,'N','제주산 흑돼지고기를 맛볼 수 있는 오션 뷰 맛집','064-749-7756','13:00','22:30',NULL,73,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '섭지코지로', '제주 서귀포시 성산읍 시흥하동로57번길 35','N',35000,'Y','신선한 딱새우 회와 고등어 회로 유명한 맛집','064-782-3450','12:00','23:00',NULL,45,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '버드나무집', '제주 제주시 조천읍 신북로 540','N',12000,'N','도민 맛집으로 인정된 칼국수 맛집','064-782-9992','10:00','21:00','목요일',76,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 2, '동백별장', '제주 제주시 원노형3길 44','N',20000,'Y','동백을 테마로 한 다양한 퓨전 요리를 맛볼 수 있는 분위기 좋은 주점','010-8885-7876','17:00','24:00','화요일',23,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '513텐동', '제주 제주시 테우해안로 46 2층','N',15000,'Y','텐동이 맛있고 바다가 보이는 전망 좋은 일식당','010-9492-4345','11:30','21:30','화요일',57,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '봉구식탁', '제주 제주시 애월읍 유수암평화길 14-3 1층','N',20000,'Y','바다가 보이는 분위기 좋은 스테이크 맛집','064-799-5909','11:30','20:00','월요일',25,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '떡하니', '제주 제주시 구좌읍 행원로9길 9-5','N',10000,'Y','푸짐한 문어 즉석 떡볶이 맛집','010-4200-1566','11:30','17:30','화요일-수요일',46,'N',NULL);
+
+-- 맛집 추가
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 2, 2, '떠돌이식객', '제주 서귀포시 성산읍 신고로22번길 37','N',15000,'Y','세상에서 단 하나뿐인 수제 해물라면','0507-1426-0508','09:00','22:00','화요일',36,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 2, '가시아방국수', '제주 서귀포시 성산읍 고성리 528','N',8000,'N','성산유채꽃 보고 두툼한 돔베고기국수','064-783-0987','10:00','20:30','수요일',74,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 4, 2, '맛나식당', '제주 서귀포시 성산읍 동류암로 41','N',13000,'N','갈치조림이 맛있는 맛나식당','064-782-4771','08:00','21:00',NULL,36,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 1, 2, '산도롱맨도롱', '제주 제주시 구좌읍 해맞이해안로 2284','N',14000,'N','우도가 바라다 보이는 종달리 국수 맛집','064-782-5105','09:00','17:30','화요일',27,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 2, 2, '대수굴식당', '제주 제주시 구좌읍 대수길 10-4','N',19000,'N','가자 오래된 해녀문화를 간직한 식당','0507-1376-0829','10:00','22:00','화요일',84,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 3, 2, '어부피자', '제주 제주시 구좌읍 행원로5길 35-20 2층','N',62000,'N','프리미엄 피자위에 생생한 랍스타가 딱!','0507-1375-9242','11:00','21:00',NULL,36,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 4, 2, '대문집', '제주 제주시 한림읍 한림로 484','N',40000,'N','제주도 은갈치조림 맛집','064-796-3770','08:00','21:00','화요일',74,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 1, 2, '쪼끄뜨레', '제주 제주시 한경면 두신로 85 B동','N',15000,'N','신창 풍차 해안 수제돈가스 맛집','0507-1376-1025','11:00','18:00','월요일',53,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 2, 2, '체면', '제주 서귀포시 대정읍 단산로 95 1층 체면','N',11000,'N','송악산 근처 흑마농라멘 맛집','0507-1443-4422','11:30','21:00','월요일',74,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 3, 2, '미영이네식당', '제주 서귀포시 대정읍 하모항구로 42','N',55000,'N','모슬포항 앞에 위치한 방어회 고등어회','064-792-0077','11:30','22:00','수요일',37,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 4, 2, '네거리식당', '제주 서귀포시 서문로29번길 20','N',20000,'N','성게미역국, 갈치국을 만날 수 있는 식당','064-762-5513','07:00','21:40','비정기 휴무',46,'N',NULL);
+
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'제주도 조아 시장','제주 서귀포시 태평로353번길 18','N',NULL,'Y','제주도 대표 물품들을 판매하는, 요즘 뜨는 시장.','064-337-8989','09:00','20:00',NULL,65,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'한림민속5일시장',	'제주 제주시 한림읍 한수풀로4길 10','N',NULL,'Y','제주의 향수를 느낄 수 있는 민속5일 시장.','064-437-4590','08:00','21:00',NULL,57,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'중문향토오일시장','제주 서귀포시 천제연로188번길 12','N',NULL,'Y','제주도 간식과 먹거리가 가득한 제주도 뜨는 시장.','064-567-8977','06:00','20:00',NULL,25,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'고성오일시장','제주 서귀포시 성산읍 고성오조로 93','N',NULL,'Y','제주 특선 해산물들을 맛볼 수 있는, 먹거리가 유명한 시장.','064-760-4282','06:00','21:00',NULL,45,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'서귀포향토오일시장','제주 서귀포시 중산간동로7894번길 18-5 국제창호2','N', NULL, 'Y','바다가 한 눈에 들어오는 눈과 입이 즐거운 서귀포의 대표 시장.','064-763-0965','07:00','19:00',NULL,72,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'동문재래시장야시장','제주 제주시 관덕로14길 20','N', NULL,'Y','제주의 밤을 느낄 수 있는, 먹거리가 가득한 활기 가득한 야시장.','064-725-3005','17:00','01:00',NULL,35,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'함덕민속오일시장','제주 제주시 조천읍 함덕16길 15-13','N',NULL,'Y','새벽의 활기가 더해진 제주의 아침을 즐길 수 있는 시장.','064-783-8559','05:00','20:00',NULL,66,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 1, 1,'한림매일시장','제주 제주시 한림읍 한림리 1584','N',NULL,'Y','제주도 특산물들이 가득한, 진짜 제주를 느낄 수 있는 시장.','064-796-5209','09:00','21:00',NULL,32,'N',NULL);
+
+commit;
+
+-- 렌트카 관련
+INSERT INTO FUEL VALUES(1, '휘발유');
+INSERT INTO FUEL VALUES(2, '경유');
+INSERT INTO FUEL VALUES(3, '전기');
+
+ALTER TABLE CAR MODIFY CAR_SIZE NUMBER;
+
+DROP TABLE tb_size; 
+CREATE TABLE tb_size (
+    size_no NUMBER NOT NULL,
+    car_size VARCHAR2(10) NOT NULL
+);
+
+ALTER TABLE tb_size ADD CONSTRAINT pk_size PRIMARY KEY ( size_no );
+ALTER TABLE car
+    ADD CONSTRAINT fk_size_to_car_1 FOREIGN KEY ( car_size )
+        REFERENCES tb_size ( size_no );
+        
+INSERT INTO tb_size VALUES(1, '소형');
+INSERT INTO tb_size VALUES(2, '중형');
+INSERT INTO tb_size VALUES(3, '대형');
+
+DELETE FROM RENTAL_CAR;
+DELETE FROM CAR;
+
+DROP SEQUENCE SEQ_CAR;
+CREATE SEQUENCE SEQ_CAR NOCACHE NOCYCLE;
+
+DROP SEQUENCE SEQ_RENTAL_CAR;
+CREATE SEQUENCE SEQ_RENTAL_CAR NOCACHE NOCYCLE;
+
+
+
+-- 차량목록
+
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '스파크', 1, '4');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '아반떼', 1, '5');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '소나타', 2, '5');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '제네시스', 2, '5');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 2, '카니발', 3, '9');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 2, '스타렉스', 3, '12');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 3, '코나', 1, '5');
+INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '벤츠 컨버터블', 1, '4');
+INSERT INTO CAR (CAR_NO, FUEL, CAR_NAME, CAR_SIZE, CAR_PERSON)
+VALUES(SEQ_CAR.NEXTVAL, 3,'테슬라', 2, 5);
+INSERT INTO CAR (CAR_NO, FUEL, CAR_NAME, CAR_SIZE, CAR_PERSON)
+VALUES(SEQ_CAR.NEXTVAL, 3,'프린세스', 3, 10);
+INSERT INTO CAR (CAR_NO, FUEL, CAR_NAME, CAR_SIZE, CAR_PERSON)
+VALUES(SEQ_CAR.NEXTVAL, 2,'붕붕이', 2, 5);
+INSERT INTO CAR (CAR_NO, FUEL, CAR_NAME, CAR_SIZE, CAR_PERSON)
+VALUES(SEQ_CAR.NEXTVAL, 2,'페어리', 2, 6);
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1001', 44000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1002', 44000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1003', 44000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1004', 44000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1005', 44000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1006', 44000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '호0684', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '호9693', 70000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '햐9572', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2001', 60000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2002', 60000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2003', 60000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2004', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2005', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2006', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '햐0815', 50000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3001', 85000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3002', 85000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3003', 85000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3004', 85000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3005', 85000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3006', 85000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '효3521', 85000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '효1346', 95000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '후8874', 125000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '후7563', 120000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4001', 150000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4002', 150000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4003', 150000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4004', 150000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4005', 150000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4006', 150000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5001', 110000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5002', 110000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5003', 110000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5004', 110000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5005', 110000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5006', 110000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6001', 125000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6002', 125000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6003', 125000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6004', 125000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6005', 125000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6006', 125000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7001', 80000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7002', 80000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7003', 80000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7004', 80000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7005', 80000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7006', 80000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8001', 320000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8002', 320000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8003', 320000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8004', 320000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8005', 320000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8006', 320000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '햐0429', 40000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '허7865', 45000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '허9604', 120000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '허7204', 80000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '후2725', 100000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '후0769', 13000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '후7654', 120000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '호0592', 110000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '하0421', 50000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '호5873', 50000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 9, '호5873', 50000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '후0311', 45000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '하8754', 40000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '하1654', 100000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '햐5432', 40000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '햐5842', 50000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '햐3452', 125000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '햐5842', 90000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '후0584', 80000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '허1224', 90000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '후4643', 80000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 10, '후4643', 90000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '하1009', 35000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호8684', 45000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호2795', 80000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호1950', 90000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호4885', 12000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호9687', 120000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '호7943', 126000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '하0785', 75000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '후6753', 85000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '하0785', 75000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 11, '하0785', 60000, 'N');
+
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '호0816', 40000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '허7859', 40000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '허8684', 60000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '하5320', 70000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '하8642', 90000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '하4321', 100000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '하9522', 120000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '햐3664', 100000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '호4638', 120000, 'N');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '햐6897', 100000, 'Y');
+INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 12, '햐6897', 95000, 'N');
+
+
 
 INSERT INTO FLIGHT VALUES(SEQ_FLIGHT.NEXTVAL,'FR0001','06:30','07:20','요정에어', 60000,80,'김포공항','제주공항');
 INSERT INTO FLIGHT VALUES(SEQ_FLIGHT.NEXTVAL,'MM0001','09:45','10:45','인어항공', 264110,120,'김포공항','제주공항');
@@ -6220,223 +6491,96 @@ INSERT INTO FLIGHT_TIME VALUES(SEQ_FLIGHT_TIME.NEXTVAL, 29, SYSDATE+90, SYSDATE+
 
 INSERT INTO FLIGHT_TIME VALUES(SEQ_FLIGHT_TIME.NEXTVAL, 30, SYSDATE+90, SYSDATE+90);
 
-commit;
+COMMIT;
 
-INSERT INTO FUEL VALUES(1, '휘발유');
-INSERT INTO FUEL VALUES(2, '경유');
-INSERT INTO FUEL VALUES(3, '전기');
+-- 추가데이터
 
-ALTER TABLE CAR MODIFY CAR_SIZE NUMBER;
-
-DROP TABLE tb_size; 
-CREATE TABLE tb_size (
-    size_no NUMBER NOT NULL,
-    car_size VARCHAR2(10) NOT NULL
-);
-
-ALTER TABLE tb_size ADD CONSTRAINT pk_size PRIMARY KEY ( size_no );
-ALTER TABLE car
-    ADD CONSTRAINT fk_size_to_car_1 FOREIGN KEY ( car_size )
-        REFERENCES tb_size ( size_no );
-        
-INSERT INTO tb_size VALUES(1, '소형');
-INSERT INTO tb_size VALUES(2, '중형');
-INSERT INTO tb_size VALUES(3, '대형');
-
-DROP SEQUENCE SEQ_CAR;
-CREATE SEQUENCE SEQ_CAR NOCACHE NOCYCLE;
-
-DROP SEQUENCE SEQ_RENTAL_CAR;
-CREATE SEQUENCE SEQ_RENTAL_CAR NOCACHE NOCYCLE;
-
-        
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '스파크', 1, '4');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '아반떼', 1, '5');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '소나타', 2, '5');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '제네시스', 2, '5');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 2, '카니발', 3, '9');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 2, '스타렉스', 3, '12');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 3, '코나', 1, '5');
-INSERT INTO CAR VALUES(SEQ_CAR.NEXTVAL, 1, '벤츠 컨버터블', 1, '4');
-
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1001', 44000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1002', 44000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1003', 44000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1004', 44000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1005', 44000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 1, '허1006', 44000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2001', 60000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2002', 60000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2003', 60000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2004', 60000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2005', 60000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 2, '허2006', 60000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3001', 85000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3002', 85000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3003', 85000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3004', 85000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3005', 85000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 3, '허3006', 85000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4001', 150000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4002', 150000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4003', 150000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4004', 150000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4005', 150000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 4, '허4006', 150000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5001', 110000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5002', 110000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5003', 110000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5004', 110000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5005', 110000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 5, '허5006', 110000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6001', 125000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6002', 125000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6003', 125000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6004', 125000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6005', 125000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 6, '허6006', 125000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7001', 80000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7002', 80000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7003', 80000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7004', 80000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7005', 80000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 7, '허7006', 80000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8001', 320000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8002', 320000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8003', 320000, 'Y');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8004', 320000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8005', 320000, 'N');
-INSERT INTO RENTAL_CAR VALUES(SEQ_RENTAL_CAR.NEXTVAL, 8, '허8006', 320000, 'N');
-
+-- 결제완료 데이터
+ALTER TABLE CAR_RESERVATION DROP COLUMN PAID_YN;
+ALTER TABLE CAR_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N'; 
+ALTER TABLE CAR_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
+ALTER TABLE ACCOM_RESERVATION DROP COLUMN PAID_YN;
+ALTER TABLE ACCOM_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N'; 
+ALTER TABLE ACCOM_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
+ALTER TABLE FLIGHT_RESERVATION DROP COLUMN PAID_YN;
+ALTER TABLE FLIGHT_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N' ; 
+ALTER TABLE FLIGHT_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
 COMMIT;
 
 
-DELETE FROM ROOM;
-DELETE FROM ACCOM;
-
-    
-DROP SEQUENCE SEQ_ACCOM;
-CREATE SEQUENCE SEQ_ACCOM NOCACHE NOCYCLE;
-
-DROP SEQUENCE SEQ_ROOM;
-CREATE SEQUENCE SEQ_ROOM NOCACHE NOCYCLE;
-
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '마리나제주', '제주 제주시 특별자치도, 금능남로 127', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '엠버서터 호텔', '제주 서귀포시 중문관광로72번길 75', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 4, '더퍼스트 제주', '제주 제주시 도령로 83', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '스카이브 호텔', '제주 제주시 노연로 12', 'N', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '브릿지 호텔', '제주 서귀포시 1100로 453-95 WE호텔', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '나이스웨더', '제주 서귀포시 중문관광로72번길 100', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 4, '블루아일랜드', '제주 서귀포시 안덕면 산록남로 863', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '마운틴제주', '제주 서귀포시 막숙포로 118', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '라온제나', '제주 제주시 애월읍 애월해안로 394', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '수피아', '제주 서귀포시 동홍로 7', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 4, '그랜트 인 제주', '제주 서귀포시 동문로 42', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '제이로인', '제주 제주시 애월읍 애월해안로 554-6', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '제주로올래', '제주 서귀포시 태평로 363 헤이 서귀포', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '만다린러브', '제주 서귀포시 성산읍 고성오조로 94', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '그랜드 하얏트', '제주 제주시 그랜읍 하얏리 443', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, 'KH호텔', '제주 제주시 테헤란로 123-2', 'N', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '1DRAGON', '제주 제주시 드라곤로 1', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '칼 호텔', '제주 서귀포시 표선면 813', 'N', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '토스카나 호텔', '제주 서귀포시 안덕면 29', 'N', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '댕냥호텔', '제주 서귀포시 꼬리면 귀엽리 486', 'Y', 'H');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '제주 배드라이도', '제주 제주시 구좌읍 293', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '혼저옵서예', '제주 제주시 조천읍 003', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '예스존', '제주 제주시 추자면 3', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '바우잰', '제주 제주시 한림읍 12', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 2, '미르가온', '제주 제주시 미르로 2', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '투용', '제주 제주시 투용동 22', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '재주좋조', '제주 서귀포시 우리읍 잘하리', 'Y', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 1, '가온누리', '제주 서귀포시 성주청 32', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '백패커스', '제주 서귀포시 남원읍 200', 'N', 'G');
-INSERT INTO ACCOM VALUES(SEQ_ACCOM.NEXTVAL, 3, '올래스테이', '제주 서귀포시 대정읍 30', 'N', 'G');
-
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 4, '스탠다드싱글룸', 180000, 1, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 2, '킹룸', 320000, 3, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 2, '패밀리룸', 430000, 4, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 1, '더블룸', 290000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 1, '스탠다드더블룸', 68000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 3, '디럭스 트윈룸', 89000, 3, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 1, '디럭스 트리플룸', 110000, 3, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 1, '디럭스 패밀리룸', 150000, 4, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '수페리어 싱글룸', 580000, 1, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '수페리어 트윈룸', 730000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 3, '디럭스 킹룸', 810000, 3, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 3, '수페리어 패밀리룸', 1100000, 4, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '프리미어 패밀리룸', 1390000, 6, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 3, '디럭스 더블룸', 120000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 4, '디럭스 트윈룸', 150000, 3, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 2, '스위트 패밀리룸', 230000, 4, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 3, '슈퍼 패밀리룸', 410000, 6, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 1, '스탠다드 싱글룸', 28000, 1, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 1, '스탠다드 트윈룸', 35000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 2, '디럭스 킹룸', 45000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 4, '스위트 패밀리룸', 53000, 4, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 6, 4, '1인실', 23000, 1, 'N', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 7, 2, '1인실', 50000, 1, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 8, 3, '1인실', 38000, 1, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 9, 4, '2인실', 62000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 10, 1, '1인실', 19000, 1, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 11, 2, '1인실', 89000, 1, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 12, 3, '2인실', 47000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 13, 1, '1인실', 99000, 1, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 14, 2, '1인실', 41000, 1, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 1, '트윈 룸 시티뷰', 500000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 2, '트윈 룸 오션뷰', 550000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 1, '킹 룸 시티뷰', 600000, 4, 'N', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 2, '킹 룸 오션뷰', 650000, 4, 'N', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 1, 2, '그랜드 스위트 트윈', 900000, 4, 'N', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 3, '352강의장', 400000, 6, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 3, '541강의장', 400000, 6, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 3, '상담실', 200000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 2, 3, '취업반', 800000, 1, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '1용', 600000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '2용', 800000, 3, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 3, 2, '3용', 1000000, 4, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 3, '스탠다드 온돌', 300000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 4, 1, '스탠다드 트윈', 300000, 2, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 1, '디럭스 트윈', 400000, 2, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 5, 1, '디럭스 패밀리', 600000, 4, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 6, 2, '리트리버는 귀여워', 400000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 6, 3, '비숑도 귀여워', 400000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 6, 1, '코숏은 더 귀여워', 400000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 6, 2, '러시안블루도 귀여워', 400000, 2, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 7, 3, '6인실', 100000, 6, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 8, 1, '6인실', 200000, 6, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 9, 1, '6인실', 50000, 6, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 10, 1, '4인실', 30000, 4, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 11, 3, '4인실', 100000, 4, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 12, 2, '4인실', 222222, 4, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 13, 2, '6인실', 333333, 6, 'Y', 'Y');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 14, 2, '6인실', 30000, 6, 'Y', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 15, 1, '6인실', 30000, 6, 'N', 'N');
-INSERT INTO ROOM VALUES(SEQ_ROOM.NEXTVAL, 16, 1, '4인실', 40000, 4, 'Y', 'N');
+-- 여행지 무휴 -> NULL 변경
+UPDATE TRAVEL SET CLOSED_DAY=NULL WHERE CLOSED_DAY='무휴';
 
 
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 8, 5, 2, '오는 정 김밥', '제주서귀포시 동문동로 2','N',4000,'N','맛있는 녀석들에 소개된 자꾸 생각나는 제주도 김밥 맛집','064-762-8927','10:00','20:00','일요일',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '우진 해장국', '제주 제주시 서사로 11','N',10000,'N','수요미식회에 소개된, 제주 여행 시 뜨끈한 국물이 먹고 싶다면 꼭 들려야 하는 맛집','064-757-3393','6:00','22:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '올래 국수 본점', '제주 제주시 귀아랑길 24','N',9000,'N','수요미식회에 소개된, 고기 국수 하나로 승부하는 맛집','064-742-7355','8:30','15:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 2, '연돈', '제주 서귀포시 일주서로 968-10','N',90000,'N','백종원의 골목식당 에서 극찬 받은 흑돼지 돈가스 맛집','064-738-7060','12:00','21:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '표선갈치어장', '제주 서귀포시 표선면 표선당포로 27','N',100000,'N','푸짐한 갈치 요리를 맛보고 싶다면 꼭 와야하는 갈치 요리 전문점','064-787-7118','10:00','22:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '흑돈가', '제주 제주시 한라대학로 11','N',18000,'N','숯불 향을 가득 입힌 흑돼지고기를 맛볼 수 있는 흑돼지 전문 맛집','064-747-0088','11:00','24:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 6, 5, 2, '흑본오겹', '제주 제주시 서해안로 382','N',22000,'N','제주산 흑돼지고기를 맛볼 수 있는 오션 뷰 맛집','064-749-7756','13:00','22:30','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '섭지코지로', '제주 서귀포시 성산읍 시흥하동로57번길 35','N',35000,'Y','신선한 딱새우 회와 고등어 회로 유명한 맛집','064-782-3450','12:00','23:00','NULL',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '버드나무집', '제주 제주시 조천읍 신북로 540','N',12000,'N','도민 맛집으로 인정된 칼국수 맛집','064-782-9992','10:00','21:00','목요일',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 5, 5, 2, '동백별장', '제주 제주시 원노형3길 44','N',20000,'Y','동백을 테마로 한 다양한 퓨전 요리를 맛볼 수 있는 분위기 좋은 주점','010-8885-7876','17:00','24:00','화요일',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '513텐동', '제주 제주시 테우해안로 46 2층','N',15000,'Y','텐동이 맛있고 바다가 보이는 전망 좋은 일식당','010-9492-4345','11:30','21:30','화요일',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '봉구식탁', '제주 제주시 애월읍 유수암평화길 14-3 1층','N',20000,'Y','바다가 보이는 분위기 좋은 스테이크 맛집','064-799-5909','11:30','20:00','월요일',0,'N',NULL);
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL, 7, 5, 2, '떡하니', '제주 제주시 구좌읍 행원로9길 9-5','N',10000,'Y','푸짐한 문어 즉석 떡볶이 맛집','010-4200-1566','11:30','17:30','화요일-수요일',0,'N',NULL);
-commit;
 
-ALTER TABLE CAR_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N'; 
-ALTER TABLE CAR_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
-ALTER TABLE ACCOM_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N'; 
-ALTER TABLE ACCOM_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
-ALTER TABLE FLIGHT_RESERVATION ADD PAID_YN CHAR(1) DEFAULT 'N' ; 
-ALTER TABLE FLIGHT_RESERVATION ADD CHECK (PAID_YN IN('Y','N'));
+-- 숙소 테이블 제약조건 수정
+ALTER TABLE ACCOM_RESERVATION DROP COLUMN CANCEL_YN;
+ALTER TABLE ACCOM_RESERVATION ADD CANCEL_YN CHAR(1) DEFAULT 'N';
+ALTER TABLE ACCOM_RESERVATION ADD CHECK (CANCEL_YN IN ( 'N', 'Y' ));
+COMMIT;
+
+-- 보험 테이블 추가
+ALTER TABLE car_reservation MODIFY insurance NUMBER;
+
+DROP TABLE insurance;
+CREATE TABLE insurance (
+    insurance_no NUMBER NOT NULL,
+    insurance    VARCHAR(20) NOT NULL
+);
+
+ALTER TABLE insurance ADD CONSTRAINT pk_insurance PRIMARY KEY ( insurance_no );
+ALTER TABLE car_reservation
+    ADD CONSTRAINT fk_insurance_to_car_reservation FOREIGN KEY (insurance)
+            REFERENCES insurance ( insurance_no );
+
+INSERT INTO insurance (insurance_no,insurance) VALUES (0, '보험안함');
+INSERT INTO insurance (insurance_no,insurance) VALUES (1, '일반자차');
+INSERT INTO insurance (insurance_no,insurance) VALUES (2, '완전자차');
+INSERT INTO insurance (insurance_no,insurance) VALUES (3, '슈퍼자차');
+
+-- 비행시간 칼럼 데이터 변경
+ALTER TABLE FLIGHT_TIME MODIFY DEPARTURE_DATE DATE;
+ALTER TABLE FLIGHT_TIME MODIFY ARRIVAL_DATE DATE;
+COMMIT;
+
+-- 지역 로케이션 데이터
+INSERT INTO LOCATION VALUES (1, '제주시');
+INSERT INTO LOCATION VALUES (2, '서귀포시');
+INSERT INTO LOCATION VALUES (3, '제주전체');
 
 
-ALTER TABLE ACCOM_RESERVATION DROP CONSTRAINT SYS_C008684;
-ALTER TABLE ACCOM_RESERVATION ADD CHECK ( cancel_yn IN ( 'N', 'Y' ) );
+-- 신용카드, 계좌이체 결제 테이블 생성, 넘버로 변경
+ALTER TABLE PAYMENT MODIFY PAY_METHOD NUMBER;
 
+DROP TABLE PAY_METHOD_NO;
+CREATE TABLE PAY_METHOD_NO (
+    METHOD_NO NUMBER PRIMARY KEY,
+    METHOD    VARCHAR(12) NOT NULL
+);
+COMMIT;
+ALTER TABLE PAYMENT
+    ADD CONSTRAINT FK_PAY_METHOD_NO_TO_PAYMENT FOREIGN KEY (PAY_METHOD)
+            REFERENCES PAY_METHOD_NO ( METHOD_NO );
+
+INSERT INTO PAY_METHOD_NO VALUES (1, '신용카드');
+INSERT INTO PAY_METHOD_NO VALUES (2, '계좌이체');
+
+COMMIT;
+
+-- 관리자계정
+INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, 'JEJU', 'KH3', '관리자', '관리자', NULL, NULL, DEFAULT, DEFAULT, DEFAULT);
+COMMIT;
+
+ALTER TABLE MEMBER DROP UNIQUE(ID);
+ALTER TABLE MEMBER ADD UNIQUE(ID, QUIT_YN);
+
+ALTER TABLE QNA MODIFY QUESTION_TITLE VARCHAR(50);
+
+INSERT INTO QNA VALUES(SEQ_QNA.NEXTVAL, 1, '문의작성 테스트', sysdate, default, '문의 내역 작성중', null, sysdate, default, null, null);
+COMMIT;
+
+ALTER TABLE SURVEY MODIFY PURPOSE2 NULL;
+
+COMMIT;
+
+-- 추가 데이터 확인

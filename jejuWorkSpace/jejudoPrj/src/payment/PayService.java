@@ -336,6 +336,10 @@ public class PayService {
 			System.out.println("cvc");
 			System.out.print(">");
 			int d = InputUtil.getInt();
+			
+			System.out.println("비밀번호 앞 두자리를 입력해주세요.");
+			System.out.print(">");
+			int e = InputUtil.getInt();
 
 			if ((int) (Math.log10(a1) + 1) > 4) {
 				System.out.println("번호를 다시 입력해 주세요");
@@ -358,7 +362,10 @@ public class PayService {
 			}if ((int) (Math.log10(d) + 1) > 3) {
 				System.out.println("번호를 다시 입력해 주세요");
 				continue;
-			} else {
+			}if ((int) (Math.log10(e) + 1) > 2) {
+				System.out.println("번호를 다시 입력해 주세요");
+				continue;
+			}else {
 				System.out.println("카드 정보가 입력되었습니다.");
 				System.out.println(lastPay + "원 결제되었습니다.");
 				break;
