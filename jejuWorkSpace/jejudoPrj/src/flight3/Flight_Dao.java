@@ -333,12 +333,12 @@ public class Flight_Dao {
 		
 		try {
 			//SQL 준비
-			String sql = "UPDATE FLIGHT_RESERVATION SET CANCEL_YN = 'Y' WHERE DEPARTURE_FLIGHT = ? AND RETURN_FLIGHT = ?";
+			String sql = "UPDATE FLIGHT_RESERVATION SET CANCEL_YN = 'Y' WHERE FLIGHT_NO = ?";
 			
 			//SQL 담을 객체 만들기
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, myvo.getMyDepartureFlightNo());
-			pstmt.setString(2, myvo.getMyReturnFlightNo());	
+			pstmt.setInt(1, myvo.getReserveNo());
+//			pstmt.setString(2, myvo.getMyReturnFlightNo());	
 //			pstmt.setString(1, myvo.getMyDepartureNo());	
 //			pstmt.setString(2, myvo.getMyReturnNo());
 			//SQL 실행 및 결과 저장

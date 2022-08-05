@@ -3,11 +3,10 @@ package car;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import car_main.Main;
+import main.Main;
 import util.JDBCTemplate;
 
 public class CarDao {
@@ -169,8 +168,10 @@ public class CarDao {
 		try {
 			String sql = "UPDATE CAR_RESERVATION SET CANCEL_YN = 'Y' WHERE MEMBER_NO = ? AND CAR_NO = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, rVo.getMemberNo());
+			pstmt.setInt(1, Main.loginNo);
 			pstmt.setInt(2, rVo.getReserveNo());
+			
+//			Main.loginNo;
 			
 			result = pstmt.executeUpdate();
 			

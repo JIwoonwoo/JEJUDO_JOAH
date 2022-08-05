@@ -43,6 +43,11 @@ import gui.panel.MainPanel;
 import gui.panel.MyPagePanel;
 import gui.panel.PayInforPanel;
 import gui.panel.PointPanel;
+import gui.panel.Q1Panel;
+import gui.panel.Q2Panel;
+import gui.panel.Q3Panel;
+import gui.panel.Q4Panel;
+import gui.panel.Q5Panel;
 import gui.panel.ReservInforPanel;
 import gui.panel.ReservedAccomPanel;
 import gui.panel.ReservedCar2Panel;
@@ -136,6 +141,11 @@ public class GUI {
 		inforborad = new InforBorad();
 		accDetail = new AccDetail();
 		flightDetail = new FlightDetail();
+		Q1Panel q1 = new Q1Panel();
+		Q2Panel q2 = new Q2Panel();
+		Q3Panel q3 = new Q3Panel();
+		Q4Panel q4 = new Q4Panel();
+		Q5Panel q5 = new Q5Panel();
 
 		MemberService ms = new MemberService();
 		QnaService qs = new QnaService();
@@ -144,6 +154,126 @@ public class GUI {
 		AccService as = new AccService();
 		PayService ps = new PayService();
 		Flight_Service fs = new Flight_Service();
+		
+		/** 자주묻는질문1 **/
+		frame.getContentPane().add(q1);
+		q1.setVisible(false);
+		
+		// 홈
+		q1.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q1.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		q1.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q1.setVisible(false);
+				servicePanel.setVisible(true);
+			}
+		});
+		
+		/** 자주묻는질문2 **/
+		frame.getContentPane().add(q2);
+		q2.setVisible(false);
+		
+		// 홈
+		q2.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q2.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		q2.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q2.setVisible(false);
+				servicePanel.setVisible(true);
+			}
+		});
+		
+		/** 자주묻는질문3 **/
+		frame.getContentPane().add(q3);
+		q3.setVisible(false);
+		
+		// 홈
+		q3.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q3.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		q3.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q3.setVisible(false);
+				servicePanel.setVisible(true);
+			}
+		});
+		
+		/** 자주묻는질문4 **/
+		frame.getContentPane().add(q4);
+		q4.setVisible(false);
+		
+		// 홈
+		q4.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q4.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		q4.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q4.setVisible(false);
+				servicePanel.setVisible(true);
+			}
+		});
+		
+		/** 자주묻는질문5 **/
+		frame.getContentPane().add(q5);
+		q5.setVisible(false);
+		
+		// 홈
+		q5.getHomeBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q5.setVisible(false);
+				mainPanel.setVisible(true);
+			}
+		});
+
+		// 뒤로가기
+		q5.getBackBtn().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q5.setVisible(false);
+				servicePanel.setVisible(true);
+			}
+		});
 		
 		/** 비행기정보 **/
 		frame.getContentPane().add(flightDetail);
@@ -390,7 +520,7 @@ public class GUI {
 					where = "myPage";
 					return;
 				}
-				PopUpDialog dialog = new PopUpDialog(frame, "추천여행지", "설문조사를 실시해 주세요 -> 예약하기");
+				PopUpDialog dialog = new PopUpDialog(frame, "추천여행지", "설문조사를 실시해 주세요");
 				dialog.run();
 			}
 		});
@@ -439,7 +569,8 @@ public class GUI {
 					reservInforPanel.setFlightList(list3);
 
 				}
-
+				reservInforPanel.getUpdateBtn().setVisible(true);
+				reservInforPanel.getDeleteBtn().setVisible(true);
 				reservInforPanel.getBackBtn().setVisible(true);
 				reservInforPanel.getNextBtn().setVisible(false);
 				reservInforPanel.setVisible(true);
@@ -497,8 +628,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				viewQna.setVisible(false);
 				where = "viewQna";
-				writeQna.setTextArea(viewQna.getqTitle());
-				writeQna.setTextField(viewQna.getqContent());
+				writeQna.setTextField(viewQna.getqTitle());
+				writeQna.setTextArea(viewQna.getqContent());
 				writeQna.setNo(viewQna.getNo());
 				writeQna.setVisible(true);
 			}
@@ -624,6 +755,56 @@ public class GUI {
 		/** 고객센터 **/
 		frame.getContentPane().add(servicePanel);
 		servicePanel.setVisible(false);
+		
+		servicePanel.getQ1().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				q1.setVisible(true);
+				
+			}
+		});
+		
+		servicePanel.getQ2().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				q2.setVisible(true);
+				
+			}
+		});
+		
+		servicePanel.getQ3().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				q3.setVisible(true);
+				
+			}
+		});
+		
+		servicePanel.getQ4().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				q4.setVisible(true);
+				
+			}
+		});
+		
+		servicePanel.getQ5().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				servicePanel.setVisible(false);
+				q5.setVisible(true);
+				
+			}
+		});
 
 		// 홈
 		servicePanel.getHomeBtn().addActionListener(new ActionListener() {
@@ -719,6 +900,38 @@ public class GUI {
 		/** 예약정보 **/
 		frame.getContentPane().add(reservInforPanel);
 		reservInforPanel.setVisible(false);
+		
+		reservInforPanel.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				PayVo vo = ps.getNo(Main.loginNo, "Y");
+				
+				if(vo==null) {
+					return;
+				}
+				
+				Flight_Vo_MyFlight fvo = new Flight_Vo_MyFlight();
+				fvo.setReserveNo(vo.getFlightNo());
+				fs.delete(fvo);
+				
+				if(vo.getCarNo()!=0) {
+					ReserveVo cvo = new ReserveVo();
+					cvo.setReserveNo(vo.getCarNo());
+					cs.carCancel(cvo);
+				}
+				
+			}
+		});
+		reservInforPanel.getUpdateBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		// 홈
 		reservInforPanel.getHomeBtn().addActionListener(new ActionListener() {
@@ -808,7 +1021,7 @@ public class GUI {
 				if (as.accReserve(voBox.getAvo()) > 0 && fs.realReservation(voBox.getFvo()) > 0) {
 					
 					System.out.println("test인설트정상적");
-					PayVo pvo = ps.getNo(Main.loginNo);
+					PayVo pvo = ps.getNo(Main.loginNo, "N");
 					if (pvo != null) {
 						System.out.println("test넘버조회 성공");
 						vo.setAccomNo(pvo.getAccomNo());
@@ -832,6 +1045,8 @@ public class GUI {
 								reservInforPanel.setAccList(list2);
 								reservInforPanel.setFlightList(list3);
 								
+								reservInforPanel.getUpdateBtn().setVisible(false);
+								reservInforPanel.getDeleteBtn().setVisible(false);
 								reservInforPanel.getBackBtn().setVisible(false);
 								reservInforPanel.getNextBtn().setVisible(true);
 								reservInforPanel.setVisible(true);

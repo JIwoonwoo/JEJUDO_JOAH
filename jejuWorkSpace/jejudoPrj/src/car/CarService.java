@@ -1,12 +1,7 @@
 package car;
 
 import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-
-import car_main.Main;
 
 import util.JDBCTemplate;
 
@@ -64,9 +59,9 @@ public class CarService {
 			conn = JDBCTemplate.getConnection();
 		 	carVoList = dao.carInquiry(vo, conn);
 		 	
-		 	if(carVoList != null) {
-				Main.inquiryCar = vo;
-		 	} 
+//		 	if(carVoList != null) {
+//				Main.inquiryCar = vo;
+//		 	} 
 		 	
 		} catch (Exception e) {
 			e.printStackTrace();

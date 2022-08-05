@@ -1,7 +1,11 @@
 package gui.dialog;
 
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import gui.button.ImgButton;
 import gui.panel.ImgPanel;
@@ -25,8 +31,8 @@ public class YesOrNo extends JDialog {
 	    Point loc = parent.getLocation();
 	    setLocation(loc.x+225,loc.y+450);
 	    
-//		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/labelDialog.jpg").getImage());
-		JPanel panel = new ImgPanel(new ImageIcon("././image/page/labelDialog.jpg").getImage());
+		JPanel panel = new ImgPanel(new ImageIcon("D:/miniPrj/jejuWorkSpace/jejudoPrj/image/page/labelDialog2.jpg").getImage());
+//		JPanel panel = new ImgPanel(new ImageIcon("././image/page/labelDialog2.jpg").getImage());
 //		JPanel panel = new ImgPanel("labelDialog");
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -34,6 +40,7 @@ public class YesOrNo extends JDialog {
 		JButton btnNewButton = new ImgButton("확인2");
 		btnNewButton.setSize(109, 37);
 		btnNewButton.setLocation(30, 125);
+		btnNewButton.setBorder((new LineBorder(Color.LIGHT_GRAY, 1, true)));
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -47,6 +54,7 @@ public class YesOrNo extends JDialog {
 		JButton btnNewButton2 = new ImgButton("취소2");
 		btnNewButton2.setSize(109, 37);
 		btnNewButton2.setLocation(165, 125);
+		btnNewButton2.setBorder((new LineBorder(Color.LIGHT_GRAY, 1, true)));
 		btnNewButton2.addActionListener(new ActionListener() {
 			
 			@Override

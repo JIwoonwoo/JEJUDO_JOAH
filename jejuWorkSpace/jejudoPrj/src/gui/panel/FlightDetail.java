@@ -96,8 +96,8 @@ public class FlightDetail extends ImgPanel {
 		lblNewLabel_3.setText(vo.getFlightName());
 		lblNewLabel_4.setText(vo.getAirline());
 		lblNewLabel_5.setText(vo.getReturnDate().substring(2,10));
-		lblNewLabel_6.setText(vo.getReturnTime());
-		lblNewLabel_7.setText(vo.getReturnFlightName());
+		lblNewLabel_6.setText(vo.getReturnFlightName());
+		lblNewLabel_7.setText(vo.getReturnTime());
 		lblNewLabel_8.setText(vo.getReturnAirline());
 	}
 

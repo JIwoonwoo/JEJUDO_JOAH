@@ -7,18 +7,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import accom.AccDto;
 import accom.AccService;
+import car.CarService;
 import car.ReserveVo;
-import flight3.Flight_Service;
 import flight3.Flight_Vo_MyFlight;
 import gui.GUI;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
+import gui.button.ImgButton;
 import gui.button.NextBtn;
 
 public class ReservInforPanel extends ImgPanel {
@@ -26,8 +28,8 @@ public class ReservInforPanel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
-//	private JButton updateBtn;
-//	private JButton deleteBtn;
+	private JButton updateBtn;
+	private JButton deleteBtn;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -42,17 +44,16 @@ public class ReservInforPanel extends ImgPanel {
 		homeBtn = new HomeBtn();
 		add(homeBtn);
 
-		nextBtn = new NextBtn();
-		add(nextBtn);
-
 		backBtn = new BackBtn();
 		add(backBtn);
 		
-//		updateBtn = new ImgButton("예약변경");
-//		add(updateBtn);
-//		
-//		deleteBtn = new ImgButton("예약취소");
-//		add(deleteBtn);
+		updateBtn = new ImgButton("예약변경");
+		updateBtn.setLocation(0, 828);
+		add(updateBtn);
+		
+		deleteBtn = new ImgButton("예약취소");
+		deleteBtn.setLocation(275, 828);
+		add(deleteBtn);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -101,6 +102,9 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane_2.setBorder(null);
 		scrollPane_2.setBackground(null);
 		scrollPane_2.setOpaque(false);
+		
+				nextBtn = new NextBtn();
+				add(nextBtn);
 		scrollPane_2.getViewport().setOpaque(false);
 		
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -121,11 +125,6 @@ public class ReservInforPanel extends ImgPanel {
 		return backBtn;
 	}
 
-	public void set() {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void setCarList(List<ReserveVo> list) {
 		panel_2.removeAll();
 		panel_2.revalidate();
@@ -136,6 +135,14 @@ public class ReservInforPanel extends ImgPanel {
 
 			CarListTemplate b = new CarListTemplate(vo);
 			b.setNo(vo.getRentalNo());
+			
+			ReserveVo cvo = new CarService().detailInquiry(vo.getRentalNo());
+			vo.setCarUq(cvo.getCarUq());
+			vo.setSize(cvo.getSize());
+			vo.setName(cvo.getName());
+			vo.setFuel(cvo.getFuel());
+			vo.setOpenable(cvo.getOpenable());
+			
 			b.setBounds(15, 0 + (41 * i), 464, 41);
 			b.getButton().addMouseListener(new MouseAdapter() {
 				@Override
@@ -250,5 +257,23 @@ public class ReservInforPanel extends ImgPanel {
 		
 		scrollPane.setViewportView(panel);
 	}
+
+	public JButton getUpdateBtn() {
+		return updateBtn;
+	}
+
+	public void setUpdateBtn(JButton updateBtn) {
+		this.updateBtn = updateBtn;
+	}
+
+	public JButton getDeleteBtn() {
+		return deleteBtn;
+	}
+
+	public void setDeleteBtn(JButton deleteBtn) {
+		this.deleteBtn = deleteBtn;
+	}
+	
+	
 
 }

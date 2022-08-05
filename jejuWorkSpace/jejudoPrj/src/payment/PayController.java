@@ -51,7 +51,7 @@ public class PayController {
 		MemberVo mvo = ps.userInfo(no);
 		
 		
-		PayVo vo = ps.reservation(no);
+		PayVo vo = ps.reservation(no, "N");
 		if(vo == null) {
 			return;
 		}

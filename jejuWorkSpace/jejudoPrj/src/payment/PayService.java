@@ -12,7 +12,7 @@ import util.JDBCTemplate;
 
 public class PayService {
 	
-	public PayVo getNo(int no) {
+	public PayVo getNo(int no, String yn) {
 		Connection conn = null;
 		PayVo vo = null;
 		PayDao dao = new PayDao();
@@ -21,7 +21,7 @@ public class PayService {
 			conn = JDBCTemplate.getConnection();
 			vo = new PayVo();
 			// 항공 예약정보 비행기 예약번호, 금액 출발
-			PayVo vogf = dao.gfPay(no, conn);
+			PayVo vogf = dao.gfPay(no, conn, yn);
 			
 			if(vogf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
@@ -32,7 +32,7 @@ public class PayService {
 			System.out.println(vo);
 		
 			// 방 예약정보
-			PayVo vor = dao.rPay(no, conn);
+			PayVo vor = dao.rPay(no, conn, yn);
 			
 			if(vor==null) {
 				System.out.println("숙박 예약 정보가 없습니다.");
@@ -42,7 +42,7 @@ public class PayService {
 			vo.setAccomNo(vor.getAccomNo());
 			
 			// 차 예약정보
-			PayVo voc = dao.cPay(no, conn);
+			PayVo voc = dao.cPay(no, conn, yn);
 			
 			if (voc==null) {
 				vo.setCarNo(0);
@@ -150,7 +150,7 @@ public class PayService {
 	}
 
 	// 예약정보 조회
-	public PayVo reservation(int no) {
+	public PayVo reservation(int no, String yn) {
 		PayDao dao = new PayDao();
 		Connection conn = null;
 		PayVo vo = null;
@@ -159,7 +159,7 @@ public class PayService {
 		try {
 			conn = JDBCTemplate.getConnection();
 			// 항공 예약정보 비행기 예약번호, 금액 출발
-			PayVo vogf = dao.gfPay(no, conn);
+			PayVo vogf = dao.gfPay(no, conn, yn);
 			
 			if(vogf==null) {
 				System.out.println("항공 예약 정보가 없습니다.");
@@ -174,7 +174,7 @@ public class PayService {
 			}
 		
 			// 방 예약정보
-			PayVo vor = dao.rPay(no, conn);
+			PayVo vor = dao.rPay(no, conn, yn);
 			
 			if(vor==null) {
 				System.out.println("숙박 예약 정보가 없습니다.");
@@ -182,7 +182,7 @@ public class PayService {
 			}
 			// 차 예약정보
 			
-			PayVo voc = dao.cPay(no, conn);
+			PayVo voc = dao.cPay(no, conn, yn);
 			
 			
 			if (voc==null) {

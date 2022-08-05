@@ -43,7 +43,7 @@ public class PointTemplate extends JPanel {
 		lblNewLabel_3 = new JLabel("+ "+point);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_3.setFont(new Font("굴림", Font.PLAIN, 15));
-		lblNewLabel_3.setBounds(416, 10, 36, 26);
+		lblNewLabel_3.setBounds(331, 10, 121, 26);
 		add(lblNewLabel_3);
 		
 		separator_3 = new JSeparator();
