@@ -1,12 +1,20 @@
 package gui.panel;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
 
 import flight3.Flight_Vo_MyFlight;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
+import gui.button.ImgButton;
+import payment.PayService;
+import payment.PayVo;
 
 public class FlightDetail extends ImgPanel {
 	
@@ -15,7 +23,7 @@ public class FlightDetail extends ImgPanel {
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 //	private JButton updateBtn;
-//	private JButton deleteBtn;
+	private JButton deleteBtn;
 
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -39,8 +47,10 @@ public class FlightDetail extends ImgPanel {
 //		updateBtn = new ImgButton("예약변경");
 //		add(updateBtn);
 //		
-//		deleteBtn = new ImgButton("예약취소");
-//		add(deleteBtn);
+		deleteBtn = new ImgButton("예약취소");
+		deleteBtn.setLocation(0, 818);
+		deleteBtn.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+		add(deleteBtn);
 
 		lblNewLabel = new JLabel();
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 15));
@@ -92,6 +102,8 @@ public class FlightDetail extends ImgPanel {
 	}
 
 	public void set(Flight_Vo_MyFlight vo) {
+		no = vo.getReserveNo();
+		System.out.println(no);
 		lblNewLabel.setText(vo.getReservDate().substring(2,10));
 		lblNewLabel_1.setText(vo.getDepartureDate().substring(2,10));
 		lblNewLabel_2.setText(vo.getDepartureTime());
@@ -118,6 +130,16 @@ public class FlightDetail extends ImgPanel {
 	public void setNo(int no) {
 		this.no = no;
 	}
+
+	public JButton getDeleteBtn() {
+		return deleteBtn;
+	}
+
+	public void setDeleteBtn(JButton deleteBtn) {
+		this.deleteBtn = deleteBtn;
+	}
+	
+	
 	
 	
 }

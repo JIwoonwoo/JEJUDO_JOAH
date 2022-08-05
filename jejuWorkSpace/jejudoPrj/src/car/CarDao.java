@@ -124,7 +124,7 @@ public class CarDao {
 					+ "WHERE CANCEL_YN = 'N'\r\n"
 					+ "AND PAID_YN = 'Y'\r\n"
 					+ "AND 예약.MEMBER_NO = ?\r\n"
-					+ "ORDER BY CAR_NO";
+					+ "ORDER BY CAR_NO DESC";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, input);

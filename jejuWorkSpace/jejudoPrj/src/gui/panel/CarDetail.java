@@ -1,9 +1,11 @@
 package gui.panel;
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import car.ReserveVo;
 import gui.button.BackBtn;
@@ -12,10 +14,12 @@ import gui.button.ImgButton;
 
 public class CarDetail extends ImgPanel {
 	
+	private int no;
+	
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 //	private JButton updateBtn;
-//	private JButton deleteBtn;
+	private JButton deleteBtn;
 	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -41,8 +45,10 @@ public class CarDetail extends ImgPanel {
 //		updateBtn = new ImgButton("예약변경");
 //		add(updateBtn);
 //		
-//		deleteBtn = new ImgButton("예약취소");
-//		add(deleteBtn);
+		deleteBtn = new ImgButton("예약취소");
+		deleteBtn.setLocation(0, 818);
+		deleteBtn.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+		add(deleteBtn);
 		
 		lblNewLabel = new JLabel();
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -102,6 +108,8 @@ public class CarDetail extends ImgPanel {
 	}
 	
 	public void set(ReserveVo vo) {
+		no = vo.getReserveNo();
+		System.out.println(no);
 		lblNewLabel.setText(Integer.toString(vo.getReserveNo()));
 		lblNewLabel_1.setText(vo.getReserveDate().substring(2,10));
 		lblNewLabel_1_1.setText(vo.getName());
@@ -130,4 +138,22 @@ public class CarDetail extends ImgPanel {
 //	public JButton getDeleteBtn() {
 //		return deleteBtn;
 //	}
+	
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public JButton getDeleteBtn() {
+		return deleteBtn;
+	}
+
+	public void setDeleteBtn(JButton deleteBtn) {
+		this.deleteBtn = deleteBtn;
+	}
+	
+	
 }

@@ -45,6 +45,7 @@ public class AccListTemplate extends JPanel {
 
 		separator = new JSeparator();
 		separator.setBounds(0, 39, 463, 2);
+		separator.setForeground(Color.LIGHT_GRAY);
 		add(separator);
 
 		lblNewLabel_1 = new JLabel(rVo.getReserveDate().toString().substring(2,10));

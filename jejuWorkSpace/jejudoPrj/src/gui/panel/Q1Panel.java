@@ -1,13 +1,16 @@
 package gui.panel;
 
+import javax.swing.JButton;
+
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
-import gui.button.NextBtn;
+import gui.button.InvisiableButton;
 
 public class Q1Panel extends ImgPanel {
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
+	private JButton btnNewButton;
 	
 	public Q1Panel() {
 		super("Q1");
@@ -17,6 +20,10 @@ public class Q1Panel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
+		
+		btnNewButton = new InvisiableButton();
+		btnNewButton.setBounds(50, 538, 430, 53);
+		add(btnNewButton);
 		
 				
 	}
@@ -29,6 +36,9 @@ public class Q1Panel extends ImgPanel {
 		return backBtn;
 	}
 
+	public JButton getBtnNewButton() {
+		return btnNewButton;
+	}
 	
 	
 }

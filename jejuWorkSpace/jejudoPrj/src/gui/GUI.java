@@ -159,6 +159,19 @@ public class GUI {
 		frame.getContentPane().add(q1);
 		q1.setVisible(false);
 		
+		q1.getBtnNewButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				q1.setVisible(false);
+				reservInforPanel.getUpdateBtn().setVisible(true);
+				reservInforPanel.getDeleteBtn().setVisible(true);
+				reservInforPanel.getBackBtn().setVisible(true);
+				reservInforPanel.getNextBtn().setVisible(false);
+				reservInforPanel.setVisible(true);
+			}
+		});
+		
 		// 홈
 		q1.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -279,6 +292,31 @@ public class GUI {
 		frame.getContentPane().add(flightDetail);
 		flightDetail.setVisible(false);
 		
+		flightDetail.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				YesOrNo d = new YesOrNo(frame, "예약취소", "함께 예약한 정보 모두 취소됩니다.");
+				if(d.run()==1) {
+					PayVo voi = new PayVo();
+					voi.setFlightNo(flightDetail.getNo());
+					
+					PayVo vou = new PayService().cancelCall(voi);
+					if(vou!=null) {
+						boolean isFinish = new PayService().cancelUp(vou);
+						
+						if(isFinish) {
+							PopUpDialog dialog2 = new PopUpDialog(frame, "예약취소", "예약 취소되었습니다.");
+							dialog2.run();
+							flightDetail.setVisible(false);
+							myPagePanel.setVisible(true);
+						}
+					}
+				}
+			}
+		});
+		
 		// 홈
 		flightDetail.getHomeBtn().addActionListener(new ActionListener() {
 
@@ -302,6 +340,33 @@ public class GUI {
 		/** 숙소정보 **/
 		frame.getContentPane().add(accDetail);
 		accDetail.setVisible(false);
+		
+		accDetail.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				YesOrNo d = new YesOrNo(frame, "예약취소", "함께 예약한 정보 모두 취소됩니다.");
+				if(d.run()==1) {
+					PayVo voi = new PayVo();
+					voi.setAccomNo(accDetail.getNo());
+					
+					PayVo vou = new PayService().cancelCall(voi);
+					if(vou!=null) {
+						boolean isFinish = new PayService().cancelUp(vou);
+						
+						if(isFinish) {
+							PopUpDialog dialog2 = new PopUpDialog(frame, "예약취소", "예약 취소되었습니다.");
+							dialog2.run();
+							accDetail.setVisible(false);
+							myPagePanel.setVisible(true);
+							System.out.println("11");
+						}
+					}
+					System.out.println("22");
+				}
+			}
+		});
 
 		// 홈
 		accDetail.getHomeBtn().addActionListener(new ActionListener() {
@@ -500,6 +565,7 @@ public class GUI {
 						updateMemberPanel.setPhone(vo.getPhone());
 						updateMemberPanel.setEmail(vo.getEmail());
 						updateMemberPanel.setVisible(true);
+						updateMemberPanel.getPwdField().setEnabled(true);
 					}else {
 						PopUpDialog dialog = new PopUpDialog(frame, "회원정보수정", "비밀번호가 잘못되었습니다");
 						dialog.run();
@@ -877,6 +943,31 @@ public class GUI {
 		/** 자동차 디테일 **/
 		frame.getContentPane().add(carDetail);
 		carDetail.setVisible(false);
+		
+		carDetail.getDeleteBtn().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				YesOrNo d = new YesOrNo(frame, "예약취소", "함께 예약한 정보 모두 취소됩니다.");
+				if(d.run()==1) {
+					PayVo voi = new PayVo();
+					voi.setCarNo(carDetail.getNo());
+					
+					PayVo vou = new PayService().cancelCall(voi);
+					if(vou!=null) {
+						boolean isFinish = new PayService().cancelUp(vou);
+						
+						if(isFinish) {
+							PopUpDialog dialog2 = new PopUpDialog(frame, "예약취소", "예약 취소되었습니다.");
+							dialog2.run();
+							carDetail.setVisible(false);
+							myPagePanel.setVisible(true);
+						}
+					}
+				}
+			}
+		});
 
 		// 뒤로가기
 		carDetail.getBackBtn().addActionListener(new ActionListener() {

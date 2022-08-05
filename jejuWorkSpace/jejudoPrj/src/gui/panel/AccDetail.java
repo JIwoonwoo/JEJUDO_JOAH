@@ -1,5 +1,6 @@
 package gui.panel;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -18,11 +20,13 @@ import gui.button.ImgButton;
 import gui.button.InvisiableCheck;
 
 public class AccDetail extends ImgPanel {
+	
+	private int no;
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
 //	private JButton updateBtn;
-//	private JButton deleteBtn;
+	private JButton deleteBtn;
 
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1_1_1_1_1_1_1_1;
@@ -80,8 +84,10 @@ public class AccDetail extends ImgPanel {
 //		updateBtn = new ImgButton("예약변경");
 //		add(updateBtn);
 //		
-//		deleteBtn = new ImgButton("예약취소");
-//		add(deleteBtn);
+		deleteBtn = new ImgButton("예약취소");
+		deleteBtn.setLocation(0, 818);
+		deleteBtn.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
+		add(deleteBtn);
 
 		lblNewLabel = new JLabel();
 		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 18));
@@ -131,6 +137,8 @@ public class AccDetail extends ImgPanel {
 	}
 
 	public void set(AccDto vo) {
+		no = vo.getReserveNo();
+		System.out.println(no);
 		lblNewLabel.setText(vo.getAccomname());
 		lblNewLabel_1.setText(vo.getAddress());
 		lblNewLabel_1_1.setText(vo.getRoomname());
@@ -161,4 +169,23 @@ public class AccDetail extends ImgPanel {
 	public BackBtn getBackBtn() {
 		return backBtn;
 	}
+	
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+
+	public JButton getDeleteBtn() {
+		return deleteBtn;
+	}
+
+	public void setDeleteBtn(JButton deleteBtn) {
+		this.deleteBtn = deleteBtn;
+	}
+	
+	
+	
 }

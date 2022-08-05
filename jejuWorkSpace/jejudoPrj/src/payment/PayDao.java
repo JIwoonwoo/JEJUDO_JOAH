@@ -346,6 +346,7 @@ public class PayDao {
 					+ "FROM PAYMENT P\r\n"
 					+ "JOIN FLIGHT_RESERVATION FR ON P.FLIGHT_NO = FR.FLIGHT_NO \r\n"
 					+ "WHERE FR.MEMBER_NO = ? \r\n"
+					+ "AND P.CANCEL_YN = 'N' \r\n"
 					+ "ORDER BY P.PAY_DATE DESC";
 
 			pstmt = conn.prepareStatement(sql);
@@ -410,7 +411,7 @@ public class PayDao {
 	//항공 취소시
 	public PayVo cancelFlight(int no, Connection conn) throws Exception {
 		
-		String sql = "SELECT P.PAYMENT_NO,P.FLIGHT_NO,P.ACCOM_NO,P.CAR_NO\r\n"
+		String sql = "SELECT P.PAY_NO, P.FLIGHT_NO, P.ACCOM_NO, P.CAR_NO\r\n"
 				+ "FROM FLIGHT_RESERVATION F\r\n"
 				+ "JOIN PAYMENT P ON F.FLIGHT_NO = P.FLIGHT_NO\r\n"
 				+ "WHERE F.FLIGHT_NO = ?";
@@ -427,7 +428,8 @@ public class PayDao {
 				
 			if(rs.next()) {			
 				vo = new PayVo();
-				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				
+				vo.setPayNo(rs.getInt("PAY_NO"));
 				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
 				vo.setAccomNo(rs.getInt("ACCOM_NO"));
 				vo.setCarNo(rs.getInt("CAR_NO"));	
@@ -463,9 +465,9 @@ public class PayDao {
 			rs = pstmt.executeQuery();
 				
 			if(rs.next()) {
-				
 				vo = new PayVo();
-				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				
+				vo.setPayNo(rs.getInt("PAY_NO"));
 				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
 				vo.setAccomNo(rs.getInt("ACCOM_NO"));
 				vo.setCarNo(rs.getInt("CAR_NO"));	
@@ -501,7 +503,8 @@ public class PayDao {
 				
 			if(rs.next()) {
 				vo = new PayVo();
-				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				
+				vo.setPayNo(rs.getInt("PAY_NO"));
 				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
 				vo.setAccomNo(rs.getInt("ACCOM_NO"));
 				vo.setCarNo(rs.getInt("CAR_NO"));		
@@ -521,9 +524,9 @@ public class PayDao {
 	public int cancelUpdate(PayVo vo, Connection conn) throws Exception {
 
 		String sql1 = "UPDATE CAR_RESERVATION SET CANCEL_YN = 'Y', CANCEL_DATE = SYSDATE WHERE CAR_NO = ?";
-		String sql2 = "UPDATE ACCOM_RESERVATION SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE ACCOM_NO = ?";
-		String sql3 = "UPDATE FLIGHT_RESERVATION SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE FLIGHT_NO = ?";
-		String sql4 = "UPDATE PAYMENT SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE PAY_NO = ?";
+		String sql2 = "UPDATE ACCOM_RESERVATION SET CANCEL_YN = 'Y', CANCEL_DATE = SYSDATE WHERE ACCOM_NO = ?";
+		String sql3 = "UPDATE FLIGHT_RESERVATION SET CANCEL_YN = 'Y', CANCEL_DATE = SYSDATE WHERE FLIGHT_NO = ?";
+		String sql4 = "UPDATE PAYMENT SET CANCEL_YN = 'Y', CANCEL_DATE = SYSDATE WHERE PAY_NO = ?";
 		
 
 		int result;
@@ -537,7 +540,7 @@ public class PayDao {
 			pstmt1 = conn.prepareStatement(sql1);
 			pstmt2 = conn.prepareStatement(sql2);
 			pstmt3 = conn.prepareStatement(sql3);
-			pstmt3 = conn.prepareStatement(sql4);
+			pstmt4 = conn.prepareStatement(sql4);
 			
 			pstmt1.setInt(1, vo.getCarNo());
 			pstmt2.setInt(1, vo.getAccomNo());

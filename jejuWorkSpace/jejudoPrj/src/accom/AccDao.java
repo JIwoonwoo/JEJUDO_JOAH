@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import accom.AccDto;
 import main.Main;
 import member.MemberVo;
 import survey.SurveyVo;

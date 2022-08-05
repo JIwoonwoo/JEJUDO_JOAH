@@ -489,14 +489,25 @@ public class PayService {
 		PayDao dao = new PayDao();
 		Connection conn = null;
 		
+		System.out.println(voi.getAccomNo());
+		System.out.println(voi.getCarNo());
+		System.out.println(voi.getFlightNo());
+		
 		try {
 			conn = JDBCTemplate.getConnection();
 			
 			if(voi.getFlightNo() != 0) {
+				System.out.println("f");
 				vo = dao.cancelFlight(voi.getFlightNo(), conn);
-			}else if(voi.getAccomNo() != 0) {
+			}
+			
+			if(voi.getAccomNo() != 0) {
+				System.out.println("a");
 				vo = dao.cancelAccom(voi.getAccomNo(), conn);
-			}else {
+			}
+			
+			if(voi.getCarNo() != 0){
+				System.out.println("c");
 				vo = dao.cancelCar(voi.getCarNo(), conn);
 			}
 		
