@@ -407,5 +407,159 @@ public class PayDao {
 		return payList;
 	}
 	
+	//항공 취소시
+	public PayVo cancelFlight(int no, Connection conn) throws Exception {
+		
+		String sql = "SELECT P.PAYMENT_NO,P.FLIGHT_NO,P.ACCOM_NO,P.CAR_NO\r\n"
+				+ "FROM FLIGHT_RESERVATION F\r\n"
+				+ "JOIN PAYMENT P ON F.FLIGHT_NO = P.FLIGHT_NO\r\n"
+				+ "WHERE F.FLIGHT_NO = ?";
+
+		PayVo vo = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			rs = pstmt.executeQuery();
+				
+			if(rs.next()) {			
+				vo = new PayVo();
+				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
+				vo.setAccomNo(rs.getInt("ACCOM_NO"));
+				vo.setCarNo(rs.getInt("CAR_NO"));	
+				
+			}
+			
+		} finally {
+
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+	//숙박 취소시
+	public PayVo cancelAccom(int no, Connection conn) throws Exception {
+		
+		String sql = "SELECT P.PAY_NO,P.FLIGHT_NO,P.ACCOM_NO,P.CAR_NO\r\n"
+				+ "FROM ACCOM_RESERVATION A\r\n"
+				+ "JOIN PAYMENT P ON A.ACCOM_NO = P.ACCOM_NO\r\n"
+				+ "WHERE A.ACCOM_NO = ?";
+
+		PayVo vo = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			rs = pstmt.executeQuery();
+				
+			if(rs.next()) {
+				
+				vo = new PayVo();
+				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
+				vo.setAccomNo(rs.getInt("ACCOM_NO"));
+				vo.setCarNo(rs.getInt("CAR_NO"));	
+			}
+		} finally {
+
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+
+		}
+
+		return vo;
+
+	}
+	// 자동차 취소시
+	public PayVo cancelCar(int no, Connection conn) throws Exception {
+	
+		
+		String sql = "SELECT P.PAY_NO, P.FLIGHT_NO, P.ACCOM_NO, P.CAR_NO\r\n"
+				+ "FROM CAR_RESERVATION C\r\n"
+				+ "JOIN PAYMENT P ON C.CAR_NO = P.CAR_NO\r\n"
+				+ "WHERE C.CAR_NO = ?";
+	
+		PayVo vo = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+	
+			rs = pstmt.executeQuery();
+				
+			if(rs.next()) {
+				vo = new PayVo();
+				vo.setPayNo(rs.getInt("PAYMENT_NO"));
+				vo.setFlightNo(rs.getInt("FLIGHT_NO"));
+				vo.setAccomNo(rs.getInt("ACCOM_NO"));
+				vo.setCarNo(rs.getInt("CAR_NO"));		
+			}
+			
+		} finally {
+	
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rs);
+	
+		}
+	
+		return vo;
+	
+	}
+	
+	public int cancelUpdate(PayVo vo, Connection conn) throws Exception {
+
+		String sql1 = "UPDATE CAR_RESERVATION SET CANCEL_YN = 'Y', CANCEL_DATE = SYSDATE WHERE CAR_NO = ?";
+		String sql2 = "UPDATE ACCOM_RESERVATION SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE ACCOM_NO = ?";
+		String sql3 = "UPDATE FLIGHT_RESERVATION SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE FLIGHT_NO = ?";
+		String sql4 = "UPDATE PAYMENT SET CANCEL_YN = 'Y' CANCEL_DATE = SYSDATE WHERE PAY_NO = ?";
+		
+
+		int result;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmt4 = null;
+
+		try {
+
+			pstmt1 = conn.prepareStatement(sql1);
+			pstmt2 = conn.prepareStatement(sql2);
+			pstmt3 = conn.prepareStatement(sql3);
+			pstmt3 = conn.prepareStatement(sql4);
+			
+			pstmt1.setInt(1, vo.getCarNo());
+			pstmt2.setInt(1, vo.getAccomNo());
+			pstmt3.setInt(1, vo.getFlightNo());
+			pstmt4.setInt(1, vo.getPayNo());
+
+			int a = pstmt1.executeUpdate();
+			int b = pstmt2.executeUpdate();
+			int c = pstmt3.executeUpdate();
+			int d = pstmt4.executeUpdate();
+			
+			result = a+b+c+d;
+		} finally {
+			JDBCTemplate.close(pstmt1);
+			JDBCTemplate.close(pstmt2);
+			JDBCTemplate.close(pstmt3);
+			JDBCTemplate.close(pstmt4);
+		}
+
+		return result;
+	}
+
+	
 
 }

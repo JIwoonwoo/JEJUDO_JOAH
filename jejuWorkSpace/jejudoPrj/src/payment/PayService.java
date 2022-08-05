@@ -80,7 +80,6 @@ public class PayService {
 	}
 	
 	public PayVo reservation(int no, VoBox voBox) {
-		PayDao dao = new PayDao();
 		Connection conn = null;
 		PayVo vo = null;
 		// 이전예약정보 확인 후 예약번호 조회
@@ -467,29 +466,6 @@ public class PayService {
 		return list;
 	}
 
-	public void choicePayment(int no) {
-		System.out.println("\r---결제 내역 조회---");
-		System.out.println("1. 항공 결제 내역");
-		System.out.println("2. 숙박 결제 내역");
-		System.out.println("3. 렌트카 결제 내역");
-		System.out.println("4. 전체 결제 내역");
-		System.out.println("0. 뒤로가기");
-		
-		PayService ps = new PayService();
-		while(true) {
-			int c = InputUtil.getInt();
-			
-			switch(c) {
-			case 1 : ;break;
-			case 2 : ;break;
-			case 3 : ;break;
-			case 4 : checkPayment(no);break;
-			case 0 : return;
-			default : System.out.println("다시 입력해 주세요");continue;
-			}
-		}
-		
-	}
 	
 	// 전체 결제 내역 확인
 	public void checkPayment(int no) {
@@ -507,5 +483,64 @@ public class PayService {
 			JDBCTemplate.close(conn);
 		}
 	}
+	
+	public PayVo cancelCall(PayVo voi) {
+		PayVo vo = new PayVo();
+		PayDao dao = new PayDao();
+		Connection conn = null;
+		
+		try {
+			conn = JDBCTemplate.getConnection();
+			
+			if(voi.getFlightNo() != 0) {
+				vo = dao.cancelFlight(voi.getFlightNo(), conn);
+			}else if(voi.getAccomNo() != 0) {
+				vo = dao.cancelAccom(voi.getAccomNo(), conn);
+			}else {
+				vo = dao.cancelCar(voi.getCarNo(), conn);
+			}
+		
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
+		}
+		
+		return vo;
+
+	}
+	public boolean cancelUp(PayVo vo) {
+		
+		Connection conn = null;
+		boolean result = false;
+		
+		try {
+			conn = JDBCTemplate.getConnection();
+			int a = new PayDao().cancelUpdate(vo, conn);
+			
+			if (a >= 3) {
+				System.out.println("결제 정보 저장 완료");
+				JDBCTemplate.commit(conn);
+				result = true;
+			}else {
+				System.out.println("결제 정보 인서트 오류");
+				JDBCTemplate.rollback(conn);
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("결제 인서트 오류");
+			e.printStackTrace();
+			JDBCTemplate.rollback(conn);
+		} finally {
+			JDBCTemplate.commit(conn);
+			JDBCTemplate.close(conn);
+		}
+		
+		return result;
+
+		
+		
+	}
 }

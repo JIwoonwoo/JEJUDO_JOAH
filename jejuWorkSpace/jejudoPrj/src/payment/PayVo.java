@@ -10,6 +10,7 @@ public class PayVo {
 	}
 
 	// 테이블 데이터
+	private int payNo;
 	private int flightNo;
 	private int accomNo;
 	private int carNo;
@@ -27,7 +28,8 @@ public class PayVo {
 	private int flightComePay;
 	private int accomPay;
 	private int carPay;
-
+	
+	
 	public PayVo(int flightNo, int accomNo, int carNo, int totalPay, int flightGoPay, int flightComePay, int accomPay,
 			int carPay) {
 		this.flightNo = flightNo;
@@ -40,11 +42,21 @@ public class PayVo {
 		this.carPay = carPay;
 	}
 
-	// 전체 using 필드
+	@Override
+	public String toString() {
+		return "PayVo [payNo=" + payNo + ", flightNo=" + flightNo + ", accomNo=" + accomNo + ", carNo=" + carNo
+				+ ", totalPay=" + totalPay + ", pointUsed=" + pointUsed + ", cutPrice=" + cutPrice + ", myPoint="
+				+ myPoint + ", payMethod=" + payMethod + ", payDate=" + payDate + ", cancelYN=" + cancelYN
+				+ ", cancelDate=" + cancelDate + ", flightGoPay=" + flightGoPay + ", flightComePay=" + flightComePay
+				+ ", accomPay=" + accomPay + ", carPay=" + carPay + "]";
+	}
 
-	public PayVo(int flightNo, int accomNo, int carNo, int totalPay, int pointUsed, int cutPrice, int myPoint,
-			int payMethod, Timestamp payDate, char cancelYN, Timestamp cancelDate, int flightGoPay,
+	// 전체 using 필드
+	public PayVo(int payNo, int flightNo, int accomNo, int carNo, int totalPay, int pointUsed, int cutPrice,
+			int myPoint, int payMethod, Timestamp payDate, char cancelYN, Timestamp cancelDate, int flightGoPay,
 			int flightComePay, int accomPay, int carPay) {
+		super();
+		this.payNo = payNo;
 		this.flightNo = flightNo;
 		this.accomNo = accomNo;
 		this.carNo = carNo;
@@ -62,16 +74,22 @@ public class PayVo {
 		this.carPay = carPay;
 	}
 
-	@Override
-	public String toString() {
-		return "PayVo [flightNo=" + flightNo + ", accomNo=" + accomNo + ", carNo=" + carNo + ", totalPay=" + totalPay
-				+ ", pointUsed=" + pointUsed + ", cutPrice=" + cutPrice + ", mypoint=" + myPoint + ", payMethod="
-				+ payMethod + ", payDate=" + payDate + ", cancelYN=" + cancelYN + ", cancelDate=" + cancelDate
-				+ ", flightGoPay=" + flightGoPay + ", flightComePay=" + flightComePay + ", accomPay=" + accomPay
-				+ ", carPay=" + carPay + "]";
+	public int getPayNo() {
+		return payNo;
+	}
+	
+	public void setPayNo(int payNo) {
+		this.payNo = payNo;
 	}
 
-	
+	public int getMyPoint() {
+		return myPoint;
+	}
+
+	public void setMyPoint(int myPoint) {
+		this.myPoint = myPoint;
+	}
+
 	
 	public int getCutPrice() {
 		return cutPrice;
