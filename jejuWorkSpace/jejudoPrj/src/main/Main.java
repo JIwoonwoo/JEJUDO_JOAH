@@ -1,39 +1,45 @@
 package main;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import accom.AccService;
+import car.CarService;
+import car.ReserveVo;
+import flight3.Flight_Service;
+import flight3.Flight_Vo_MyFlight;
+import gui.GUI;
+import gui.dialog.YesOrNo;
+import payment.PayService;
 
 public class Main {
-
+	
 	public static int loginNo;
-	public static void main(String[] args) throws Exception {
-		System.out.println("제주도 좋아~");
-		System.out.println("여기가 메인입니다~");
+	public static void cancle() {
 		
-//		vo.getPrice(); // 1박요금
-//		vo.getCheckin();
-		String Checkout = "2022-08-05 654684311684";
-		String Checkin = "2022/08/02 654684311684";
+		CarService cs = new CarService();
+		AccService as = new AccService();
+		PayService ps = new PayService();
+		Flight_Service fs = new Flight_Service();
 		
-		Checkout = Checkout.substring(0,10); // 2022/05/05
-		Checkout = Checkout.replace("/", "");
-		Checkout = Checkout.replace("-", "");
-		
-		Checkin = Checkin.substring(0,10); // 2202/05/05
-		Checkin = Checkin.replace("/", "");
-		Checkin = Checkin.replace("-", "");
-		
-		Date date=new SimpleDateFormat("yyMMdd").parse(Checkout);  
-		Date date2=new SimpleDateFormat("yyMMdd").parse(Checkin);  
-		
-		Integer.parseInt(Checkout);
-		
-		long Sec = (date.getTime() - date2.getTime()) / 1000; // 초
-		int Days = (int)(Sec / (24*60*60)); // 일자수
-		
-		System.out.println(Days);
-		
+		YesOrNo d = new YesOrNo(GUI.frame, "예약취소", "함께 예약한 항목이 모두 취소됩니다.");
+		if(d.run()==1) {
+			
+			int carRNo = 0;
+			int AccRNo = 0;
+			int FlightRNo = 0;
+			int payNo = 0;
+			
+			ReserveVo cvo = new ReserveVo();
+			Flight_Vo_MyFlight fvo = new Flight_Vo_MyFlight();
+			
+			cvo.setReserveNo(carRNo);
+			
+			
+			cs.carCancel(cvo);
+			as.reservCancel(loginNo);
+			fs.delete(fvo);
+			
+			ps.
+			
+			
+		}
 	}
-
 }

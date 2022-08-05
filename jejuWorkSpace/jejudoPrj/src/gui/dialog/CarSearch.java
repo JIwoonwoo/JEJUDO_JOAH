@@ -94,8 +94,8 @@ public class CarSearch extends JDialog {
 	
 	public void set(List<CarVo> list) {
 		
-		Object[][] data = new Object[list.size()][5];
-		String[] cols = {"번호" , "이름" , "사이즈" , "1박 금액" , "연료"};
+		Object[][] data = new Object[list.size()][6];
+		String[] cols = {"번호" , "이름" , "사이즈" , "1박 금액" , "연료", "오픈여부"};
 		
 		int i = 0;
 		for(CarVo vo : list) {
@@ -104,6 +104,7 @@ public class CarSearch extends JDialog {
 				data[i][2] = vo.getCarSize();
 				data[i][3] = vo.getDayPrice();
 				data[i][4] = vo.getCarFuel();
+				data[i][5] = vo.getOpen_yn();
 				i++;
 		}
 		

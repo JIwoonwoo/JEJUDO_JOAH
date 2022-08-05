@@ -203,7 +203,7 @@ public class PayDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
-			pstmt.setString(1, yn);
+			pstmt.setString(2, yn);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {

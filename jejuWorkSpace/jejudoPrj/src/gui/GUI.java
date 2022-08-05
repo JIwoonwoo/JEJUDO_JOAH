@@ -901,38 +901,6 @@ public class GUI {
 		frame.getContentPane().add(reservInforPanel);
 		reservInforPanel.setVisible(false);
 		
-		reservInforPanel.getDeleteBtn().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				PayVo vo = ps.getNo(Main.loginNo, "Y");
-				
-				if(vo==null) {
-					return;
-				}
-				
-				Flight_Vo_MyFlight fvo = new Flight_Vo_MyFlight();
-				fvo.setReserveNo(vo.getFlightNo());
-				fs.delete(fvo);
-				
-				if(vo.getCarNo()!=0) {
-					ReserveVo cvo = new ReserveVo();
-					cvo.setReserveNo(vo.getCarNo());
-					cs.carCancel(cvo);
-				}
-				
-			}
-		});
-		reservInforPanel.getUpdateBtn().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-
 		// 홈
 		reservInforPanel.getHomeBtn().addActionListener(new ActionListener() {
 

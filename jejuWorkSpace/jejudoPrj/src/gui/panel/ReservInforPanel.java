@@ -36,7 +36,6 @@ public class ReservInforPanel extends ImgPanel {
 	private JScrollPane scrollPane_2;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane;
-	
 
 	public ReservInforPanel() {
 		super("reservInfor");
@@ -46,11 +45,11 @@ public class ReservInforPanel extends ImgPanel {
 
 		backBtn = new BackBtn();
 		add(backBtn);
-		
+
 		updateBtn = new ImgButton("예약변경");
 		updateBtn.setLocation(0, 828);
 		add(updateBtn);
-		
+
 		deleteBtn = new ImgButton("예약취소");
 		deleteBtn.setLocation(275, 828);
 		add(deleteBtn);
@@ -58,7 +57,7 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(25, 155, 496, 149);
-		
+
 		add(scrollPane);
 
 		panel = new JPanel();
@@ -102,11 +101,11 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane_2.setBorder(null);
 		scrollPane_2.setBackground(null);
 		scrollPane_2.setOpaque(false);
-		
-				nextBtn = new NextBtn();
-				add(nextBtn);
 		scrollPane_2.getViewport().setOpaque(false);
-		
+
+		nextBtn = new NextBtn();
+		add(nextBtn);
+
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane_1.getVerticalScrollBar().setUnitIncrement(16);
 		scrollPane_2.getVerticalScrollBar().setUnitIncrement(16);
@@ -135,14 +134,14 @@ public class ReservInforPanel extends ImgPanel {
 
 			CarListTemplate b = new CarListTemplate(vo);
 			b.setNo(vo.getRentalNo());
-			
+
 			ReserveVo cvo = new CarService().detailInquiry(vo.getRentalNo());
 			vo.setCarUq(cvo.getCarUq());
 			vo.setSize(cvo.getSize());
 			vo.setName(cvo.getName());
 			vo.setFuel(cvo.getFuel());
 			vo.setOpenable(cvo.getOpenable());
-			
+
 			b.setBounds(15, 0 + (41 * i), 464, 41);
 			b.getButton().addMouseListener(new MouseAdapter() {
 				@Override
@@ -168,14 +167,14 @@ public class ReservInforPanel extends ImgPanel {
 
 			i++;
 		}
-		
-		panel_2.setSize(0, 41*(i+1));
-		
+
+		panel_2.setSize(0, 41 * (i + 1));
+
 		panel_2.setPreferredSize(panel_2.getPreferredSize());
-		
+
 		scrollPane_2.setViewportView(panel_2);
 	}
-	
+
 	public void setAccList(List<AccDto> list) {
 		panel_1.removeAll();
 		panel_1.revalidate();
@@ -209,14 +208,14 @@ public class ReservInforPanel extends ImgPanel {
 
 			i++;
 		}
-		
-		panel_1.setSize(0, 41*(i+1));
-		
+
+		panel_1.setSize(0, 41 * (i + 1));
+
 		panel_1.setPreferredSize(panel_1.getPreferredSize());
-		
+
 		scrollPane_1.setViewportView(panel_1);
 	}
-	
+
 	public void setFlightList(List<Flight_Vo_MyFlight> list) {
 		panel.removeAll();
 		panel.revalidate();
@@ -250,11 +249,11 @@ public class ReservInforPanel extends ImgPanel {
 
 			i++;
 		}
-		
-		panel.setSize(0, 41*(i+1));
-		
+
+		panel.setSize(0, 41 * (i + 1));
+
 		panel.setPreferredSize(panel.getPreferredSize());
-		
+
 		scrollPane.setViewportView(panel);
 	}
 
@@ -273,7 +272,5 @@ public class ReservInforPanel extends ImgPanel {
 	public void setDeleteBtn(JButton deleteBtn) {
 		this.deleteBtn = deleteBtn;
 	}
-	
-	
 
 }
