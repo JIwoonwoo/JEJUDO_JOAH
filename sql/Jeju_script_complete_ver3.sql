@@ -1,6 +1,6 @@
 -- 제주도 전체 스크립트
 --220804 ver2 추가 테이블 데이터, 관광지, 숙박, 자동차 최종 입력완료
---220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력, 비행기 뷰 추가, 추가 맛집 좋아요 수정
+--220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력, 비행기 뷰 추가, 추가 맛집 좋아요 수정, 서연님의 관광지 백몇개 추가, 관광지 더 추가, 오류 모두 수정, 확인 완료
 
 DROP TABLE "ROOM" CASCADE CONSTRAINTS;
 DROP TABLE "FLIGHT" CASCADE CONSTRAINTS;
@@ -6728,3 +6728,229 @@ JOIN FLIGHT F ON FT.FLIGHT_NO = F.FLIGHT_NO
 WHERE FR.CANCEL_YN = 'N'
 )
 ;
+
+-- 관광지 추가
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'고흐의 정원', '제주 제주시 요정로 424 3호','N',12000,'Y','유럽에 간 듯한 기분을 느낄 수 있는 고흐의 정원','064-783-6700','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'공룡휴게소박물관', '제주 제주시 남중서로 222','N',10000,'N','공룡을 보며 쉬어가는 박물관','064-784-8338','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'교래자연휴양림', '제주 제주시 남중서로 223','N',1000,'Y','자연을 느낄 수 있는 휴양림','064-710-7476','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'교육박물관', '제주 제주시 남중서로 224','N', NULL,'N','자식을 둔 부모님이라면 바로 여기','064-720-9114','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'국립제주박물관', '제주 제주시 남중서로 225','N', NULL,'N','나라에서 세운 제주 박물관','064-720-8000','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주잠수함', '제주 제주시 남중서로 226','N',25000,'N','제주의 해저동물과 해저식물 구경하기','064-783-0000','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'함덕잠수함', '제주 제주시 남중서로 227','N',25000,'N','직접 잠수는 무서워도 잠수함은 무섭지않아','064-783-1334','10:00','21:00', '매월 둘째주 화요일',1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'갓전시관', '제주 제주시 남중서로 228','Y', NULL,'N','다양한 우리나라의 갓을 써보고 싶은 사람','064-782-8778','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'개똥이동물원', '제주 제주시 남동서로 25','N',8000,'Y','개똥아 똥싸니 아니오','064-759-0017','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,1,'건강과 성 박물관', '제주 제주시 남동서로 26','Y',12000,'N','건강과 성에 대해 제대로 가르쳐주는 박물관','064-792-5700','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'그리스신화박물관', '제주 제주시 남동서로 27','N',9000,'N','그리스로마신화 만화책을 좋아했던 사람이라면','064-773-5800','10:00','21:00',null,1 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'그랑블루요트', '제주 제주시 남동서로 28','Y',60000,'N','제주에서 즐기는 요트','064-739-7776','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,1,'기당미술관', '제주 제주시 남동서로 29','N',1000,'N','미술이 재미없을거라는 건 편견입니다','064-733-1586','10:00','21:00',null,3 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'김녕미로공원', '제주 제주시 남동서로 30','Y',6600,'Y','미로를 직접 찾아서 탈출해보세요','064-782-9266','10:00','21:00',null,4 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'김녕요트투어', '제주 제주시 남동서로 31','Y',60000,'N','요트도 타고 돌고래 일반투어도 하고','064-725-0225','10:00','21:00',null,5 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'김만덕기념관', '제주 제주시 남동서로 32','N', NULL,'N','김만덕을 기념하는 기념관','064-759-6090','10:00','21:00',null,6 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'김영갑갤러리', '제주 제주시 남동서로 33','N',4500,'N','김명갑의 그림이 있는 갤러리. 두모악','064-784-9907','10:00','21:00',null,7 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'난타', '제주 제주시 남동서로 34','Y',40000,'N','스트레스 해소하기 딱 좋은 장소','064-723-8878','10:00','21:00',null,8 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'노리매', '제주 제주시 남동서로 35','N',9000,'Y','아름다운 매화가 꽃피어 있는 매화테마공원','064-792-8211~4','10:00','21:00',null,9 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'노루생태관찰원', '제주 제주시 남동서로 36','Y',1000,'Y','노루와 사슴은 다른 생물입니다','064-728-3611','10:00','21:00',null,10 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,8,4,1,'넥슨컴퓨터박물관', '제주 제주시 올레길로 12','Y',8000,'N','게임계의 NO.1 넥슨','064-745-1994','10:00','21:00',null,11 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'다이나믹메이즈 에피소드3', '제주 제주시 올레길로 13','N',12000,'N','다이나믹한 미로 에피소드 벌써 3번째!','064-787-8774','10:00','21:00',null,12 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주라프', '제주 제주시 올레길로 14','N',40000,'N','제주라이프의 줄임말인가?','064-784-9030','10:00','21:00',null,13 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'더 마(馬)파크', '제주 제주시 올레길로 15','Y',20000,'N','말들이 있는 곳','064-795-8080','10:00','21:00',null,14 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'대유랜드', '제주 제주시 올레길로 16','Y',60000,'Y','대유가뭐야 대체 손목아퍼','064-738-0500','10:00','21:00',null,15 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'드르쿰다', '제주 제주시 올레길로 17','Y',19000,'N','레저를 사랑하는 사람들을 위한 동부레저','064-787-5220','10:00','21:00',null,16 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'마라도 정기여객선(마라도)', '제주 제주시 올레길로 18','N',14100,'N','마라도로 가는 정기여객선','064-794-5490','10:00','21:00',null,17 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'마라도 정기여객선(가파도)', '제주 제주시 올레길로 19','N',19000,'N','가파도로 가는 정기여객선','064-794-5490','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'마라도 가는 여객선', '제주 제주시 올레길로 20','N',4000,'N','마라도 가는 여객선 엄청많네','064-794-6661','10:00','21:00',null,19 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'만장굴', '제주 제주시 올레길로 21','N',11000,'Y','제주도에 있는 가장 유명한 굴','064-710-7903','10:00','21:00',null,20 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'메이즈랜드', '제주 제주시 올레길로 22','Y',10000,'N','메이즈러너 빙의하기','064-784-3838','10:00','21:00',null,21 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'무병장수테마파크', '제주 서귀포시 한입거리 33','N',15000,'N','무병장수하기 위한 건강의 비결','064-799-9983','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'무민랜드 제주', '제주 서귀포시 한입거리 34','N',12000,'N','무민을 좋아한다면 바로 이곳','064-794-0420','10:00','21:00', '화요일',22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'박물관은 살아있다', '제주 서귀포시 한입거리 35','N',9000,'N','박물관이 살아있다 영화를 토대로','064-805-0888','10:00','21:00', '월요일',22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'방림원', '제주 서귀포시 한입거리 36','N',5000,'Y','제주도 숲의 기운 느끼기','064-773-0090','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'백년초박물관', '제주 서귀포시 한입거리 37','N',12000,'N','제주도 하면 백년초','064-739-1777','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'베니스랜드', '제주 서귀포시 한입거리 38','N',25000,'Y','베니스를 재현한 것 같은 곳','064-784-6565','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,4,1,'번개과학체험관', '제주 서귀포시 한입거리 39','Y', NULL,'N','번개과학 체험하기','064-733-3500','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'북촌 너븐숭이 4.3기념관', '제주 서귀포시 네입거리 40','N',6000,'N','북촌 너븐숭이 4.3 기념관','064-783-4303','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'북촌 돌하르방공원', '제주 서귀포시 네입거리 41','N',15000,'Y','제주 대표 돌하르방을 실컷 볼 수 있다','064-782-0570','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'브릭캠퍼스', '제주 서귀포시 네입거리 42','N', NULL,'Y','벽돌로 이루어진 캠퍼스','064-712-1258','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'블루마운틴 커피테마공원', '제주 서귀포시 네입거리 43','Y',3000,'N','파란 산과 커피','064-782-0428','10:00','21:00','매달 30일',22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'비자림', '제주 서귀포시 네입거리 44','N',33000,'Y','제주의 자연을 느낄 수 있는 숲','064-710-7912','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'빅볼랜드', '제주 서귀포시 네입거리 45','Y',20000,'Y','거대한 풍선 공 안에서 즐겁게 놀기 좋은 곳','064-1588-6418','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'산방산유람선 그린크루즈', '제주 서귀포시 인어꼬리로 73','N',2500,'N','신방산 유람산 타고 신방산 탐험','064-792-1188','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'삼성혈', '제주 서귀포시 인어꼬리로 75','N', NULL,'N','삼성이 흘리는 피는? 삼성혈','064-722-3315','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'삼양동 선사유적지', '제주 서귀포시 인어꼬리로 76','N',9000,'N','삼양동에 있는 선사유적지','064-728-8673','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'생각하는정원', '제주 서귀포시 인어꼬리로 78','N',1500,'Y','생각이 많아지는 정원','064-772-3701','10:00','21:00',null,24 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'서귀포 감귤박물관', '제주 서귀포시 인어꼬리로 32','N',16500,'N','제주를 대표하는 감귤','064-767-3010','10:00','21:00',null,25 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'서귀포유람선', '제주 서귀포시 인어꼬리로 33','Y',1000,'N','유람선 뉴파라다이스호 체험','064-732-1717','10:00','21:00',null,26 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'서귀포 자연휴양림', '제주 서귀포시 인어꼬리로 34','N',36000,'Y','서귀포에서 가장 유명한 자연휴양림','064-738-4544','10:00','21:00',null,27 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'서귀포 잠수함', '제주 서귀포시 인어꼬리로 35','N',2000,'N','20년 넘게 유명한데는 이유가 있다','064-732-6060','10:00','21:00',null,28 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'서귀포 천문과학문화관', '제주 서귀포시 인어꼬리로 36','Y',500,'N','서울에서 보이지 않는 별 제주에서 보기','064-739-9701','10:00','21:00', '월요일',29 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'서복전시관', '제주 서귀포시 인어꼬리로 37','N',13000,'N','도파민 중독인 당신에게는 여기가 필요해요','064-763-3225','10:00','21:00',null,30 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'서프라이즈 테마파크', '제주 서귀포시 인어꼬리로 38','Y',6000,'Y','깜짝 놀라고 싶은 사람을 위한','064-783-7272','10:00','21:00',null,31 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'석부작박물관', '제주 서귀포시 인어꼬리로 39','N',13000,'N','석부작 박물관이 뭔지 궁금하세요?','064-739-5588','10:00','21:00',null,32 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'선녀와 나무꾼 테마공원', '제주 서귀포시 인어꼬리로 40','Y', NULL,'Y','선녀와 나무꾼이 직접 되어볼까','064-784-9001','10:00','21:00',null,33 ,default,default);;
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'섭지코지', '제주 서귀포시 인어꼬리로 42','N',5000,'Y','제주도에 갔다면 섭지코지는 반드시','064-782-2810','10:00','21:00', '매월 첫째주 화요일',35 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'성산포유람선', '제주 서귀포시 우도로 135','N', NULL,'N','제주에서만 탈 수 있는 유람선','064-784-6161','10:00','21:00',null,37 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'성읍민속마을', '제주 서귀포시 우도로 136','Y',13000,'Y','제주의 전통을 느낄 수 있는 민속마을','064-710-6797','10:00','21:00',null,38 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,1,'세계자동차 피아노박물관', '제주 서귀포시 우도로 137','N',6000,'N','세계의 자동차와 피아노의 역사를 느낄 수 있는 장소','064-792-3000','10:00','21:00',null,39 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,1,'세계 조가비박물관', '제주 서귀포시 우도로 138','N', NULL,'N','조가비의 모든 것','064-762-5551','10:00','21:00',null,40 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'셰프라인월드', '제주 서귀포시 우도로 139','Y',25000,'Y','제주도에 하나뿐인 세프라인월드','064-751-8500','10:00','21:00', '화요일',41 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'세리월드 익스트림아일랜드', '제주 서귀포시 우도로 140','Y',6000,'Y','익스트림한 기분을 느낄 수 있는 곳','064-739-8254','10:00','21:00',null,42 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'세리월드 동화속미로공원', '제주 서귀포시 우도로 141','Y',12000,'Y','동화속에 있는 듯한 기분을 느낄 수 있는 미로공원','064-738-8253','10:00','21:00',null,43 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'SOS박물관', '제주 서귀포시 우도로 142','N',5000,'N','SOS를 보내는 방법','064-739-7707','10:00','21:00',null,44 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'세계술박물관', '제주 서귀포시 우도로 143','N',9000,'N','전세계의 많은 술을 알고 싶다면','064-787-9500','10:00','21:00',null,45 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'소인국테마파크', '제주 서귀포시 우도로 144','Y',10000,'Y','거인이 된 듯한 기분을 느낄 수 있는 테마파크','064-794-5400','10:00','21:00','매달 30일',46 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'솔트리 사립 감성 수목원', '제주 서귀포시 우도로 145','Y', NULL,'Y','힐링하고 싶다면 감성 수목원','064-784-0989','10:00','21:00',null,47 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'송악산', '제주 서귀포시 우도로 648','N', NULL,'Y','제주에서 하는 힘찬 등산','064-740-6000','10:00','21:00',null,48 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'수월봉', '제주 서귀포시 우도로 649','N',15000,'Y','수월봉을 오르자','064-740-6000','10:00','21:00',null,49 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'수목원테마파크아이스뮤지엄', '제주 서귀포시 우도로 650','Y',10000,'N','3D착시아트 + 5D영상관 + VR1회','064-742-3700','10:00','21:00',null,49 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'스쿠버라이프', '제주 서귀포시 우도로 651','Y', NULL,'N','제주바다에서 스킨스쿠버','064-738-6114','10:00','21:00',null,49 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'신비의도로', '제주 서귀포시 우도로 652','N',39000,'Y','신비로운 착시효과로 재미를 느낄 수 있는 곳','064-728-2114','10:00','21:00',null,49 ,default,defaul);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'아라리오뮤지엄', '제주 서귀포시 우도로 655','N',15000,'N','아리랑 아리랑 아라리오','064-720-8201','10:00','21:00',null,49 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'아일랜드 제이 성산ATV)', '제주 서귀포시 우도로 657','Y',10000,'Y','ATV의 매력에 눈을 뜨다','070-4274-4664','10:00','21:00',null,50 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'아프리카박물관', '제주 서귀포시 우도로 658','N',10000,'N','아프리카인으로 빙의할 수 있는 곳','064-738-6565','10:00','21:00',null,51 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'안덕계곡', '제주 서귀포시 우도로 660','Y', NULL,'Y','제주의 아름다운 계곡','064-794-9001','10:00','21:00', '월요일',53 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'알프스 얼음 보석궁전', '제주 제주시 배가아프리 243','Y',10000,'Y','겨울왕국의 주인공이 되어볼까?','064-773-3001','10:00','21:00',null,54 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'여미지식물원', '제주 제주시 배가아프리 244','N',10000,'Y','싱그러운 식물의 기운을 느껴보자','064-735-1100','10:00','21:00',null,55 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'외돌개', '제주 제주시 배가아프리 245','N', NULL,'N','외로운 돌아이 강아지','064-760-3033','10:00','21:00',null,56 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'용두암', '제주 제주시 배가아프리 246','N', NULL,'Y','용의 머리와 비슷한 암석','064-728-3918','10:00','21:00','매달 30일',57 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'우도도항선', '제주 제주시 배가아프리 247','Y',10500,'N','우도로 향하는 배','064-782-5671','10:00','21:00',null,58 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'우도등대공원', '제주 제주시 배가아프리 248','Y', NULL,'Y','우도에 있는 등대공원','064-783-0180','10:00','21:00',null,59 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'우도스카이라인', '제주 제주시 배가아프리 249','Y',12000,'N','우도를 한 눈에 담고 싶다면','064-783-2820','10:00','21:00',null,60 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'우도잠수함', '제주 제주시 배가아프리 250','N',55000,'N','아름다운 우도의 바다 속까지 즐겨보자','064-784-2333','10:00','21:00',null,61 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'월드제트', '제주 제주시 배가아프리 251','Y',25000,'N','가족들이 함께 관광하기 좋은 장소','064-784-2337','10:00','21:00',null,62 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주아리랑', '제주 제주시 배가아프리 252','N',20000,'Y','포니벨리에서 아리랑으로 이름을 바꾸었다','064-787-2258','10:00','21:00',null,63 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'이중섭미술관', '제주 제주시 배가아프리 253','N',1500,'N','미술가 이중섭을 기리기 위한 박물관','064-760-3567','10:00','21:00',null,64 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'일출랜드', '제주 제주시 배가아프리 254','N',9000,'Y','일출이 아름답다 하여 일출랜드','064-784-2080','10:00','21:00',null,65 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'에코랜드 테마파크', '제주 제주시 배가아프리 255','N',14000,'Y','자연을 그대로 느낄 수 있는 테마파크','064-802-8020','10:00','21:00', '매월 셋째주 화요일',2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'자연사랑갤러리', '제주 제주시 배가아프리 256','N',3000,'N','자연을 사랑하자','064-787-3110','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'절물자연휴양림', '제주 제주시 배가아프리 257','N',1000,'Y','자연과 함께하는 힐링 휴양림','064-728-1510','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'점보빌리지 (트래킹체험)', '제주 서귀포시 인어동주로 1004','Y',18000,'N','코끼리 테마쇼와 트레킹 체험','064-792-1233','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주경마공원', '제주 서귀포시 인어동주로 1006','Y', NULL,'Y','렛츠런파크제주였던 경마공원','064-786-8202','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,3,1,'제주국제평화센터', '제주 서귀포시 인어동주로 1007','N',1500,'N','전세계의 평화를 담당하는 센터','064-735-6550','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주공룡랜드', '제주 서귀포시 인어동주로 1008','N',9000,'Y','제주도에 살았던 공룡들의 잔해','064-746-3060','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주다원', '제주 서귀포시 인어동주로 1009','N',7000,'Y','제주도에서 차를 마셔보자','064-738-4433','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주도립미술관', '제주 서귀포시 인어동주로 1010','N',2000,'N','제주도에서 세운 미술관','064-710-4300','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주도립김창열미술관', '제주 서귀포시 인어동주로 1011','N',2000,'N','제주도에서 세운 김창열 미술관','064-710-4150','10:00','21:00', '화요일',2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주돌문화공원', '제주 서귀포시 인어동주로 1012','N',5000,'Y','제주도 돌의 모든 것','064-710-7731','10:00','21:00', '월요일',2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주돌마을공원', '제주 서귀포시 인어동주로 1013','N',6000,'Y','제주도의 돌로 이루어진 마을','064-772-4007','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,2,3,1,'제주러브랜드', '제주 서귀포시 인어동주로 1014','N',12000,'Y','연인들이 데이트하기 좋은 곳','064-712-6988','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주랜드', '제주 서귀포시 인어동주로 1015','Y',25000,'N','ATV，승마를 즐길 수 있는 신나는 곳','064-784-3631','10:00','21:00',null,2 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주레일바이크', '제주 서귀포시 인어동주로 1016','Y',30000,'N','즐거운 레일바이크 신나는 하루','064-783-0033','10:00','21:00',null,3 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주레포츠랜드', '제주 서귀포시 인어동주로 1017','Y',25000,'N','액티비티를 좋아하는 당신을 위한 장소','064-784-8800','10:00','21:00',null,4 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주베스트힐', '제주 서귀포시 인어동주로 1018','N',99000,'N','제주에서 베스트로 꼽히는 언덕','070-4400-3300','10:00','21:00',null,5 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주센트럴파크', '제주 서귀포시 인어동주로 1019','N',7000,'Y','구,제주미니랜드로 불렸던 센트럴 파크','064-782-7720','10:00','21:00',null,6 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주도민속자연사박물관', '제주 서귀포시 인어동주로 1020','N',2000,'N','제주특별자치도에서 세운 민속자연사박물관','064-710-7708','10:00','21:00',null,7 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주민속촌', '제주 서귀포시 인어동주로 1021','N',11000,'Y','제주의 역사를 느낄 수 있는 민속촌','064-787-4501','10:00','21:00',null,8 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주목관아', '제주 서귀포시 인어동주로 1022','N',1500,'N','제주목관아 재미는없어도 뜻깊을거야','064-710-6714','10:00','21:00',null,9 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'제주마린파크', '제주 서귀포시 인어동주로 1023','Y',2000,'N','바다를 사랑하는 사람들을 위한 마린파크','064-792-7777','10:00','21:00', '매월 둘째주 일요일',10 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'제주별빛누리공원', '제주 서귀포시 인어동주로 1024','N',5000,'Y','별빛이내린다 샤랄라랄랄랄랄','064-728-8900','10:00','21:00',null,11 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주4?3평화공원', '제주 서귀포시 인어동주로 1025','N', NULL,'N','제주 4.3을 기리는 기념관','064-710-8461','10:00','21:00',null,12 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주서커스월드', '제주 서귀포시 인어동주로 1026','N',15000,'N','제주에서 즐기는 서커스','064-794-4444','10:00','21:00',null,13 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주세계자연유산센터', '제주 서귀포시 아름다운연주로 79','N',3000,'N','제주도에 와서 자연유산센터를 가는 당신은 모범생','064-710-8980','10:00','21:00',null,14 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'거문오름탐방', '제주 서귀포시 아름다운연주로 80','N',2000,'N','모범생들이 좋아하는 거문오름','064-710-8981','10:00','21:00',null,15 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주요 도자기문화박물관', '제주 서귀포시 아름다운연주로 81','N', NULL,'N','도자기에 관심있는 사람들을 위한 박물관','064-748-0121','10:00','21:00',null,16 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주스카이워터쇼', '제주 서귀포시 아름다운연주로 82','N',20000,'N','스카이워터쇼가 무엇인지 궁금하다면','064-782-7870','10:00','21:00',null,17 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주스누피가든', '제주 서귀포시 아름다운연주로 83','N',18000,'Y','남녀노소 좋아하는 스누피 가든','064-700-0000','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주승마공원', '제주 서귀포시 아름다운연주로 84','Y',44000,'N','제주에서만 특별히 즐길 수 있는승마','064-799-9540','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주오프로드', '제주 서귀포시 아름다운연주로 85','N',9000,'N','제주오프로드 뭐하는곳인지 궁금하세요?','070-8880-3900','10:00','21:00', '월요일',18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주유리박물관', '제주 서귀포시 아름다운연주로 86','N',11000,'N','유리로 다양한 것이 가능하다','064-792-6262','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주유리의성', '제주 서귀포시 아름다운연주로 87','N',25000,'N','유리로 아름답게 꾸민 성','064-772-7777','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주제트', '제주 서귀포시 아름다운연주로 88','Y',8000,'N','제주에서 제트기 타고 싶은 사람','064-739-3939','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주조각공원', '제주 서귀포시 아름다운연주로 89','N', NULL,'Y','조각미남미녀인 당신이 가야하는 곳','064-794-9680','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주커피박물관 바움', '제주 서귀포시 아름다운연주로 91','N',10000,'Y','제주도에 있는 커피박물관','064-784-2255','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주항공우주박물관', '제주 서귀포시 아름다운연주로 92','N',12000,'N','왜 제주도에 항공우주박물관이 있을까요?','064-800-2150','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'제주허브동산', '제주 서귀포시 아름다운연주로 93','N',2000,'Y','제주도 허브가 그렇게 유명하다고 합니다','064-787-7362','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주현대미술관', '제주 서귀포시 아름다운연주로 94','N',2000,'N','제주도에서도 현대미술을 엿볼 수 있다','064-710-7801','10:00','21:00',null,18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'주상절리', '제주 서귀포시 아름다운연주로 95','N',8000,'Y','아름다운 자연의 절경 주상절리','064-738-0993','10:00','21:00', '매월 둘째주 목요일',18 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'조안베어박물관', '제주 서귀포시 아름다운연주로 96','N', NULL,'N','테디베어박물관의 뒤를 잇는 귀여움','064-739-1024','10:00','21:00',null,19 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'조랑말체험공원', '제주 서귀포시 아름다운연주로 97','Y', NULL,'N','조랑말 체험이 가능한 박물관','064-787-0960','10:00','21:00',null,20 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'전쟁역사 박물관', '제주 서귀포시 아름다운연주로 98','N',6000,'N','구,평화박물관에서 전쟁역사박물관으로 바뀌었다','064-772-2500','10:00','21:00',null,21 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'차귀도 배낚시', '제주 서귀포시 아름다운연주로 99','Y', NULL,'N','차귀도에서 물고기를 잡아보자','064-773-2244','10:00','21:00',null,22 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'차귀도 유람선', '제주 서귀포시 아름다운연주로 100','N',6000,'N','차귀도로 가는 유람선','064-738-5355','10:00','21:00',null,23 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'차귀도 요트', '제주 서귀포시 아름다운연주로 101','Y',60000,'N','차귀도에서 힐링하기 위한 요트','064-772-1321','10:00','21:00',null,24 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'천제연폭포', '제주 서귀포시 아름다운연주로 102','N',2500,'Y','제주도에서 가장 유명한 폭포','064-760-6331','10:00','21:00',null,25 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'초콜릿박물관', '제주 서귀포시 대장한로 89','N',7000,'N','초콜릿을 사랑한다면 반드시','064-792-3121','10:00','21:00',null,27 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'캐릭파크', '제주 서귀포시 대장한로 91','N',11000,'N','아기자기한 캐릭터를 좋아하는 사람을 위한 테마파크','064-784-3500','10:00','21:00',null,29 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'코바다이빙스쿨', '제주 서귀포시 대장한로 92','Y',60000,'N','다이빙 마스터가 되고싶은 사람을 위한 수업','010-5254-7710','10:00','21:00',null,30 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'테디베어뮤지엄', '제주 서귀포시 대장한로 93','N',10000,'N','큰 사랑을 받고 있는 뮤지엄','064-738-7600','10:00','21:00', '화요일',31 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'테지움', '제주 서귀포시 대장한로 94','N',10500,'N','개발자 추천 관광지 1순위','064-799-4820','10:00','21:00',null,32 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'토이파크', '제주 서귀포시 대장한로 95','N',8000,'N','모든 어린이들의 성지','064-794-0333','10:00','21:00',null,33 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'퍼시픽랜드', '제주 서귀포시 대장한로 96','N', NULL,'N','마린스테이지','064-738-2888','10:00','21:00',null,34 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'편백숲', '제주 서귀포시 대장한로 97','N',8000,'N','제주토종흑염소목장','064-805-5099','10:00','21:00',null,35 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'페인터즈', '제주 서귀포시 대장한로 98','N',60000,'N','페인터로 총쏴보실래요?','064-745-7848','10:00','21:00',null,36 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'푸조시트로엥 자동차박물관', '제주 서귀포시 대장한로 99','N',6000,'N','자동차의 역사','064-742-2055','10:00','21:00',null,37 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'피규어뮤지엄', '제주 서귀포시 대장한로 100','N',12000,'N','만화, 조립 덕후들 모여라','064-792-2244','10:00','21:00',null,38 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'한국야구 명예의 전당', '제주 서귀포시 대장한로 101','N',1000,'N','한국 야구를 사랑하는 사람들이라면','064-760-6411','10:00','21:00',null,39 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'한라산국립공원', '제주 서귀포시 대장한로 102','N', NULL,'Y','한라산에 있는 국립공원','064-713-9950','10:00','21:00',null,40 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'한라생태숲', '제주 서귀포시 대장한로 103','N', NULL,'Y','한라의 생태를 느낄 수 있는 숲','064-710-8688','10:00','21:00',null,41 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'한라수목원', '제주 제주시 윤이나리 32','N', NULL,'Y','한라의 자연을 느낄 수 있는 수목원','064-710-7575','10:00','21:00',null,42 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'한림공원', '제주 제주시 윤이나리 33','N',12000,'Y','가족 단위에 가장 인기가 많은 공원','064-796-0001','10:00','21:00',null,42 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'항몽유적지', '제주 제주시 윤이나리 34','N', NULL,'N','역사 공부는 유적지 방문이 필수','064-710-6721','10:00','21:00',null,42 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'항일기념관', '제주 제주시 윤이나리 35','N', NULL,'N','일본에 대항한 조상님들의 용기를 기리며','064-783-2008','10:00','21:00',null,43 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'해녀박물관', '제주 제주시 윤이나리 36','N',1100,'N','해녀에 대한 모든 것','064-782-9898','10:00','21:00', '화요일',44 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'해양동물박물관', '제주 제주시 윤이나리 37','N',9000,'N','다양한 해양동물을 알 수 있는 박물관','064-782-3711','10:00','21:00',null,45 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'헬로키티 아일랜드', '제주 제주시 윤이나리 38','N',14000,'N','알아두세요 키티는 일본것 즐기지마세요','064-792-6114','10:00','21:00',null,46 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'휴애리', '제주 제주시 윤이나리 39','N',13000,'N','휴애리 한번 가보세요','064-732-2114','10:00','21:00',null,47 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'화조원', '제주 제주시 윤이나리 40','N',18000,'N','꽃 화인지 불 화인지 새 조인지 모르겠는 공원','064-799-9988','10:00','21:00',null,48 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'환상숲', '제주 제주시 윤이나리 41','N',5000,'Y','환상의 나라를 간접적으로 체험할 수 있는 숲','064-772-2488','10:00','21:00',null,49 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,1,'힐링카약파크 비체올린', '제주 제주시 윤이나리 42','N',14000,'N','힐링하고싶은 사람이라면 캬악을 타보세요','064-773-0000','10:00','21:00',null,50 ,default,default);
+
+-- 연주님 관광지 추가
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'포레스트 공룡사파리','제주 제주시 조천읍 선교로 474-1','Y',9000,'Y','제주 특색을 살린 아이들도 함께하는 공룡 테마파크','064-783-0300','09:00','21:00',NULL,58,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'만장가리','제주 제주시 구좌읍 만장굴길 182','N',5000,'Y','만장굴과 함께하는 이색적인 제주 동굴 탐험 ','064-710-7903','08:00','22:00','목요일',43,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주에어레일','제주 제주시 구좌읍 용오름로 641','Y',25000,'Y','제주를 한 눈에 볼 수 있는 레일 에어 바이크','064-783-0033','10:00','21:00','목요일',89,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'여포라식물원','제주 서귀포시 중문관광로 93','N',7000,'Y','온실 속 희귀 온대 식물들과 함꼐하는 이국적인 식물원','064-735-1100','09:00','19:00',NULL,61,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'검블레리','제주 제주시 우도면 연평리 677','Y',5000,'Y','제주의 멋진 바다와 함께하는 제주만의 이색적인 체험 검블레리.','010-7704-5646','09:00','01:00','화요일',62,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'바니스랜디드','제주 서귀포시 성산읍 난산리 25','Y',24000,'Y','제주의 광경을 한 번에, 멋진 베니스의 보트로 함께하는 힐링 여행','064-784-6565','10:00','24:00','화요일',55,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'솜므로마린스테이지','제주 서귀포시 중문관광로 154-17','N',10000,'Y','멋진 제주의 밤, 제주의 바다를 경험해 볼 수 있는 제주 바다 멋집.','1544-2988','09:00','19:00','목요일',77,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'쉬리의언덕','제주 서귀포시 색달동 3039-41','Y',45000,'Y','내 눈에 담긴 제주, 패러글라이딩과 함께!! 제주의 자연 체험하기','064-735-5114','09:00','20:00',NULL,23,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'라미네의식주','제주 제주시 조천읍 와선로 254','Y',15000,'Y','제주 생활의 모든 것, 제주의 의, 식, 주를 모두 함께해 볼 수 있는 이색지','064-782-0203','10:00','19:00','목요일',66,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주워터','제주 서귀포시 월드컵로 33 ','N',35000,'Y','제주의 바다, 제주의 물을 체험해보는 하는 이색 관광 ','064-739-1930','10:00','22:00',NULL,37,'N',NULL);
+
+-- 관광지 데이터 추가
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,5,4,1, '투용오름', '제주 서귀포시 kh동','N',3500,'Y','멋진 오름을 타봐요~~~','064-123-1132','10:00','16:00',NULL,30,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,1,4,1,'제주 어린이이이 박물관', '서귀포시 어린동 이오로 144번지','N',200000,'N','어린이들을 위한 테마 박물관','064-123-7653','10:00','16:00',NULL,44,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,5,2,1, '감귤 전시', '제주시 단귤동 귤귤로 ','N',35000,'N','귀여운 귤 감상','064-111-0991','10:00','18:00',NULL,88,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,5,1,1, '귤리데린', '서귀포시 해리리동 포터로 77번지','Y',25000,'N','귤과 해리포터의 만남','064-226-7832','09:00','16:00',NULL,27,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,8,5,1, '제주제주 이색 음식 박물관', '제주시 맛집동 먹자로 2번지','N',15000,'N','제주의 이색 음식을 보고 맛보세요','064-315-5112','10:00','18:00',NULL,8,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,6,4,1, '제주 오로라', '제주시 오로동 로라로 10번지','N',15000,'Y','제주에서 오로라를 구경하세여!','064-123-0121','09:00','18:00',NULL,97,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1, '제주최고의 관광지', '제주시 완투동 쓰리포로','N',15000,'Y','제주도 제일 최고의 관광지','064-221-1232','10:00','18:00',NULL,67,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,6,5,1, '금귤한라봉', '서귀포시 한라동 귤귤로 10번지','Y',35000,'Y','귤을 직접 따보자','064-816-5112','10:00','17:00',NULL,11,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,6,2,1, '썸머 타임', '제주시 여름동 더워로 2번지','N',5000,'N','제주 여름을 관광해보세요','064-876-5432','10:00','20:00',NULL,3,'N',NULL);
+
+INSERT INTO TRAVEL 
+VALUES(SEQ_TRAVEL.NEXTVAL,5,5,1, '제주 해양 박물관', '제주시 물고기동 바다로 2번지','N',10000,'N','제주 해양 생물들을 체험해보세요','064-123-3442','09:00','20:00',NULL,43,'N',NULL);
+
+-- 관광지 데이터 추가
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'포레스트 공룡사파리','제주 제주시 조천읍 선교로 474-1','Y',9000,'Y','제주 특색을 살린 아이들도 함께하는 공룡 테마파크','064-783-0300','09:00','21:00',NULL,58,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'만장가리','제주 제주시 구좌읍 만장굴길 182','N',5000,'Y','만장굴과 함께하는 이색적인 제주 동굴 탐험 ','064-710-7903','08:00','22:00','목요일',43,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'제주에어레일','제주 제주시 구좌읍 용오름로 641','Y',25000,'Y','제주를 한 눈에 볼 수 있는 레일 에어 바이크','064-783-0033','10:00','21:00','목요일',89,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,1,'여포라식물원','제주 서귀포시 중문관광로 93','N',7000,'Y','온실 속 희귀 온대 식물들과 함꼐하는 이국적인 식물원','064-735-1100','09:00','19:00',NULL,61,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'검블레리','제주 제주시 우도면 연평리 677','Y',5000,'Y','제주의 멋진 바다와 함께하는 제주만의 이색적인 체험 검블레리','010-7704-5646','09:00','01:00','화요일',62,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'바니스랜디드','제주 서귀포시 성산읍 난산리 25','Y',24000,'Y','제주의 광경을 한 번에! 멋진 베니스의 보트로 함께하는 힐링 여행','064-784-6565','10:00','24:00','화요일',55,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'솜므로마린스테이지','제주 서귀포시 중문관광로 154-17','N',10000,'Y','멋진 제주의 밤! 제주의 바다를 경험해 볼 수 있는 제주 바다 멋집.','1544-2988','09:00','19:00','목요일',77,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'쉬리의언덕','제주 서귀포시 색달동 3039-41','Y',45000,'Y','내 눈에 담긴 제주~ 패러글라이딩과 함께!! 제주의 자연 체험하기','064-735-5114','09:00','20:00',NULL,23,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'라미네의식주','제주 제주시 조천읍 와선로 254','Y',15000,'Y','제주 생활의 모든 것 제주의 의식주를 모두 함께해 볼 수 있는 이색지','064-782-0203','10:00','19:00','목요일',66,'N',NULL);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,4,1,'제주워터','제주 서귀포시 월드컵로 33 ','N',35000,'Y','제주의 바다~ 제주의 물을 체험해보는 하는 이색 관광 ','064-739-1930','10:00','22:00',NULL,37,'N',NULL);
+
+COMMIT;
+
+
+
