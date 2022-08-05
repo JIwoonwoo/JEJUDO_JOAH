@@ -122,7 +122,9 @@ public class CarService {
 		try {
 			conn = JDBCTemplate.getConnection();
 			reserveVoList = dao.reserveInquiry(conn, input);
-
+			if(reserveVoList!=null) {
+				System.out.println("예약자동차 조회 성공");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

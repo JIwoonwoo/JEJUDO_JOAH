@@ -52,7 +52,7 @@ public class UpdateMemberPanel extends ImgPanel {
 		name = new InvisiableTextField(null);
 		name.setBounds(146, 140, 321, 35);
 		name.setColumns(10);
-		name.setEnabled(false);
+//		name.setEnabled(false);
 		add(name);
 		
 		

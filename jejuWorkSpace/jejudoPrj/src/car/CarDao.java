@@ -130,10 +130,8 @@ public class CarDao {
 			pstmt.setInt(1, input);
 			rs = pstmt.executeQuery();
 			
-			reserveVoList = new ArrayList<ReserveVo>();
-	
 			while(rs.next()) {
-			
+				reserveVoList = new ArrayList<ReserveVo>();
 				ReserveVo rVo = new ReserveVo();
 				
 				int reserveNo = rs.getInt("CAR_NO");
@@ -153,7 +151,6 @@ public class CarDao {
 				rVo.setDayPrice(dayPrice);
 				
 				reserveVoList.add(rVo);
-				
 			}
 			
 		} finally {
