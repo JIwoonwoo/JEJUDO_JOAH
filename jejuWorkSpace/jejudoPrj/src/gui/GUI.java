@@ -388,6 +388,7 @@ public class GUI {
 					sugTripPanel.setVisible(true);
 					sugTripPanel.getNextBtn().setVisible(false);
 					where = "myPage";
+					return;
 				}
 				PopUpDialog dialog = new PopUpDialog(frame, "추천여행지", "설문조사를 실시해 주세요 -> 예약하기");
 				dialog.run();
