@@ -1,6 +1,6 @@
 -- 제주도 전체 스크립트
 --220804 ver2 추가 테이블 데이터, 관광지, 숙박, 자동차 최종 입력완료
---220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력
+--220805 ver3 맛집, 카페, 엑티비티 추가데이터 입력, 비행기 뷰 추가
 
 DROP TABLE "ROOM" CASCADE CONSTRAINTS;
 DROP TABLE "FLIGHT" CASCADE CONSTRAINTS;
@@ -6693,3 +6693,38 @@ INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'바다보며마라탕', '제주 서귀�
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,2,'사람많으면짜장나', '제주 서귀포시 짜장으로 112','N',8000,'Y','사람 많기로 유명한 전통 짜장면 맛집','064-865-8621','10:30','21:30',null,8 ,default,default);
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,2,'칼칼이칼국수', '제주 제주시 남중서로 222','N',7500,'N','해장으로 유명한 칼국수집','064-472-5826','10:00','22:00',null,3 ,default,default);
 
+-- 테스트 뷰 추가
+
+CREATE OR REPLACE VIEW GO
+AS
+(
+SELECT 
+    FR.MEMBER_NO "회원넘버" 
+    , FR.FLIGHT_NO AS "예약번호"
+    , FR.RESERVE_DATE AS "예약일"
+    , FT.DEPARTURE_DATE AS "출발날짜"
+    ,F.FLIGHT_NAME AS "항공편명"
+    , F.AIRLINE AS "항공사"
+    , F.DEPARTURE_TIME AS "출발시간"
+FROM FLIGHT_RESERVATION FR
+JOIN FLIGHT_TIME FT ON FT.FLIGHT_TIME_NO = FR.DEPARTURE_FLIGHT
+JOIN FLIGHT F ON FT.FLIGHT_NO = F.FLIGHT_NO
+WHERE FR.CANCEL_YN = 'N'
+);
+
+CREATE OR REPLACE VIEW BACK
+AS
+(
+SELECT 
+    FR.MEMBER_NO "회원넘버"
+    , FR.RESERVE_DATE AS "예약일"
+    , FT.DEPARTURE_DATE AS "복귀날짜" 
+    , F.FLIGHT_NAME AS"복귀항공편명"
+    , F.AIRLINE AS"복귀항공사"
+    , F.DEPARTURE_TIME AS "복귀출발시간"
+FROM FLIGHT_RESERVATION FR
+JOIN FLIGHT_TIME FT ON FT.FLIGHT_TIME_NO = FR.RETURN_FLIGHT
+JOIN FLIGHT F ON FT.FLIGHT_NO = F.FLIGHT_NO
+WHERE FR.CANCEL_YN = 'N'
+)
+;

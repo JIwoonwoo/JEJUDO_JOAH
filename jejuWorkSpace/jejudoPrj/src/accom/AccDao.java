@@ -44,13 +44,13 @@ public class AccDao {
 
 		// 호텔_게하 구분
 		String HG = "";
-		if(inputDto.getHG()==null) {
-			
-		}else if (inputDto.getHG().equals("H")) {
+		if (inputDto.getHG() == null) {
+
+		} else if (inputDto.getHG().equals("H")) {
 			HG = "AND A.TYPE = 'H'";
-		}else if (inputDto.getHG().equals("G")) {
+		} else if (inputDto.getHG().equals("G")) {
 			HG = "AND A.TYPE = 'G'";
-		} 
+		}
 		// SQL 준비
 		String sql = "SELECT A.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY, R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO WHERE CAPACITY >= ? AND CAPACITY <= ?"
 				+ budgetanswer
@@ -127,6 +127,7 @@ public class AccDao {
 
 				dto = new AccDto();
 
+				dto.setRoomno(rs.getInt("ROOM_NO"));
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setAddress(rs.getString("ACCOM_ADDRESS"));
 				dto.setPoolYN(rs.getString("POOL_YN"));
@@ -151,9 +152,6 @@ public class AccDao {
 
 	// 정한
 	public int accReserve(AccDto dto, Connection conn) throws Exception {
-
-//		System.out.println("선택하신 방을 예약하시겠습니까?  (Y/N 으로 대답)");
-//		String answer = InputUtil.sc.nextLine();
 
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		int result = 0;
@@ -193,7 +191,7 @@ public class AccDao {
 		try {
 			list = new ArrayList<AccDto>();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Main.loginNo);//회원번호
+			pstmt.setInt(1, Main.loginNo);// 회원번호
 
 			rs = pstmt.executeQuery();
 
@@ -203,30 +201,29 @@ public class AccDao {
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
 //				System.out.println(dto);
-//				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
 				list.add(dto);
 			}
 		} finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 
-	}//AccRC
-	
+	}// AccRC
+
 	public AccDto accReCheckDetail(AccDto inputDto, Connection conn) {
-		
-		
+
 		PreparedStatement pstmt = null; // sql을 담아주는 객체
 		ResultSet rs = null;
 		AccDto dto = null;
-		
+
 		String sql = "SELECT CHECK_IN, CHECK_OUT, AR.ACCOM_NO, R.ROOM_NO, ACCOM_NAME, ACCOM_ADDRESS, A.POOL_YN, R.ROOM_NAME,R.ROOM_PRICE, R.CAPACITY , R.ANIMAL_YN, R.POOL_ABLE_YN, AA.ACCOM_AR, ROOM_VIEW_INFO, AR.RESERVE_DATE FROM ACCOM A JOIN ROOM R ON A.ACCOM_NO = R.ACCOM_NO JOIN ACCOM_AR_INFO AA ON A.ACCOM_AROUND = AA.ACCOM_AR_NO JOIN ROOM_VIEW_INFO V ON R.ROOM_VIEW = V.ROOM_VIEW_NO JOIN ACCOM_RESERVATION AR ON AR.ROOM_NO = R.ROOM_NO WHERE AR.ACCOM_NO = ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, inputDto.getReserveNo());//예약번호여야함
+			pstmt.setInt(1, inputDto.getReserveNo());// 예약번호여야함
 
 			rs = pstmt.executeQuery();
 
@@ -248,8 +245,8 @@ public class AccDao {
 				dto.setRoomview(rs.getString("ROOM_VIEW_INFO"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
 
-//				System.out.print("예약번호 : " + dto.getReserveNo());
-//				System.out.print("예약일자 : " + dto.getReserveDate());
+				System.out.print("예약번호 : " + dto.getReserveNo());
+				System.out.print("예약일자 : " + dto.getReserveDate());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -257,5 +254,24 @@ public class AccDao {
 
 		}
 		return dto;
+	}
+
+	public int reservCancel(AccDto dto, Connection conn, int cancelno) {
+
+		PreparedStatement pstmt = null; // sql을 담아주는 객체
+		int result = 0;
+
+		String sql = "UPDATE ACCOM_RESERVATION SET CANCEL_YN = 'Y' WHERE ACCOM_NO = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cancelno);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
 	}
 }

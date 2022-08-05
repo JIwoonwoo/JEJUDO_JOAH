@@ -120,7 +120,7 @@ public class AccService {
 			result = new AccDao().accReserve(dto, conn);
 
 			if (result == 1) {
-				System.out.println("성공");
+				System.out.println("예약 성공");
 				JDBCTemplate.commit(conn);
 			} else {
 				JDBCTemplate.rollback(conn);
@@ -181,5 +181,32 @@ public class AccService {
 		return dto;
 
 	}// accRC
+
+	public void reservCancel(int cancelno) {
+		
+		Connection conn = null;
+		int result = 0;
+		AccDto dto = new AccDto();
+		try {
+			conn = JDBCTemplate.getConnection();
+
+			result = new AccDao().reservCancel(dto, conn, cancelno);
+
+			if (result == 1) {
+				System.out.println("예약 취소됨");
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			JDBCTemplate.rollback(conn);
+			System.out.println("error 예약취소 실패");
+		}
+
+		
+		
+	}
 
 }
