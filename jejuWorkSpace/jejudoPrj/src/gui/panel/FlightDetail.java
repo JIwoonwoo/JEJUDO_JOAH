@@ -9,6 +9,8 @@ import gui.button.BackBtn;
 import gui.button.HomeBtn;
 
 public class FlightDetail extends ImgPanel {
+	
+	private int no;
 
 	private HomeBtn homeBtn;
 	private BackBtn backBtn;
@@ -108,4 +110,14 @@ public class FlightDetail extends ImgPanel {
 	public BackBtn getBackBtn() {
 		return backBtn;
 	}
+
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	
 }
