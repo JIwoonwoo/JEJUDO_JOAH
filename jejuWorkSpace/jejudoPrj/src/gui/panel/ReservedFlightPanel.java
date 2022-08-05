@@ -17,6 +17,7 @@ import gui.button.HomeBtn;
 import gui.button.NextBtn;
 import gui.document.MyIntFilter;
 import gui.field.InvisiableTextField;
+import javax.swing.SpinnerNumberModel;
 
 public class ReservedFlightPanel extends ImgPanel {
 
@@ -42,7 +43,7 @@ public class ReservedFlightPanel extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 
-		contPerson = new JSpinner();
+		contPerson = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
 		contPerson.setFont(new Font("굴림", Font.PLAIN, 15));
 		contPerson.setBounds(159, 420, 324, 41);
 		contPerson.setOpaque(false);
@@ -95,7 +96,7 @@ public class ReservedFlightPanel extends ImgPanel {
 	}
 
 	public void reset() {
-		contPerson.setValue(Integer.valueOf(0));
+		contPerson.setValue(Integer.valueOf(1));
 		goDay.setText("YYMMDD");
 		backDay.setText("YYMMDD");
 		minMoney.setText("0");
@@ -138,5 +139,4 @@ public class ReservedFlightPanel extends ImgPanel {
 	public String getComboBox() {
 		return (String) comboBox.getSelectedItem();
 	}
-
 }

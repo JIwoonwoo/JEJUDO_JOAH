@@ -153,7 +153,7 @@ public class Flight_Service {
 		return result;
 	}
 		
-	public List<Flight_Vo_MyFlight> search2(Flight_Vo_MyFlight myvo) {
+	public List<Flight_Vo_MyFlight> search2() {
 //		//비즈니스 로직
 //		if(myvo.getMyMemberNo().equals(null)) {
 //			System.out.println("입력하신 회원 정보가 없습니다.");
@@ -188,7 +188,7 @@ public class Flight_Service {
 		try {
 			conn = JDBCTemplate.getConnection();
 			
-			myFlightVoList = new Flight_Dao().searchAndDelete(myvo, conn);
+			myFlightVoList = new Flight_Dao().searchAndDelete(conn);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

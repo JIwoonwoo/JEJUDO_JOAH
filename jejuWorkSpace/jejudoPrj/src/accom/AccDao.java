@@ -202,8 +202,8 @@ public class AccDao {
 				dto.setReserveNo(Integer.parseInt(rs.getString("ACCOM_NO")));
 				dto.setAccomname(rs.getString("ACCOM_NAME"));
 				dto.setReserveDate(rs.getTimestamp("RESERVE_DATE"));
-				System.out.println(dto);
-				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
+//				System.out.println(dto);
+//				System.out.println(dto.getReserveNo() + "|" + dto.getAccomname() + "|" + dto.getReserveDate());
 				list.add(dto);
 			}
 		} finally {

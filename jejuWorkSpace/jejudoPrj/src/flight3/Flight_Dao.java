@@ -244,11 +244,11 @@ public class Flight_Dao {
 		
 	}
 	
-	public List<Flight_Vo_MyFlight> searchAndDelete(Flight_Vo_MyFlight myvo, Connection conn) throws Exception {
+	public List<Flight_Vo_MyFlight> searchAndDelete(Connection conn) throws Exception {
 
 		
 		//SQL 준비
-		String sql = "SELECT 회원넘버, 예약일, 출발항공선택번호, 출발날짜, 항공편명, 항공사, 출발시간, 복귀항공선택번호, 복귀날짜, 복귀항공편명, 복귀항공사, 복귀출발시간\r\n"
+		String sql = "SELECT 회원넘버,예약번호, 예약일, 출발날짜, 항공편명, 항공사, 출발시간, 복귀날짜, 복귀항공편명, 복귀항공사, 복귀출발시간\r\n"
 				+ "FROM GO\r\n"
 				+ "JOIN BACK USING(회원넘버, 예약일)\r\n"
 				+ "WHERE 회원넘버 = ?";
@@ -260,7 +260,7 @@ public class Flight_Dao {
 		try {
 			//SQL 담을 객체 준비 및 SQL 완성
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, myvo.getMyMemberNo());
+			pstmt.setInt(1, Main.loginNo);
 
 			
 			//SQL 실행 및 결과 저장
@@ -274,12 +274,12 @@ public class Flight_Dao {
 			while(rs.next()) {
 				String myMemberNo = rs.getString("회원넘버");
 				String reservDate = rs.getString("예약일");
-				String myDepartureNo = rs.getString("출발항공선택번호");
+//				String myDepartureNo = rs.getString("출발항공선택번호");
 				String departureDate = rs.getString("출발날짜");
 				String flightName = rs.getString("항공편명");
 				String airline = rs.getString("항공사");
 				String departureTime = rs.getString("출발시간");
-				String myReturnNo = rs.getString("복귀항공선택번호");
+//				String myReturnNo = rs.getString("복귀항공선택번호");
 				String returnDate = rs.getString("복귀날짜");
 				String returnFlightName = rs.getString("복귀항공편명");
 				String returnAirline = rs.getString("복귀항공사");
@@ -287,18 +287,21 @@ public class Flight_Dao {
 				
 				
 				Flight_Vo_MyFlight vo = new Flight_Vo_MyFlight();
+				vo.setReserveNo(rs.getInt("예약번호"));
 				vo.setMyMemberNO(myMemberNo);
 				vo.setReservDate(reservDate);
-				vo.setMyDepartureNo(myDepartureNo);
+//				vo.setMyDepartureNo(myDepartureNo);
 				vo.setDepartureDate(departureDate);
 				vo.setFlightName(flightName);
 				vo.setAirline(returnAirline);
 				vo.setDepartureTime(departureTime);
-				vo.setMyReturnNo(myReturnNo);
+//				vo.setMyReturnNo(myReturnNo);
 				vo.setReturnDate(returnDate);
 				vo.setReturnFlightName(returnFlightName);
 				vo.setReturnAirline(returnAirline);
 				vo.setReturnTime(returnTime);
+				
+//				System.out.println(vo);
 				
 //				System.out.println("  " +myMemberNo + " " +" | " + reservDate + " | " + myDepartureNo+ " | " +departureDate + " | " 
 //				+flightName + " | " + airline+ " | " + " "+ departureTime + " " + " | " +myReturnNo+ " | "

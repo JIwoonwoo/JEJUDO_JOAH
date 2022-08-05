@@ -9,6 +9,7 @@ import accom.AccDto;
 import car.ReserveVo;
 import flight3.Flight_Vo;
 import flight3.Flight_Vo_MyFlight;
+import payment.PayDao;
 import payment.PayVo;
 
 public class VoBox {
@@ -102,7 +103,8 @@ public class VoBox {
 			e.printStackTrace();
 		}  
 		
-		voc.setCarPay(Integer.parseInt(vo.getDayPrice())*Days);
+		int rentPay = new PayDao().rentPayCount(Integer.parseInt(vo.getDayPrice()),Days,Integer.parseInt(vo.getInsurance()));
+		voc.setCarPay(rentPay);
 		
 	}
 

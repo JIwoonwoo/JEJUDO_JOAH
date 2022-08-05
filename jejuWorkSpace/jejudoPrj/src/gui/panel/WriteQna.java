@@ -62,6 +62,11 @@ public class WriteQna extends ImgPanel {
 				
 	}
 	
+	public void reset() {
+		textField.setText(null);
+		textArea.setText(null);
+	}
+	
 	public HomeBtn getHomeBtn() {
 		return homeBtn;
 	}

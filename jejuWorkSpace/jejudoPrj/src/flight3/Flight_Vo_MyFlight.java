@@ -36,6 +36,7 @@ public class Flight_Vo_MyFlight { //사용자가 선택한 비행기 예약
 	private String myDepartureFlightNo;
 	private String myReturnFlightNo;
 	private String myMemberNo;
+	private int reserveNo;
 	
 	private String reservDate; 
 	private String myDepartureNo; 
@@ -189,6 +190,16 @@ public class Flight_Vo_MyFlight { //사용자가 선택한 비행기 예약
 
 
 
+
+
+	public int getReserveNo() {
+		return reserveNo;
+	}
+
+
+	public void setReserveNo(int reserveNo) {
+		this.reserveNo = reserveNo;
+	}
 
 
 	//toString

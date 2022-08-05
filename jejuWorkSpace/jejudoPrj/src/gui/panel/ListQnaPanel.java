@@ -48,6 +48,7 @@ public class ListQnaPanel extends ImgPanel {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 106, 500, 653);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(scrollPane);
 
 		panel.setBorder(null);

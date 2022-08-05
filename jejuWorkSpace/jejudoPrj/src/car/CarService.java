@@ -37,7 +37,7 @@ public class CarService {
 			return carVoList;
 		}
 
-		if(rentalDate > returnDate) {
+		if(rentalDate >= returnDate) {
 			System.out.println("날짜를 확인해주세요.");
 			return carVoList;
 		}
