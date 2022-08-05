@@ -10,6 +10,10 @@ public class Flight_Service {
 
 	public List<Flight_Vo> reservation(Flight_Vo vo, int fno) {
 		
+		if(vo.getFlightPrice().equals("0")) {
+			vo.setFlightPrice("10000000");
+		}
+		
 		//비즈니스 로직 (출발 날짜, 복귀 날짜, 출발 공항 잘 입력하는지 확인하기)
 		if(vo.getDepartureDate()==null) {
 			System.out.println("출발 날짜 입력은 필수입니다.");
