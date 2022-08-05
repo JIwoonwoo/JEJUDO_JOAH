@@ -113,7 +113,6 @@ public class PayService {
 			
 			PayVo voc = voBox.getVoc();
 			
-			
 			if (voc==null) {
 //				System.out.println("렌트카를 예약하지 않았습니다. 이대로 진행 하시겠습니까?");
 //				System.out.println("1. 진행, 0.다시 예약하기");

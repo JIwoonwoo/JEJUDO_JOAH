@@ -14,6 +14,8 @@ import javax.swing.ScrollPaneConstants;
 import accom.AccDto;
 import accom.AccService;
 import car.ReserveVo;
+import flight3.Flight_Service;
+import flight3.Flight_Vo_MyFlight;
 import gui.GUI;
 import gui.button.BackBtn;
 import gui.button.HomeBtn;
@@ -55,11 +57,12 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(25, 155, 496, 149);
+		
 		add(scrollPane);
 
 		panel = new JPanel();
 		panel.setLayout(null);
-		scrollPane.setViewportView(panel);
+//		scrollPane.setViewportView(panel);
 
 		panel.setBorder(null);
 		panel.setBackground(new Color(250, 250, 250));
@@ -99,6 +102,10 @@ public class ReservInforPanel extends ImgPanel {
 		scrollPane_2.setBackground(null);
 		scrollPane_2.setOpaque(false);
 		scrollPane_2.getViewport().setOpaque(false);
+		
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane_1.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane_2.getVerticalScrollBar().setUnitIncrement(16);
 
 	}
 
@@ -201,6 +208,47 @@ public class ReservInforPanel extends ImgPanel {
 		panel_1.setPreferredSize(panel_1.getPreferredSize());
 		
 		scrollPane_1.setViewportView(panel_1);
+	}
+	
+	public void setFlightList(List<Flight_Vo_MyFlight> list) {
+		panel.removeAll();
+		panel.revalidate();
+		panel.repaint();
+		int i = 0;
+		for (Flight_Vo_MyFlight vo : list) {
+
+			FlightListTemplate b = new FlightListTemplate(vo);
+			b.setBounds(15, 0 + (41 * i), 464, 41);
+			b.getButton().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					b.setSelect();
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					b.resetColor();
+				}
+			});
+			b.getButton().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					GUI.flightDetail.set(vo);
+					GUI.flightDetail.setVisible(true);
+				}
+			});
+			panel.add(b);
+
+			i++;
+		}
+		
+		panel.setSize(0, 41*(i+1));
+		
+		panel.setPreferredSize(panel.getPreferredSize());
+		
+		scrollPane.setViewportView(panel);
 	}
 
 }

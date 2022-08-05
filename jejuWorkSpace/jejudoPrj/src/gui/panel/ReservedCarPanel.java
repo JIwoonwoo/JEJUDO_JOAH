@@ -11,6 +11,8 @@ import gui.button.HomeBtn;
 import gui.button.InvisiableRadio;
 import gui.button.NextBtn;
 import gui.field.InvisiableTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JCheckBox;
 
 public class ReservedCarPanel extends ImgPanel {
 	
@@ -27,6 +29,8 @@ public class ReservedCarPanel extends ImgPanel {
 	private InvisiableRadio carSize2;
 	private InvisiableRadio carSize3;
 
+	private JCheckBox notReserve;
+
 	public ReservedCarPanel() {
 		super("reservedCar");
 
@@ -40,6 +44,7 @@ public class ReservedCarPanel extends ImgPanel {
 		add(backBtn);
 		
 		contPerson = new JSpinner();
+		contPerson.setModel(new SpinnerNumberModel(1, 1, 100, 1));
 		contPerson.setFont(new Font("굴림", Font.PLAIN, 15));
 		contPerson.setBounds(159, 407, 324, 41);
 		contPerson.setOpaque(false);
@@ -74,11 +79,17 @@ public class ReservedCarPanel extends ImgPanel {
 		carSize3.setLocation(361, 509);
 		carSize2.setLocation(198, 509);
 		carSize1.setLocation(34, 509);
+		
+		notReserve = new JCheckBox(" 렌트카 예약 안함");
+		notReserve.setFont(new Font("굴림", Font.PLAIN, 15));
+		notReserve.setBounds(33, 615, 192, 35);
+		notReserve.setOpaque(false);
+		add(notReserve);
 			
 	}
 	
 	public void reset() {
-		contPerson.setValue(Integer.valueOf(0));
+		contPerson.setValue(Integer.valueOf(1));
 		goDay.setText("YYMMDD");
 		backDay.setText("YYMMDD");
 		if(sizeG!=null)sizeG.clearSelection();
@@ -111,6 +122,14 @@ public class ReservedCarPanel extends ImgPanel {
 	public String getCarSize() {
 		return bgc.getText(sizeG);
 	}
-	
 
+	public JCheckBox getNotReserve() {
+		return notReserve;
+	}
+
+	public void setNotReserve(JCheckBox notReserve) {
+		this.notReserve = notReserve;
+	}
+	
+	
 }

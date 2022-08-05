@@ -94,6 +94,10 @@ public class SugTripPanel extends ImgPanel {
 		scrollPane_2.setBackground(null);
 		scrollPane_2.setOpaque(false);
 		scrollPane_2.getViewport().setOpaque(false);
+		
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane_1.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane_2.getVerticalScrollBar().setUnitIncrement(16);
 
 	}
 	

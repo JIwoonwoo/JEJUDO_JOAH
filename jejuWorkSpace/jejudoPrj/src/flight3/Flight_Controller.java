@@ -144,7 +144,7 @@ public class Flight_Controller {
 		Flight_Vo_MyFlight myvo = new Flight_Vo_MyFlight();
 		myvo.setMyMemberNO(myMemberNo);
 		
-		List<Flight_Vo_MyFlight> myFlightVoList = new Flight_Service().search2(myvo);
+		List<Flight_Vo_MyFlight> myFlightVoList = new Flight_Service().search2();
 		 
 		
 		for(int i = 0 ; i < myFlightVoList.size(); ++i) {

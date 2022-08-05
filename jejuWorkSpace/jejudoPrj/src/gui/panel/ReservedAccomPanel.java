@@ -15,6 +15,7 @@ import gui.button.InvisiableCheck;
 import gui.button.NextBtn;
 import gui.document.MyIntFilter;
 import gui.field.InvisiableTextField;
+import javax.swing.SpinnerNumberModel;
 
 public class ReservedAccomPanel extends ImgPanel {
 	
@@ -45,6 +46,7 @@ public class ReservedAccomPanel extends ImgPanel {
 		add(backBtn);
 
 		contPerson = new JSpinner();
+		contPerson.setModel(new SpinnerNumberModel(1, 1, 100, 1));
 		contPerson.setFont(new Font("굴림", Font.PLAIN, 15));
 		contPerson.setBounds(159, 420, 324, 41);
 		contPerson.setOpaque(false);
@@ -94,7 +96,7 @@ public class ReservedAccomPanel extends ImgPanel {
 	}
 
 	public void reset() {
-		contPerson.setValue(Integer.valueOf(0));
+		contPerson.setValue(Integer.valueOf(1));
 		goDay.setText("YYMMDD");
 		backDay.setText("YYMMDD");
 //		minMoney.setText("0");

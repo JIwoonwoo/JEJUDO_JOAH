@@ -214,6 +214,9 @@ public class PayDao {
 				vo = new PayVo();
 				vo.setCarNo(cNo);
 				vo.setCarPay(rentPay);
+				
+				System.out.println(cp);
+				System.out.println(rentPay);
 
 			}
 		} finally {
@@ -224,12 +227,12 @@ public class PayDao {
 		return vo;
 	}
 	
-	private int rentPayCount(int cp, int cDay, int cIns) {
+	public int rentPayCount(int cp, int cDay, int cIns) {
 		int rentPay = 0;
 		switch(cIns) {
-		case 1 : rentPay = cp*cDay*11/10;break;
-		case 2 : rentPay = cp*cDay*12/10;break;
-		case 3 : rentPay = cp*cDay*18/10;break;
+		case 1 : rentPay = cp*cDay*11/10; System.out.println("test"); break;
+		case 2 : rentPay = cp*cDay*12/10; System.out.println("test"); break;
+		case 3 : rentPay = cp*cDay*18/10;System.out.println("test"); break;
 		default : rentPay = cp*cDay;break;
 		}
 		
