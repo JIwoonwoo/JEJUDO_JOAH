@@ -1,9 +1,13 @@
 package car;
 
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import car_main.Main;
+
 import util.JDBCTemplate;
 
 
@@ -18,6 +22,7 @@ public class CarService {
 //		int person = Integer.parseInt(vo.getCarPerson());
 //		int size = Integer.parseInt(vo.getCarSize());
 //		int fuel = Integer.parseInt(vo.getCarFuel());
+	    
 		int person = Parsing.getInt(vo.getCarPerson());
 		int size = Parsing.getInt(vo.getCarSize());
 		int rentalDate = Parsing.getInt(vo.getRentalDate());
@@ -37,6 +42,13 @@ public class CarService {
 			return carVoList;
 		}
 		
+		int result = Parsing.getDate(vo.getRentalDate());
+	    
+		if(result >= 0) {
+			System.out.println("날짜를 확인해주세요.");
+	        return carVoList;
+		}
+		
 		if(person >= 13) {
 			System.out.println(person+"인승 차가 없습니다.");
 			return carVoList;
@@ -46,7 +58,6 @@ public class CarService {
 			System.out.println("잘못된 입력입니다.");
 			return carVoList;
 		}
-		
 		
 		Connection conn = null;
 		try {

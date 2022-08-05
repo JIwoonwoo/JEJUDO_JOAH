@@ -118,11 +118,12 @@ public class CarDao {
 		List<ReserveVo> reserveVoList = null;
 		
 		try {
-			String sql = "SELECT 예약.CAR_NO,RENTAL_NO, RENTAL_DATE, RETURN_DATE, RESERVE_DATE, 보험.INSURANCE, DAY_PRICE\r\n"
-					+ "FROM CAR_RESERVATION 예약\r\n"
-					+ "JOIN INSURANCE 보험 ON 예약.INSURANCE = 보험.INSURANCE_NO\r\n"
-					+ "JOIN RENTAL_CAR 렌트 USING(RENTAL_NO)\r\n"
+			String sql = "SELECT 예약.CAR_NO,RENTAL_NO, RENTAL_DATE, RETURN_DATE, RESERVE_DATE, 보험.INSURANCE, DAY_PRICE \r\n"
+					+ "FROM CAR_RESERVATION 예약 \r\n"
+					+ "JOIN INSURANCE 보험 ON 예약.INSURANCE = 보험.INSURANCE_NO \r\n"
+					+ "JOIN RENTAL_CAR 렌트 USING(RENTAL_NO)  \r\n"
 					+ "WHERE CANCEL_YN = 'N'\r\n"
+					+ "AND PAID_YN = 'Y'\r\n"
 					+ "AND 예약.MEMBER_NO = ?\r\n"
 					+ "ORDER BY CAR_NO";
 			

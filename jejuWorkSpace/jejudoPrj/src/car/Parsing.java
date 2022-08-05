@@ -1,6 +1,10 @@
 package car;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
+
+import java.sql.Date;
 
 public class Parsing {
 	
@@ -25,5 +29,29 @@ public class Parsing {
 			System.out.println("제대로 입력해주세요");
 		}
 		return parse;
+	}
+	
+	public static int getDate(String rentalDate) {
+		SimpleDateFormat f = new SimpleDateFormat("yyMMdd");
+	      
+	      //오늘날짜 yyyy-MM-dd로 생성
+	      String todayfm = f.format(new Date(System.currentTimeMillis()));
+	       
+	      //비교할 date와 today를데이터 포맷으로 변경
+	      Date rental;
+	      int result = 0;
+		try {
+			 rental = new Date(f.parse(rentalDate).getTime());
+			 Date today = new Date(f.parse(todayfm).getTime());
+		       
+		      //compareTo메서드를 통한 날짜비교
+		      result = today.compareTo(rental); 
+
+		} catch (Exception e) {
+			System.out.println("날짜 비교 중 예외 발생 ! ");
+			e.printStackTrace();
+		}
+		return result;
+	     
 	}
 }
