@@ -6615,22 +6615,22 @@ INSERT INTO TRAVEL
 VALUES(SEQ_TRAVEL.NEXTVAL,7,2,3,'말에게 당근 주기 체험', '제주시 얼굴면 상상로','Y',25000,'N','귀엽고 멋진 말에게 밥을 먹이를 주세요!','064-983-9292','10:00','16:00','매주 월요일',13,'N',NULL);
 
 INSERT INTO TRAVEL 
-VALUES(SEQ_TRAVEL.NEXTVAL,6,2,3,'대정 돌고래 에코투어', '제주 서귀포시 대정읍 최남단해안로','Y',31000,'N','자연을 누비는 돌고래를 지켜봐주세요','11:00','16:00',NULL,NULL,76,'N',NULL);
+VALUES(SEQ_TRAVEL.NEXTVAL,6,2,3,'대정 돌고래 에코투어', '제주 서귀포시 대정읍 최남단해안로','Y',31000,'N','자연을 누비는 돌고래를 지켜봐주세요','064-565-8987','11:00','16:00',NULL,76,'N',NULL);
 
 INSERT INTO TRAVEL 
 VALUES(SEQ_TRAVEL.NEXTVAL,5,5,3,'제주 해녀 물질 체험', '제주 서귀포시 안덕면 형제해안로 13-1 사계어촌계','Y',50000,'N','제주 바다에서 신선한 해산물을 직접 따보세요!',NULL,NULL,NULL,NULL,31,'N',NULL);
 
 INSERT INTO TRAVEL 
-VALUES(SEQ_TRAVEL.NEXTVAL,5,5, 3,'고부루 비어스파', '제주특별자치도 서귀포시 남성중로 171','Y',240000,'N','무제한 수제 맥주와 함께 1박 2일','17:00',NULL,NULL,NULL,31,'N',NULL);
+VALUES(SEQ_TRAVEL.NEXTVAL,5,5, 3,'고부루 비어스파', '제주특별자치도 서귀포시 남성중로 171','Y',240000,'N','무제한 수제 맥주와 함께 1박 2일',NULL,'17:00',NULL,NULL,31,'N',NULL);
 
 INSERT INTO TRAVEL 
-VALUES(SEQ_TRAVEL.NEXTVAL,5,2,3,'아날로그도 괜찮아', '제주특별자치도 제주시 종달리, 구좌읍','Y',25000,'N','나에게 집중하는 타자기 체험','09:00','18:00','둘째주 월요일',NULL,78,'N',NULL);
+VALUES(SEQ_TRAVEL.NEXTVAL,5,2,3,'아날로그도 괜찮아', '제주특별자치도 제주시 종달리, 구좌읍','Y',25000,'N','나에게 집중하는 타자기 체험',NULL,'09:00','18:00','둘째주 월요일',78,'N',NULL);
 ---
 INSERT INTO TRAVEL 
 VALUES(SEQ_TRAVEL.NEXTVAL,5,5,3,'감귤 샹그리아 만들기 체험', '제주특별자치도 제주시 한경면 구좌읍','Y',25000,'N','싱그럽고 상큼한 샹그리아를 직접 만들어보세요','064-188-0002','09:00','16:00',NULL,42,'N',NULL);
 
 INSERT INTO TRAVEL 
-VALUES(SEQ_TRAVEL.NEXTVAL,8,2,3,' 찐 불멍 체험', '제주도 제주시 애월읍 애납로 165 1층','Y',49000,'N','쿨 대니와 함께 하는 미국식 불멍 체험','18:00','20:00',NULL,NULL,98,'N',NULL);
+VALUES(SEQ_TRAVEL.NEXTVAL,8,2,3,' 찐 불멍 체험', '제주도 제주시 애월읍 애납로 165 1층','Y',49000,'N','쿨 대니와 함께 하는 미국식 불멍 체험',NULL,'18:00','20:00',NULL,98,'N',NULL);
 
 -- 엑티비티 추가
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,1,4,3, '제주 감귤사진관', '제주시 감각면 사진도로 352','Y',70000,'Y','제주도에서 특별한 사진을 남겨보세요','064-258-2091','10:00','17:00',NULL,55,'N',NULL);
@@ -6672,7 +6672,7 @@ INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,2,4,'그루브','제주 제주시 한림읍 
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,7,3,4,'제주기와','제주 제주시 애월읍 광령남4길 45-1','N',8500,'Y','제주도 애월 야경이 멋진 한옥 피크닉 카페','070-8899-7515','09:16','18:16','목요일',50,'N',NULL);
 
 -- 맛집, 카페 추가데이터
-INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'제주보쌈', '제주 제주시 요정로 421 3호','N',40000,'Y','보쌈이 맛있는 제주시 맛집','064-5353-5399','11:00','24:00:00',null,3 ,default,default);
+INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'제주보쌈', '제주 제주시 요정로 421 3호','N',40000,'Y','보쌈이 맛있는 제주시 맛집','064-5353-5399','11:00','24:00',null,3 ,default,default);
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'샤브샤브제주쌈', '제주 서귀포시 인어꼬리로 73','N',60000,'N','샤브샤브와 보쌈이 맛있는 맛집','064-5388-8253','10:00','21:00',null,3 ,default,default);
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,6,3,2,'흑돼지샤브', '제주 서귀포시 한입거리 33','N',40000,'N','흑돼지로 먹는 샤브샤브','064-258-3432','13:00','23:00',null,3 ,default,default);
 INSERT INTO TRAVEL VALUES(SEQ_TRAVEL.NEXTVAL,5,4,2,'감귤샌드', '제주 제주시 두입거리 59','Y',9000,'N','신선한 감귤로 직접 만들어먹는 과일 샌드위치','064-3243-3422','11:00','20:00', '월요일',6 ,default,default);
