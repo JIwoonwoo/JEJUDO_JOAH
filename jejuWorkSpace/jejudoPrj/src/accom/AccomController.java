@@ -44,11 +44,11 @@ public class AccomController {
 		
 		AccTestMenu.Accommodation = dto;
 		
-		//검색메소드 호출
 		new AccService().accSearch(dto);
 		
 	}
 	
+	//검색메소드 호출
 	public void accSelect() {
 		
 		System.out.println("예약하실 숙소 번호를 입력하세요.");
@@ -63,6 +63,7 @@ public class AccomController {
 		dto.setCheckout(checkout);
 		
 		AccDto result = new AccService().accSelect(dto);
+		new AccService().accReserve(dto);
 //		
 //		if(result == 1) {
 //			//예약 성공
@@ -92,5 +93,16 @@ public class AccomController {
 		dto.setReserveNo(reserveno);
 		
 		new AccService().accReCheckDetail(dto);
+	}
+	
+	public void reservCancel() {
+		
+		System.out.println("취소하실 예약번호를 입력하세요.");
+		
+		int cancelno = InputUtil.getInt();
+		
+		new AccService().reservCancel(cancelno);
+		
+		
 	}
 }
