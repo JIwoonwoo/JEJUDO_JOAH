@@ -385,7 +385,7 @@ public class MemberService {
 
 	public boolean checkNick(String nick) {
 		// 특문 불가능 2-8글자
-		String pattern = "^[가-힣a-z0-9]{2,8}$";
+		String pattern = "^[가-힣a-zA-Z0-9]{2,8}$";
 		return Pattern.matches(pattern, nick);
 	}
 

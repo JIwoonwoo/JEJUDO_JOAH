@@ -105,20 +105,21 @@ public class SugTripPanel extends ImgPanel {
 		SurveyVo svo = new SurveyService().search(Main.loginNo);
 		if(svo==null) {
 			return false;
+		}else {
+			svo.setCategory("1");	
+			ts.recommTravel(svo);
+			set(ts.recommTravel(svo), panel, scrollPane);
+			svo.setCategory("3");	
+			ts.recommTravel(svo);
+			set(ts.recommTravel(svo), panel_1, scrollPane_1);
+			svo.setCategory("2");	
+			List<TravelVo> list = ts.recommTravel(svo);
+			svo.setCategory("4");	
+			list.addAll(ts.recommTravel(svo));
+			set(list, panel_2, scrollPane_2);
+	
+			return true;
 		}
-		svo.setCategory("1");	
-		ts.recommTravel(svo);
-		set(ts.recommTravel(svo), panel, scrollPane);
-		svo.setCategory("3");	
-		ts.recommTravel(svo);
-		set(ts.recommTravel(svo), panel_1, scrollPane_1);
-		svo.setCategory("2");	
-		List<TravelVo> list = ts.recommTravel(svo);
-		svo.setCategory("4");	
-		list.addAll(ts.recommTravel(svo));
-		set(list, panel_2, scrollPane_2);
-
-		return true;
 	}
 
 	public HomeBtn getHomeBtn() {
