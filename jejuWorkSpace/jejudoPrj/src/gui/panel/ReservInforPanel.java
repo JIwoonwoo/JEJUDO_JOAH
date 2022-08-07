@@ -46,14 +46,6 @@ public class ReservInforPanel extends ImgPanel {
 		backBtn = new BackBtn();
 		add(backBtn);
 
-		updateBtn = new ImgButton("예약변경");
-		updateBtn.setLocation(0, 828);
-		add(updateBtn);
-
-		deleteBtn = new ImgButton("예약취소");
-		deleteBtn.setLocation(275, 828);
-		add(deleteBtn);
-
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(25, 155, 496, 149);

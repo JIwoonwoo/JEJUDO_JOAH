@@ -164,8 +164,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				q1.setVisible(false);
-				reservInforPanel.getUpdateBtn().setVisible(true);
-				reservInforPanel.getDeleteBtn().setVisible(true);
+//				reservInforPanel.getUpdateBtn().setVisible(true);
+//				reservInforPanel.getDeleteBtn().setVisible(true);
 				reservInforPanel.getBackBtn().setVisible(true);
 				reservInforPanel.getNextBtn().setVisible(false);
 				reservInforPanel.setVisible(true);
@@ -636,8 +636,8 @@ public class GUI {
 					reservInforPanel.setFlightList(list3);
 
 				}
-				reservInforPanel.getUpdateBtn().setVisible(true);
-				reservInforPanel.getDeleteBtn().setVisible(true);
+//				reservInforPanel.getUpdateBtn().setVisible(true);
+//				reservInforPanel.getDeleteBtn().setVisible(true);
 				reservInforPanel.getBackBtn().setVisible(true);
 				reservInforPanel.getNextBtn().setVisible(false);
 				reservInforPanel.setVisible(true);
