@@ -28,8 +28,6 @@ public class ReservInforPanel extends ImgPanel {
 	private HomeBtn homeBtn;
 	private NextBtn nextBtn;
 	private BackBtn backBtn;
-	private JButton updateBtn;
-	private JButton deleteBtn;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -247,22 +245,6 @@ public class ReservInforPanel extends ImgPanel {
 		panel.setPreferredSize(panel.getPreferredSize());
 
 		scrollPane.setViewportView(panel);
-	}
-
-	public JButton getUpdateBtn() {
-		return updateBtn;
-	}
-
-	public void setUpdateBtn(JButton updateBtn) {
-		this.updateBtn = updateBtn;
-	}
-
-	public JButton getDeleteBtn() {
-		return deleteBtn;
-	}
-
-	public void setDeleteBtn(JButton deleteBtn) {
-		this.deleteBtn = deleteBtn;
 	}
 
 }

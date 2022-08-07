@@ -1105,8 +1105,8 @@ public class GUI {
 								reservInforPanel.setAccList(list2);
 								reservInforPanel.setFlightList(list3);
 								
-								reservInforPanel.getUpdateBtn().setVisible(false);
-								reservInforPanel.getDeleteBtn().setVisible(false);
+//								reservInforPanel.getUpdateBtn().setVisible(false);
+//								reservInforPanel.getDeleteBtn().setVisible(false);
 								reservInforPanel.getBackBtn().setVisible(false);
 								reservInforPanel.getNextBtn().setVisible(true);
 								reservInforPanel.setVisible(true);
